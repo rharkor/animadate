@@ -19,7 +19,7 @@ import { redis } from "@/lib/redis"
 import { html, plainText, subject } from "@/lib/templates/mail/verify-email"
 import { ApiError, ensureLoggedIn, generateRandomSecret, handleApiError } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
-import { logger } from "@next-boilerplate/lib"
+import { logger } from "@animadate/lib"
 import { Prisma } from "@prisma/client"
 
 import { signUpResponseSchema } from "../me/schemas"
@@ -116,7 +116,7 @@ export const generateTotpSecret = async ({ ctx: { session } }: apiInputFromSchem
     })
     if (!user.email) return ApiError("unknownError")
     const totp = new OTPAuth.TOTP({
-      issuer: "next-boilerplate",
+      issuer: "animadate",
       label: user.email,
       algorithm: "SHA1",
       digits: 6,

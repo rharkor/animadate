@@ -1,6 +1,6 @@
 import { z } from "zod"
 
-import { logger } from "@next-boilerplate/lib"
+import { logger } from "@animadate/lib"
 
 import { dictionaryRequirements } from "./utils/dictionary"
 import { TDictionary } from "./langs"

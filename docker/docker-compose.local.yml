@@ -1,39 +1,34 @@
-#! This docker-compose is meant to be used for local development only.
-
-name: next-boilerplate
+name: animadate
 services:
   db:
     image: postgres:latest
-    container_name: next-boilerplate_db
+    container_name: animadate_db
     restart: unless-stopped
     volumes:
-      - next-boilerplate-postgres-data:/var/lib/postgresql/data
+      - animadate-postgres-data:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: postgres
-
     logging:
-      driver: "json-file"
+      driver: json-file
       options:
-        max-size: "50m"
+        max-size: 50m
     ports:
-      - "5432:5432"
-
+      - 5432:5432
   redis:
     image: redis:latest
     restart: unless-stopped
-    container_name: next-boilerplate_redis
+    container_name: animadate_redis
     command: /bin/sh -c "redis-server"
     logging:
-      driver: "json-file"
+      driver: json-file
       options:
-        max-size: "50m"
+        max-size: 50m
     volumes:
-      - next-boilerplate-redis-data:/data
+      - animadate-redis-data:/data
     ports:
-      - "6379:6379"
-
+      - 6379:6379
 volumes:
-  next-boilerplate-postgres-data:
-  next-boilerplate-redis-data:
+  animadate-postgres-data: null
+  animadate-redis-data: null

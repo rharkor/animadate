@@ -2,7 +2,7 @@
 import { config } from "dotenv"
 import { z } from "zod"
 
-import { logger } from "@next-boilerplate/lib"
+import { logger } from "@animadate/lib"
 import { createEnv } from "@t3-oss/env-nextjs"
 
 if (!process.env.ENV) {

@@ -70,22 +70,22 @@ jobs:
           path: ${{ github.workspace }}/result.json
       - name: Changed app?
         id: changed-app
-        if: ${{ contains(fromJSON(steps.changeset.outputs.result).packages, '@next-boilerplate/app') || github.event.inputs.FORCE_APP_DEPLOY == 'true' }}
+        if: ${{ contains(fromJSON(steps.changeset.outputs.result).packages, '@animadate/app') || github.event.inputs.FORCE_APP_DEPLOY == 'true' }}
         run: |
           echo "result=true" >> $GITHUB_OUTPUT
       - name: Changed docs?
         id: changed-docs
-        if: ${{ contains(fromJSON(steps.changeset.outputs.result).packages, '@next-boilerplate/docs') || github.event.inputs.FORCE_DOCS_DEPLOY == 'true' }}
+        if: ${{ contains(fromJSON(steps.changeset.outputs.result).packages, '@animadate/docs') || github.event.inputs.FORCE_DOCS_DEPLOY == 'true' }}
         run: |
           echo "result=true" >> $GITHUB_OUTPUT
       - name: Changed cron?
         id: changed-cron
-        if: ${{ contains(fromJSON(steps.changeset.outputs.result).packages, '@next-boilerplate/cron') || github.event.inputs.FORCE_CRON_DEPLOY == 'true' }}
+        if: ${{ contains(fromJSON(steps.changeset.outputs.result).packages, '@animadate/cron') || github.event.inputs.FORCE_CRON_DEPLOY == 'true' }}
         run: |
           echo "result=true" >> $GITHUB_OUTPUT
       - name: Changed landing?
         id: changed-landing
-        if: ${{ contains(fromJSON(steps.changeset.outputs.result).packages, '@next-boilerplate/landing') || github.event.inputs.FORCE_LANDING_DEPLOY == 'true' }}
+        if: ${{ contains(fromJSON(steps.changeset.outputs.result).packages, '@animadate/landing') || github.event.inputs.FORCE_LANDING_DEPLOY == 'true' }}
         run: |
           echo "result=true" >> $GITHUB_OUTPUT
 

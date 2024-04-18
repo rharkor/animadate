@@ -5,7 +5,7 @@ import { exit } from "node:process"
 import * as path from "path"
 import * as url from "url"
 
-import { logger } from "@next-boilerplate/lib"
+import { logger } from "@animadate/lib"
 
 import { completeInitialisation } from "./complete-initialisation"
 import { dbSetup } from "./db-setup"

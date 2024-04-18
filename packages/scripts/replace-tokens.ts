@@ -11,7 +11,7 @@ import inquirer from "inquirer"
 import * as path from "path"
 import * as url from "url"
 
-import { logger } from "@next-boilerplate/lib"
+import { logger } from "@animadate/lib"
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url))
 
@@ -22,7 +22,7 @@ export const replaceTokens = async () => {
     {
       message: "What is the project name?",
       id: "PROJECT_NAME",
-      token: "next-boilerplate",
+      token: "animadate",
     },
   ]
   const answers = await inquirer.prompt(

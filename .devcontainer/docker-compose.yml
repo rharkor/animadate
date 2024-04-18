@@ -1,4 +1,4 @@
-name: next-boilerplate
+name: animadate
 services:
   app:
     build:

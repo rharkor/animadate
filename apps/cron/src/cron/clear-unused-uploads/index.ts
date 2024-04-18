@@ -3,8 +3,8 @@ import { exit } from "process"
 import { env } from "@/lib/env"
 import { prisma } from "@/lib/prisma"
 import { s3Client as _s3Client } from "@/lib/s3"
+import { chunk, logger } from "@animadate/lib"
 import { DeleteObjectCommand } from "@aws-sdk/client-s3"
-import { chunk, logger } from "@next-boilerplate/lib"
 import { Prisma } from "@prisma/client"
 
 const clearUnusedUploads = async () => {

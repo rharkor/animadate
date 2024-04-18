@@ -1,5 +1,5 @@
 {
-  "name": "@next-boilerplate/tsconfig",
+  "name": "@animadate/tsconfig",
   "dependencies": {
     "eslint-config-custom": "*",
     "custom-prettier-config": "*"

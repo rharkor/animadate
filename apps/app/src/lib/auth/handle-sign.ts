@@ -5,7 +5,7 @@ import { signIn } from "next-auth/react"
 import { toast } from "react-toastify"
 import * as z from "zod"
 
-import { logger } from "@next-boilerplate/lib"
+import { logger } from "@animadate/lib"
 
 import { signInSchema } from "../../api/auth/schemas"
 import { TDictionary } from "../langs"

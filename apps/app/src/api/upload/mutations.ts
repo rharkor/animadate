@@ -8,8 +8,8 @@ import { s3Client } from "@/lib/s3"
 import { stringToSlug } from "@/lib/utils"
 import { ApiError, ensureLoggedIn, handleApiError } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
+import { logger } from "@animadate/lib"
 import { createPresignedPost } from "@aws-sdk/s3-presigned-post"
-import { logger } from "@next-boilerplate/lib"
 
 import { presignedUrlResponseSchema, presignedUrlSchema } from "./schemas"
 

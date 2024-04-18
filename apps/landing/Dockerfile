@@ -40,7 +40,7 @@ COPY packages/configs ./packages/configs
 COPY packages/lib ./packages/lib
 
 
-RUN turbo run build --filter=@next-boilerplate/landing
+RUN turbo run build --filter=@animadate/landing
 
 
 FROM base AS runner

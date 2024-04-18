@@ -4,7 +4,7 @@ import * as fs from "fs"
 import * as path from "path"
 import * as url from "url"
 
-import { logger } from "@next-boilerplate/lib"
+import { logger } from "@animadate/lib"
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url))
 const rootPath = path.join(__dirname, "..")
@@ -24,7 +24,7 @@ const packagesPath = packages
 
 const options: { skipMissing: boolean; ignoreMatches: string[] } = {
   skipMissing: false,
-  ignoreMatches: ["@next-boilerplate/scripts"],
+  ignoreMatches: ["@animadate/scripts"],
 }
 
 const main = async () => {

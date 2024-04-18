@@ -8,7 +8,7 @@ import { toast } from "react-toastify"
 import GithubSignIn from "@/components/auth/github-sign-in"
 import { authRoutes } from "@/constants/auth"
 import { TDictionary } from "@/lib/langs"
-import { logger } from "@next-boilerplate/lib"
+import { logger } from "@animadate/lib"
 
 import { AuthProvidersDr } from "./providers.dr"
 

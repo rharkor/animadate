@@ -1,7 +1,7 @@
 /* eslint-disable no-process-env */
 import { z } from "zod"
 
-import { logger } from "@next-boilerplate/lib"
+import { logger } from "@animadate/lib"
 import { createEnv } from "@t3-oss/env-nextjs"
 
 export const env = createEnv({

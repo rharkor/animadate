@@ -8,8 +8,8 @@ import { s3Client } from "@/lib/s3"
 import { ApiError } from "@/lib/utils/server-utils"
 import { ensureLoggedIn, handleApiError } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
+import { logger } from "@animadate/lib"
 import { DeleteObjectCommand } from "@aws-sdk/client-s3"
-import { logger } from "@next-boilerplate/lib"
 import { Prisma } from "@prisma/client"
 
 export const updateUser = async ({ input, ctx: { session } }: apiInputFromSchema<typeof updateUserSchema>) => {

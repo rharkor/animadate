@@ -8,7 +8,7 @@ terraform {
 
   #? Variables are not available in the backend block
   backend "s3" {
-    bucket = "next-boilerplate-terra-config"
+    bucket = "animadate-terra-config"
     key    = "terraform.tfstate"
     region = "eu-west-1"
   }

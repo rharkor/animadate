@@ -3,7 +3,7 @@ import { toast } from "react-toastify"
 import { z } from "zod"
 
 import { fileSchemaMinimal } from "@/schemas/file"
-import { logger } from "@next-boilerplate/lib"
+import { logger } from "@animadate/lib"
 import { TRPCClientErrorLike } from "@trpc/client"
 
 import { AppRouter } from "../../api/_app"

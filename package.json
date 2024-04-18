@@ -1,5 +1,5 @@
 {
-  "name": "next-boilerplate",
+  "name": "animadate",
   "private": true,
   "scripts": {
     "dev": "turbo run dev",
@@ -12,7 +12,7 @@
     "test": "turbo run test",
     "init": "npm run -s init:build && npm run -s init:env && npm run -s init -w packages/scripts && npm run -s init:coding-env",
     "init:env": "npm run -s init:env -w packages/scripts",
-    "init:build": "turbo run build --filter='@next-boilerplate/*'^...",
+    "init:build": "turbo run build --filter='@animadate/*'^...",
     "init:coding-env": "bash ./packages/scripts/install/install.sh",
     "depcheck": "npm run -s depcheck -w packages/scripts",
     "is-initialized": "npm run -s is-initialized -w packages/scripts",

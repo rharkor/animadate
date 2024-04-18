@@ -7,7 +7,7 @@ import { toast } from "react-toastify"
 import { useAccount } from "@/contexts/account"
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
-import { logger } from "@next-boilerplate/lib"
+import { logger } from "@animadate/lib"
 import { Button } from "@nextui-org/react"
 
 import { VerifyEmailButtonDr } from "./verify-email-button.dr"

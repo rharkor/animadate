@@ -2,7 +2,7 @@ import chalk from "chalk"
 import { envSetup } from "env-setup"
 import { exit } from "node:process"
 
-import { logger } from "@next-boilerplate/lib"
+import { logger } from "@animadate/lib"
 
 async function main() {
   logger.log(chalk.blue('Starting the "env setup" script...'))

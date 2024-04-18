@@ -1,6 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
-  "extends": "@next-boilerplate/tsconfig/next.json",
+  "extends": "@animadate/tsconfig/next.json",
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
