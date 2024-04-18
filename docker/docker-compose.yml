@@ -1,0 +1,82 @@
+name: next-boilerplate
+services:
+  app:
+    image: DOCKER_DEPLOY_APP_IMAGE
+    container_name: next-boilerplate_app
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+    ports:
+      - "3000:3000"
+
+  cron:
+    image: DOCKER_DEPLOY_CRONS_IMAGE
+    container_name: next-boilerplate_crons
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+
+  doc:
+    image: DOCKER_DEPLOY_DOCS_IMAGE
+    container_name: next-boilerplate_doc
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+    ports:
+      - "3001:3000"
+    #? You can comment the volumes section if you are not using the static files
+    volumes:
+      - .:/docs/.docusaurus
+
+  landing:
+    image: DOCKER_DEPLOY_LANDING_IMAGE
+    container_name: next-boilerplate_landing
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+    ports:
+      - "3002:3000"
+
+  db:
+    image: postgres:latest
+    container_name: next-boilerplate_db
+    restart: unless-stopped
+    volumes:
+      - next-boilerplate-postgres-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASS}
+      POSTGRES_DB: ${DATABASE_NAME}
+
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:latest
+    restart: unless-stopped
+    container_name: next-boilerplate_redis
+    command: /bin/sh -c "redis-server --requirepass ${REDIS_PASSWORD}"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+    volumes:
+      - next-boilerplate-redis-data:/data
+    ports:
+      - "6379:6379"
+
+volumes:
+  next-boilerplate-postgres-data:
+  next-boilerplate-redis-data:
