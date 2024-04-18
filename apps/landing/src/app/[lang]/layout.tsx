@@ -22,7 +22,7 @@ export default function RootLayout({ children, params }: { children: React.React
   if (!i18n.locales.includes(params.lang)) return redirect(`/${i18n.defaultLocale}/${params.lang}`)
 
   return (
-    <html lang={params.lang}>
+    <html lang={params.lang} suppressHydrationWarning>
       <body className={cn("antialiaseds bg-background min-h-screen font-sans", fontSans.variable)}>{children}</body>
     </html>
   )
