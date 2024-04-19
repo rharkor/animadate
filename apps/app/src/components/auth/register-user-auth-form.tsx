@@ -4,13 +4,13 @@ import * as React from "react"
 import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
 import { ChevronLeft } from "lucide-react"
-import { isMobile } from "react-device-detect"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 
 import { signUpSchema } from "@/api/auth/schemas"
 import PrivacyAcceptance from "@/app/[lang]/(sys-auth)/privacy-acceptance"
 import { authRoutes } from "@/constants/auth"
+import useIsMobile from "@/hooks/use-is-mobile"
 import { handleSignError, handleSignIn } from "@/lib/auth/handle-sign"
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
@@ -62,6 +62,7 @@ export type IForm1 = z.infer<ReturnType<typeof formSchema1>>
 
 export function RegisterUserAuthForm({ searchParams, locale, dictionary, ...props }: UserAuthFormProps) {
   const router = useRouter()
+  const isMobile = useIsMobile()
 
   const [isDesactivate2FAModalOpen, setDesactivate2FAModalOpen] = React.useState(false)
   const [otpPromiseResolve, setOtpPromiseResolve] = React.useState<(otp: string | null) => void>()
@@ -181,6 +182,7 @@ export function RegisterUserAuthForm({ searchParams, locale, dictionary, ...prop
         })
       }, 400)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formStep])
 
   const isSuccess = registerMutation.isSuccess

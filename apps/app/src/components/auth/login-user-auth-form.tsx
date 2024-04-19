@@ -12,9 +12,10 @@ import { env } from "@/lib/env"
 import { TDictionary } from "@/lib/langs"
 import { cn, ensureRelativeUrl } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Button, Card, CardBody, Link } from "@nextui-org/react"
+import { Button, Card, CardBody, Link, Spinner } from "@nextui-org/react"
 
 import TotpVerificationModal from "../profile/totp/totp-verification-modal"
+import CheckMarkAnimation from "../ui/check-mark/check-mark"
 import Copiable from "../ui/copiable"
 import FormField from "../ui/form"
 
@@ -59,10 +60,12 @@ export function LoginUserAuthForm({ searchParams, dictionary, ...props }: UserAu
     })
   }
 
+  const [isSuccess, setIsSuccess] = React.useState(false)
   async function onSubmit(data: IForm) {
     setIsLoading(true)
     try {
       const isPushingRoute = await handleSignIn({ data, callbackUrl, dictionary, getOtpCode })
+      setIsSuccess(true)
       //? If isPushingRoute is true, it means that the user is being redirected to the callbackUrl
       if (!isPushingRoute) setIsLoading(false)
     } catch (e) {
@@ -71,10 +74,18 @@ export function LoginUserAuthForm({ searchParams, dictionary, ...props }: UserAu
   }
 
   return (
-    <>
-      <form onSubmit={form.handleSubmit(onSubmit)} {...props} className={cn("grid space-y-2", props.className)}>
+    <div className="md:mt-3 md:rounded-large md:bg-content1/30 md:shadow-small md:backdrop-blur-xl">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        {...props}
+        className={cn(
+          "relative !mt-1 flex w-full flex-col space-y-2 overflow-hidden",
+          "md:-left-0 md:!mt-0 md:w-[400px] md:px-8 md:py-6 md:pb-1",
+          props.className
+        )}
+      >
         {env.NEXT_PUBLIC_IS_DEMO && (
-          <Card className="relative">
+          <Card className="relative bg-content1/30">
             <CardBody>
               <h3 className="flex flex-row items-center gap-1">
                 <BadgeInfo className="size-4" />
@@ -119,13 +130,38 @@ export function LoginUserAuthForm({ searchParams, dictionary, ...props }: UserAu
           autoCorrect="off"
           isDisabled={isLoading}
         />
-        <Link className="ml-auto text-sm text-muted-foreground hover:text-primary" href={"/forgot-password"}>
+        <Link className="ml-auto text-sm" href={"/forgot-password"}>
           {dictionary.forgotPassword}
         </Link>
-        <Button type="submit" isLoading={isLoading} color="primary">
+        <Button
+          type="submit"
+          isDisabled={isLoading}
+          color={isSuccess ? "success" : "primary"}
+          startContent={
+            isSuccess ? (
+              <CheckMarkAnimation className="size-6 text-success-foreground" />
+            ) : isLoading ? (
+              <Spinner
+                classNames={{
+                  wrapper: "size-4",
+                }}
+                color="current"
+                size="sm"
+              />
+            ) : (
+              <></>
+            )
+          }
+        >
           {dictionary.signIn}
         </Button>
       </form>
+      <h3 className={cn("!mt-0 text-start text-sm text-slate-100", "md:px-8 md:py-6 md:pt-0")}>
+        {dictionary.auth.doNotHaveAccount}{" "}
+        <Link className="text-sm" href={authRoutes.signUp[0]}>
+          {dictionary.auth.signUp}
+        </Link>
+      </h3>
       <TotpVerificationModal
         dictionary={dictionary}
         isOpen={isDesactivate2FAModalOpen}
@@ -147,6 +183,6 @@ export function LoginUserAuthForm({ searchParams, dictionary, ...props }: UserAu
         onlyPrompt
         curEmail={form.watch("email")}
       />
-    </>
+    </div>
   )
 }

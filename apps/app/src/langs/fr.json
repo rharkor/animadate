@@ -76,7 +76,9 @@
     "alreadyHaveAnAccount": "Vous avez déjà un compte ?",
     "login": "Connectez-vous",
     "name": "Nom",
-    "signUpSuccess": "Compte crée"
+    "signUpSuccess": "Compte crée",
+    "doNotHaveAccount": "Vous n'avez pas de compte ?",
+    "signUp": "S'inscrire"
   },
   "and": "et",
   "profile": "Profil",
