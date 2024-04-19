@@ -330,7 +330,7 @@ export function RegisterUserAuthForm({ searchParams, locale, dictionary, ...prop
           )}
         </div>
       </form>
-      <h3 className="!mt-0 text-start text-sm">
+      <h3 className="!mt-0 text-start text-sm text-slate-100">
         {dictionary.auth.alreadyHaveAnAccount}{" "}
         <Link className="text-sm" href={authRoutes.signIn[0]}>
           {dictionary.auth.login}

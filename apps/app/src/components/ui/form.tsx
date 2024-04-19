@@ -49,14 +49,17 @@ const WithPasswordStrengthPopover = <
         specialRegex.test(passwordValue),
       ].filter(Boolean).length
     : 0
-  const position = inputRef.current?.getBoundingClientRect()
 
   const updatePopoverPosition = useCallback(() => {
+    const inputWrapper = inputRef.current?.querySelector(".input-wrapper")
+    if (!inputWrapper) return
+    const position = inputWrapper.getBoundingClientRect()
     if (position && popoverRef.current) {
       popoverRef.current.style.top = `${position.top + position.height + 4}px`
       popoverRef.current.style.left = `${position.left}px`
+      popoverRef.current.style.width = `${position.width}px`
     }
-  }, [position])
+  }, [inputRef])
 
   updatePopoverPosition()
 
@@ -79,10 +82,22 @@ const WithPasswordStrengthPopover = <
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFocused])
 
+  useEffect(() => {
+    // Update position after render
+    setTimeout(updatePopoverPosition, 0)
+  }, [passwordValue, updatePopoverPosition])
+
+  const [passwordChangedSinceLastFocus, setPasswordChangedSinceLastFocus] = useState(false)
+
+  if (lastFocusPasswordValue !== passwordValue && isFocused && !passwordChangedSinceLastFocus) {
+    setPasswordChangedSinceLastFocus(true)
+  }
+
   const isDisplayed =
     isFocused &&
     (showPasswordPopoverCondition ? showPasswordPopoverCondition(passwordValue) : true) &&
-    lastFocusPasswordValue !== passwordValue
+    passwordChangedSinceLastFocus &&
+    passwordStrengthValue < 5
 
   return (
     <div className="relative" ref={inputRef}>
@@ -91,16 +106,12 @@ const WithPasswordStrengthPopover = <
         createPortal(
           <div
             className={cn(
-              "pointer-events-none fixed z-50 flex h-max flex-col gap-2 rounded-medium border border-default-100 bg-default-50 p-2 opacity-0 transition-opacity duration-200 ease-in-out",
+              "pointer-events-none fixed z-50 flex h-max flex-col gap-2 rounded-medium border border-default-100 bg-default-50 p-2 transition-all duration-200 ease-in-out",
+              "translate-y-8 opacity-0",
               {
-                "pointer-events-auto opacity-100": isDisplayed,
+                "pointer-events-auto translate-y-0 opacity-100": isDisplayed,
               }
             )}
-            style={
-              position && {
-                width: `${position.width}px`,
-              }
-            }
             ref={popoverRef}
           >
             <div
@@ -223,6 +234,9 @@ export default function FormField<
             },
             props.className
           )}
+          classNames={{
+            inputWrapper: "input-wrapper",
+          }}
           ref={inputRef}
           onFocusChange={setIsFocused}
           type={typeToRealType(type)}

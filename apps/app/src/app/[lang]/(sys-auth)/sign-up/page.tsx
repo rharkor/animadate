@@ -9,6 +9,9 @@ import { dictionaryRequirements } from "@/lib/utils/dictionary"
 
 import { PrivacyAcceptanceDr } from "../privacy-acceptance.dr"
 
+const landscapeLink = "https://animadate-public.s3.fr-par.scw.cloud/dogs/landscape.mp4"
+const portraitLink = "https://animadate-public.s3.fr-par.scw.cloud/dogs/portrait.mp4"
+
 export default async function SignUpPage({
   searchParams,
   params: { lang },
@@ -38,13 +41,26 @@ export default async function SignUpPage({
   )
 
   return (
-    <main className="container flex min-h-dvh flex-1 flex-col items-center justify-between space-y-6 px-2 py-8">
-      <div className="my-8 flex flex-col items-center gap-1">
+    <main className="container flex min-h-dvh flex-1 flex-col items-center justify-between gap-6 px-2 py-8">
+      <div className="fixed left-0 top-0 z-0 min-h-full min-w-full blur-[2px]">
+        <video autoPlay muted loop className="min-w-screen absolute min-h-screen scale-105 object-cover">
+          <source src={portraitLink} type="video/mp4" />
+        </video>
+        <div
+          className={cn(
+            "absolute inset-0 z-[1] bg-gradient-to-b from-foreground/0 to-foreground/60",
+            "via-foreground/0 via-40% to-80%"
+          )}
+        ></div>
+      </div>
+      <div className="z-10 my-8 flex flex-col items-center gap-1">
         <Logo className="size-12" />
         <h2 className={cn("text-xl font-medium", fontMono.className)}>{dictionary.name}</h2>
       </div>
-      <div className="flex w-full flex-col space-y-2">
-        <h1 className={cn("text-2xl font-semibold", fontMono.className)}>{dictionary.signUpPage.createAnAccount}</h1>
+      <div className="z-10 flex w-full flex-col space-y-2">
+        <h1 className={cn("text-2xl font-semibold text-slate-50", fontMono.className)}>
+          {dictionary.signUpPage.createAnAccount}
+        </h1>
         <RegisterUserAuthForm dictionary={dictionary} searchParams={searchParams} locale={lang} />
       </div>
     </main>
