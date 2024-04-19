@@ -76,7 +76,9 @@
     "alreadyHaveAnAccount": "Already have an account?",
     "login": "Login",
     "name": "Name",
-    "signUpSuccess": "Account created"
+    "signUpSuccess": "Account created",
+    "doNotHaveAccount": "Don't have an account?",
+    "signUp": "Sign Up"
   },
   "and": "and",
   "profile": "Profile",

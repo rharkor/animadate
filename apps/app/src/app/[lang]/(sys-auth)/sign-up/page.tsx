@@ -1,6 +1,7 @@
 import { RegisterUserAuthForm } from "@/components/auth/register-user-auth-form"
 import { RegisterUserAuthFormDr } from "@/components/auth/register-user-auth-form.dr"
 import Logo from "@/components/logo"
+import { landscapeLink, landscapePosterLink, portraitLink, portraitPosterLink } from "@/constants/images"
 import { fontMono } from "@/lib/fonts"
 import { Locale } from "@/lib/i18n-config"
 import { getDictionary } from "@/lib/langs"
@@ -8,11 +9,6 @@ import { cn } from "@/lib/utils"
 import { dictionaryRequirements } from "@/lib/utils/dictionary"
 
 import { PrivacyAcceptanceDr } from "../privacy-acceptance.dr"
-
-const landscapeLink = "https://animadate-public.s3.fr-par.scw.cloud/dogs/landscape.mp4"
-const landscapePosterLink = "https://animadate-public.s3.fr-par.scw.cloud/dogs/landscape.webp"
-const portraitLink = "https://animadate-public.s3.fr-par.scw.cloud/dogs/portrait.mp4"
-const portraitPosterLink = "https://animadate-public.s3.fr-par.scw.cloud/dogs/portrait.webp"
 
 export default async function SignUpPage({
   searchParams,
