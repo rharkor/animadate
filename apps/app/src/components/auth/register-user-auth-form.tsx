@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { useRouter } from "next/navigation"
+import { motion } from "framer-motion"
 import { ChevronLeft } from "lucide-react"
 import { isMobile } from "react-device-detect"
 import { useForm } from "react-hook-form"
@@ -190,11 +191,15 @@ export function RegisterUserAuthForm({ searchParams, locale, dictionary, ...prop
         {...props}
         className={cn("relative -left-2 !mt-1 flex w-screen flex-col space-y-2 overflow-hidden p-1", props.className)}
       >
-        <div
-          className="flex w-[200%] flex-row gap-2 transition-all"
-          style={{
-            transform: `translateX(-${(formStep / 2) * 100}%)`,
+        <motion.div
+          className="flex w-[200%] flex-row gap-2"
+          // style={{
+          //   transform: `translateX(-${(formStep / 2) * 100}%)`,
+          // }}
+          animate={{
+            translateX: `-${(formStep / 2) * 100}%`,
           }}
+          transition={{ type: "spring", bounce: 0.3, duration: 0.7 }}
         >
           <div
             className="flex-1 space-y-2 px-1 transition-all"
@@ -261,7 +266,7 @@ export function RegisterUserAuthForm({ searchParams, locale, dictionary, ...prop
               tabIndex={formStep !== 1 ? -1 : 0}
             />
           </div>
-        </div>
+        </motion.div>
         <PrivacyAcceptance className="mx-1" dictionary={dictionary} />
         <div className="mx-1 flex flex-row">
           <Button
