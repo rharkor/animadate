@@ -10,8 +10,6 @@ import { dictionaryRequirements } from "@/lib/utils/dictionary"
 
 import { PrivacyAcceptanceDr } from "../privacy-acceptance.dr"
 
-
-
 export default async function SignUpPage({
   searchParams,
   params: { lang },
