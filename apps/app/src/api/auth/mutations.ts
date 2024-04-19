@@ -25,7 +25,7 @@ import { Prisma } from "@prisma/client"
 import { signUpResponseSchema } from "../me/schemas"
 
 export const register = async ({ input }: apiInputFromSchema<typeof signUpSchema>) => {
-  const { email, password, username } = input
+  const { email, password, name } = input
   try {
     if (env.DISABLE_REGISTRATION === true) {
       return ApiError("registrationDisabled")
@@ -35,7 +35,7 @@ export const register = async ({ input }: apiInputFromSchema<typeof signUpSchema
     const user = await prisma.user.create({
       data: {
         email: email.toLowerCase(),
-        username,
+        name,
         password: hashedPassword,
         lastLocale: input.locale,
       },

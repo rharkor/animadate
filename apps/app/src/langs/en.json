@@ -1,4 +1,5 @@
 {
+  "name": "Animadate",
   "errors": {
     "password": {
       "regex": "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character",
@@ -7,10 +8,10 @@
       "max25": "Password must be at most 25 characters long.",
       "dontMatch": "Passwords don't match."
     },
-    "username": {
-      "required": "Username is required.",
-      "min3": "Username must be at least 3 characters long.",
-      "max30": "Username must be at most 30 characters long."
+    "name": {
+      "required": "Name is required.",
+      "min3": "Name must be at least 3 characters long.",
+      "max30": "Name must be at most 30 characters long."
     },
     "email": {
       "required": "Email is required.",
@@ -53,10 +54,6 @@
       "toggle": "See details",
       "updateAccount": "Update your account",
       "updateAccountDescription": "You can update your account details here.",
-      "username": {
-        "label": "Username",
-        "placeholder": "Enter your username"
-      },
       "loggedDevices": "Logged in devices",
       "loggedDevicesDescription": "Manage your logged in devices here.",
       "deleteLoggedDevice": {
@@ -75,7 +72,10 @@
     "clickingAggreement": "By clicking continue, you agree to our",
     "termsOfService": "Terms of Service",
     "privacyPolicy": "Privacy Policy",
-    "demoMode": "Demo mode"
+    "demoMode": "Demo mode",
+    "alreadyHaveAnAccount": "Already have an account?",
+    "login": "Login",
+    "name": "Name"
   },
   "and": "and",
   "profile": "Profile",
@@ -106,7 +106,6 @@
   "password": "Password",
   "passwordConfirmation": "Confirm Password",
   "edit": "Edit",
-  "username": "Username",
   "confirmPassword": "Confirm Password",
   "withEmail": "with email",
   "timeUnit": {

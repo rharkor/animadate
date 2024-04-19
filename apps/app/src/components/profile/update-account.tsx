@@ -49,7 +49,7 @@ export default function UpdateAccount({
       await update()
       utils.me.getAccount.invalidate()
       form.reset({
-        username: data.user.username ?? "",
+        name: data.user.name ?? "",
       })
     },
   })
@@ -59,13 +59,13 @@ export default function UpdateAccount({
   const form = useForm<INonSensibleForm>({
     resolver: zodResolver(nonSensibleSchema(dictionary)),
     values: {
-      username: account.data?.user.username || "",
+      name: account.data?.user.name || "",
     },
   })
 
   const resetForm = useCallback(() => {
     form.reset({
-      username: account.data?.user.username ?? "",
+      name: account.data?.user.name ?? "",
     })
   }, [account.data?.user, form])
 
@@ -88,8 +88,8 @@ export default function UpdateAccount({
           <form onSubmit={form.handleSubmit(onUpdateNonSensibleInforation)} className="grid gap-2">
             <FormField
               form={form}
-              name="username"
-              label={dictionary.profilePage.profileDetails.username.label}
+              name="name"
+              label={dictionary.auth.name}
               type="text"
               isDisabled={updateUserMutation.isLoading || account.isLoading || !hasVerifiedEmail}
             />

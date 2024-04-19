@@ -6,7 +6,8 @@ declare module "next-auth" {
       id: string
       role: string
       uuid: string
-      username?: string
+      email: string
+      name: string
       role: string
       hasPassword: boolean
       emailVerified: Date | null

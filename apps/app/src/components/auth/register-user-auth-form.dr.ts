@@ -1,4 +1,5 @@
 import { signUpSchemaDr } from "@/api/auth/schemas"
+import { PrivacyAcceptanceDr } from "@/app/[lang]/(sys-auth)/privacy-acceptance.dr"
 import { dictionaryRequirements } from "@/lib/utils/dictionary"
 
 import { FormFieldDr } from "../ui/form.dr"
@@ -12,7 +13,6 @@ export const getFormSchemaDr = dictionaryRequirements(formMinizedSchemaDr, formS
 export const RegisterUserAuthFormDr = dictionaryRequirements(
   {
     email: true,
-    username: true,
     password: true,
     confirmPassword: true,
     signUp: true,
@@ -30,7 +30,13 @@ export const RegisterUserAuthFormDr = dictionaryRequirements(
       otpInvalid: true,
       wrongProvider: true,
     },
+    auth: {
+      alreadyHaveAnAccount: true,
+      login: true,
+      name: true,
+    },
   },
   FormFieldDr,
-  getFormSchemaDr
+  getFormSchemaDr,
+  PrivacyAcceptanceDr
 )

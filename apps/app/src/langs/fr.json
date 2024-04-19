@@ -1,4 +1,5 @@
 {
+  "name": "Animadate",
   "errors": {
     "password": {
       "regex": "Le mot de passe doit contenir au moins une lettre majuscule, une lettre minuscule, un chiffre, et un caractère spécial.",
@@ -7,10 +8,10 @@
       "max25": "Le mot de passe doit être au maximum 25 caractères long.",
       "dontMatch": "Les mots de passe ne correspondent pas"
     },
-    "username": {
-      "required": "Nom d'utilisateur requis",
-      "min3": "Le nom d'utilisateur doit être au moins 3 caractères long.",
-      "max30": "Le nom d'utilisateur doit être au maximum 30 caractères long."
+    "name": {
+      "required": "Nom requis",
+      "min3": "Le nom doit être au moins 3 caractères long.",
+      "max30": "Le nom doit être au maximum 30 caractères long."
     },
     "email": {
       "required": "Email requis",
@@ -53,10 +54,6 @@
       "toggle": "Voir les détails",
       "updateAccount": "Mettre à jour le compte",
       "updateAccountDescription": "Vous pouvez mettre à jour votre compte ci-dessous",
-      "username": {
-        "label": "Nom d'utilisateur",
-        "placeholder": "Nom d'utilisateur"
-      },
       "loggedDevices": "Appareils connectés",
       "loggedDevicesDescription": "Vous pouvez voir les appareils connectés à votre compte ci-dessous",
       "deleteLoggedDevice": {
@@ -75,11 +72,14 @@
     "clickingAggreement": "En cliquant sur Inscription, vous acceptez nos",
     "termsOfService": "Conditions d'utilisation",
     "privacyPolicy": "Politique de confidentialité",
-    "demoMode": "Mode démo"
+    "demoMode": "Mode démo",
+    "alreadyHaveAnAccount": "Vous avez déjà un compte ?",
+    "login": "Connectez-vous",
+    "name": "Nom"
   },
   "and": "et",
   "profile": "Profil",
-  "signUp": "Inscription",
+  "signUp": "S'inscrire",
   "signIn": "Connexion",
   "toSignUp": "S'inscrire",
   "toSignIn": "Se connecter",
@@ -106,7 +106,6 @@
   "password": "Mot de passe",
   "passwordConfirmation": "Confirmer le mot de passe",
   "edit": "Modifier",
-  "username": "Nom d'utilisateur",
   "confirmPassword": "Confirmer le mot de passe",
   "withEmail": "avec email",
   "timeUnit": {
