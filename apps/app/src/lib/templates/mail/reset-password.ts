@@ -2,10 +2,10 @@ import { env } from "@/lib/env"
 
 export const subject = "Reset your password"
 
-export const plainText = (username: string, resetLink: string, locale: string) => {
+export const plainText = (name: string, resetLink: string, locale: string) => {
   const en = `Password Reset
 
-Hello ${username},
+Hello ${name},
 
 We received a request to reset your password. You can reset your password by clicking the following link:
 
@@ -19,7 +19,7 @@ This email was sent to you as part of our account services.${
 `
   const fr = `Réinitialiser votre mot de passe
 
-Bonjour ${username},
+Bonjour ${name},
 
 Nous avons reçu une demande de réinitialisation de votre mot de passe. Vous pouvez réinitialiser votre mot de passe en cliquant sur le lien suivant :
 
@@ -35,7 +35,7 @@ Ce courriel vous a été envoyé dans le cadre de nos services de compte.${
   return en
 }
 
-export const html = (username: string, resetLink: string, locale: string) => `<!DOCTYPE html>
+export const html = (name: string, resetLink: string, locale: string) => `<!DOCTYPE html>
 <html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" lang="${locale}">
 
 <head>
@@ -201,9 +201,9 @@ export const html = (username: string, resetLink: string, locale: string) => `<!
                                                                         <span>
                                                                         ${
                                                                           locale === "fr"
-                                                                            ? `Bonjour ${username}, vous avez récemment demandé à réinitialiser votre mot de passe pour votre compte. Cliquez sur le bouton ci-dessous pour le réinitialiser.`
+                                                                            ? `Bonjour ${name}, vous avez récemment demandé à réinitialiser votre mot de passe pour votre compte. Cliquez sur le bouton ci-dessous pour le réinitialiser.`
                                                                             : `
-                                                                            Hi ${username}, you recently requested to reset your password for your account. Click the button below to reset it.`
+                                                                            Hi ${name}, you recently requested to reset your password for your account. Click the button below to reset it.`
                                                                         }
                                                                         </span>
                                                                     </p>

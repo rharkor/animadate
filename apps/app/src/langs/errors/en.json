@@ -7,9 +7,6 @@
   "otpSecretAlreadyExists": "You already have an OTP secret.",
   "otpSecretNotFound": "OTP secret not found.",
   "demoAdminCannotHaveOtpSecret": "The administator cannot have an OTP secret in demo mode.",
-  "username": {
-    "exist": "Username already exists."
-  },
   "email": {
     "exist": "Email already exists."
   },

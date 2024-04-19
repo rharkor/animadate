@@ -22,7 +22,7 @@ export default async function requireAuth(callbackUrl?: string) {
         searchParams = "?" + new URLSearchParams({ callbackUrl: url.pathname }).toString()
       }
     }
-    redirect(authRoutes.signIn[0] + searchParams)
+    redirect(authRoutes.signUp[0] + searchParams)
   }
 
   return session

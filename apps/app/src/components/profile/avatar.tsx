@@ -118,7 +118,7 @@ export default function UpdateAvatar({
           <Avatar
             className="!size-20 text-large"
             src={getImageUrl(account.data?.user.profilePicture) || undefined}
-            name={account.data?.user.username || undefined}
+            name={account.data?.user.name || undefined}
             onClick={() => setShowModal(true)}
           />
         </Skeleton>

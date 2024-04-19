@@ -30,8 +30,11 @@ export default async function RootLayout({
   if (!i18n.locales.includes(params.lang)) return redirect(`/${i18n.defaultLocale}/${params.lang}`)
 
   return (
-    <html lang={params.lang}>
-      <body className={cn("antialiaseds min-h-screen bg-background font-sans", fontSans.variable)}>
+    <html lang={params.lang} suppressHydrationWarning>
+      <body
+        className={cn("min-h-screen bg-background font-sans antialiased", fontSans.variable)}
+        suppressHydrationWarning
+      >
         <RootProviders lang={params.lang as Locale}>{children}</RootProviders>
       </body>
     </html>

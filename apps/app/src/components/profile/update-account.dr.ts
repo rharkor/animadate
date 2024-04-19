@@ -5,14 +5,12 @@ import { UpdateAvatarDr } from "./avatar.dr"
 
 export const UpdateAccountDr = dictionaryRequirements(
   {
-    profilePage: {
-      profileDetails: {
-        username: true,
-      },
+    auth: {
+      name: true,
     },
     errors: {
       emailNotVerified: true,
-      username: true,
+      name: true,
     },
     needSavePopup: true,
     reset: true,

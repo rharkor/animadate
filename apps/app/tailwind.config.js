@@ -14,7 +14,7 @@ module.exports = {
     extend: {
       colors: {
         muted: "hsl(var(--nextui-default-100))",
-        "muted-foreground": "hsl(var(--nextui-default-500))",
+        "muted-foreground": "hsl(var(--nextui-default-600))",
       },
     },
   },
@@ -23,7 +23,11 @@ module.exports = {
     nextui({
       themes: {
         light: {
-          colors: {},
+          colors: {
+            primary: "#7EE7FC",
+            focus: "#7EE7FC",
+            background: "#DFF5F9",
+          },
         },
         dark: {
           colors: {},

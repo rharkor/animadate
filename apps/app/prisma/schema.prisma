@@ -37,14 +37,12 @@ enum UserRole {
 
 model User {
   id             String    @id @default(cuid())
-  name           String?
-  email          String?   @unique
+  name           String
+  email          String    @unique
   emailVerified  DateTime?
   profilePicture File?
   accounts       Account[]
 
-  // Custom fields
-  username                   String?                     @unique
   role                       UserRole                    @default(USER)
   password                   String?
   hasPassword                Boolean                     @default(false)
@@ -56,7 +54,113 @@ model User {
   otpVerified                Boolean                     @default(false)
   uploadsInProgress          FileUploading[]
 
+  pet Pet?
+
   // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum CHARACTERISTIC {
+  FRIENDLY
+  PLAYFUL
+  CALM
+  ACTIVE
+  INDEPENDENT
+  LOYAL
+  INTELLIGENT
+  PROTECTIVE
+  AGGRESSIVE
+  AFFECTIONATE
+  CURIOUS
+  ENERGETIC
+  SWEET
+  HAPPY
+  LOVING
+  QUIET
+  SHY
+  SOCIAL
+  TALKATIVE
+  TIMID
+  BOLD
+  BRAVE
+  CLEVER
+  CONFIDENT
+  COOL
+  CRAZY
+  CUTE
+  DARING
+  DEVOTED
+  DOCILE
+  DYNAMIC
+  EASYGOING
+  ENTHUSIASTIC
+  FAITHFUL
+  FEARLESS
+  FIERCE
+  FUNNY
+  GENTLE
+  GOOD
+  HARDWORKING
+  HELPFUL
+  HONEST
+  HUMBLE
+  JOYFUL
+  KIND
+  MATURE
+  OBEDIENT
+  PATIENT
+  PEACEFUL
+  POLITE
+  RELIABLE
+  RESPONSIBLE
+  SENSITIVE
+  SERIOUS
+  SINCERE
+  SMART
+  STRONG
+  TENDER
+  TOUGH
+  TRUSTWORTHY
+  WISE
+  WITTY
+  ZEALOUS
+  ADAPTABLE
+  AMUSING
+  BRIGHT
+  CHARMING
+  CHEERFUL
+  COURAGEOUS
+  CREATIVE
+  DECISIVE
+  DETERMINED
+  FAIR
+  FLEXIBLE
+  GENEROUS
+}
+
+model Characteristic {
+  id    String         @id @default(cuid())
+  value CHARACTERISTIC
+  pet   Pet            @relation(fields: [petId], references: [id], onDelete: Cascade)
+  petId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Pet {
+  id                        String           @id @default(cuid())
+  name                      String
+  kind                      String // ex: "Dog"
+  breed                     String // ex: "Golden Retriever"
+  bornAt                    DateTime
+  characteristics           Characteristic[]
+  ownerId                   String           @unique
+  owner                     User             @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  photos                    File[]
+  researchedCharacteristics CHARACTERISTIC[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -101,6 +205,8 @@ model File {
 
   userProfilePictureId String? @unique
   userProfilePicture   User?   @relation(fields: [userProfilePictureId], references: [id], onDelete: SetNull)
+  petPhotosId          String? @unique
+  petPhotos            Pet?    @relation(fields: [petPhotosId], references: [id], onDelete: SetNull)
 
   fileUploadingId String?        @unique
   fileUploading   FileUploading? @relation(fields: [fileUploadingId], references: [id], onDelete: SetNull)
