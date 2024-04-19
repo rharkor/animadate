@@ -9,7 +9,7 @@ import { z } from "zod"
 
 import { sendVerificationEmail } from "@/api/me/email/mutations"
 import { otpWindow } from "@/constants"
-import { authRoutes, JWT_MAX_AGE } from "@/constants/auth"
+import { authRoutes, SESSION_MAX_AGE } from "@/constants/auth"
 import { env } from "@/lib/env"
 import { i18n } from "@/lib/i18n-config"
 import { ITrpcContext } from "@/types"
@@ -72,7 +72,7 @@ export const providers: Provider[] = [
         select: {
           id: true,
           email: true,
-          username: true,
+          name: true,
           role: true,
           password: true,
           emailVerified: true,
@@ -102,7 +102,7 @@ export const providers: Provider[] = [
       try {
         const ua = req.headers?.["user-agent"] ?? ""
         const ip = requestIp.getClientIp(req) ?? ""
-        const expires = new Date(Date.now() + JWT_MAX_AGE * 1000)
+        const expires = new Date(Date.now() + SESSION_MAX_AGE * 1000)
         const body: z.infer<ReturnType<typeof sessionsSchema>> = {
           id: uuid,
           userId: user.id,
@@ -113,7 +113,7 @@ export const providers: Provider[] = [
           lastUsedAt: new Date(),
           createdAt: new Date(),
         }
-        await redis.setex(`session:${user.id}:${uuid}`, JWT_MAX_AGE, JSON.stringify(body))
+        await redis.setex(`session:${user.id}:${uuid}`, SESSION_MAX_AGE, JSON.stringify(body))
       } catch (error) {
         logger.error("Error creating session", error)
       }
@@ -122,7 +122,7 @@ export const providers: Provider[] = [
       return {
         id: user.id.toString(),
         email: user.email,
-        username: user.username,
+        name: user.name,
         role: user.role,
         uuid,
         emailVerified: user.emailVerified,
@@ -161,7 +161,7 @@ export const nextAuthOptions: NextAuthOptions = {
         token.id = user.id
         token.email = user.email
         if ("hasPassword" in user) token.hasPassword = user.hasPassword as boolean
-        if ("username" in user) token.username = user.username
+        if ("name" in user) token.name = user.name
         if ("role" in user) token.role = user.role as string
         if ("uuid" in user) token.uuid = user.uuid as string
         if ("emailVerified" in user) token.emailVerified = user.emailVerified as Date
@@ -238,7 +238,7 @@ export const nextAuthOptions: NextAuthOptions = {
         }
       }
       //* Fill session with user data
-      const username = dbUser.username
+      const name = dbUser.name
       const role = dbUser.role
       const hasPassword = dbUser.hasPassword
       const emailVerified = dbUser.emailVerified
@@ -249,7 +249,7 @@ export const nextAuthOptions: NextAuthOptions = {
         user: {
           ...session.user,
           id: token.id,
-          username: username ?? undefined,
+          name,
           role,
           uuid,
           hasPassword,
@@ -298,9 +298,6 @@ export const nextAuthOptions: NextAuthOptions = {
       return true
     },
   },
-  jwt: {
-    maxAge: JWT_MAX_AGE,
-  },
   pages: {
     signIn: authRoutes.signIn[0],
     newUser: authRoutes.signUp[0],
@@ -308,6 +305,7 @@ export const nextAuthOptions: NextAuthOptions = {
   },
   session: {
     strategy: "jwt", //? Strategy database could not work with credentials provider for security reasons
+    maxAge: SESSION_MAX_AGE,
   },
   logger: {
     error(code, metadata) {

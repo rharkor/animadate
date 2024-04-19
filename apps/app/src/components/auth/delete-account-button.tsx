@@ -24,19 +24,21 @@ export default function DeleteAccountButton({
   const deleteAccountMutation = trpc.me.deleteAccount.useMutation({
     onSuccess: () => {
       toast.success(dictionary.deleteAccountSuccessDescription)
-      router.push(authRoutes.signIn[0])
+      router.push(authRoutes.signUp[0])
     },
   })
 
-  const handleDeleteAccount = () => {
-    deleteAccountMutation.mutate()
+  const [isLoading, setIsLoading] = useState(false)
+  const handleDeleteAccount = async () => {
+    setIsLoading(true)
+    deleteAccountMutation.mutateAsync()
   }
 
   const [showModal, setShowModal] = useState(false)
 
   return (
     <>
-      <Button color="danger" isLoading={deleteAccountMutation.isLoading} onClick={() => setShowModal(true)}>
+      <Button color="danger" isLoading={isLoading} onClick={() => setShowModal(true)}>
         {children}
       </Button>
       <Modal isOpen={showModal} onOpenChange={(open) => setShowModal(open)}>
@@ -51,7 +53,7 @@ export default function DeleteAccountButton({
                 <Button onPress={onClose} variant="flat">
                   {dictionary.cancel}
                 </Button>
-                <Button color="danger" onPress={handleDeleteAccount} isLoading={deleteAccountMutation.isLoading}>
+                <Button color="danger" onPress={handleDeleteAccount} isLoading={isLoading}>
                   {dictionary.deleteAccountConfirm}
                 </Button>
               </ModalFooter>

@@ -16,7 +16,7 @@ export default async function RootProviders({ children, lang }: { children: Reac
   return (
     <UIProvider>
       <NextAuthProvider>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <ThemeProvider attribute="class" defaultTheme="system" forcedTheme="light" enableSystem>
           <TrpcProvider dictionary={dictionary}>{children}</TrpcProvider>
           <Toaster />
         </ThemeProvider>

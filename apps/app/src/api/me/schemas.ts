@@ -13,31 +13,30 @@ import { TDictionary } from "../../lib/langs"
 import {
   emailSchema,
   emailSchemaDr,
+  nameSchema,
+  nameSchemaDr,
   passwordSchemaWithRegex,
   passwordSchemaWithRegexDr,
-  usernameSchema,
-  usernameSchemaDr,
 } from "../auth/schemas"
 
-export const userSchemaDr = dictionaryRequirements(usernameSchemaDr)
+export const userSchemaDr = dictionaryRequirements(nameSchemaDr)
 export const userSchema = (dictionary?: TDictionary<typeof userSchemaDr>) =>
   z.object({
     id: z.string(),
-    name: z.string().nullable(),
-    email: z.string().nullable(),
+    email: z.string(),
     emailVerified: z.date().nullable(),
     profilePicture: fileSchemaMinimal().nullable(),
-    username: usernameSchema(dictionary).nullable(),
+    name: nameSchema(dictionary).nullable(),
     role: z.string(),
     hasPassword: z.boolean(),
     otpVerified: z.boolean(),
     lastLocale: z.string().nullable(),
   })
 
-export const updateUserSchemaDr = dictionaryRequirements(usernameSchemaDr)
+export const updateUserSchemaDr = dictionaryRequirements(nameSchemaDr)
 export const updateUserSchema = (dictionary?: TDictionary<typeof updateUserSchemaDr>) =>
   z.object({
-    username: usernameSchema(dictionary).or(z.literal("")).optional(),
+    name: nameSchema(dictionary).or(z.literal("")).optional(),
     profilePictureKey: z.string().optional().nullable(),
   })
 
@@ -86,7 +85,7 @@ export const deleteSessionResponseSchema = () =>
     id: z.string(),
   })
 
-export const getAccountResponseSchemaDr = dictionaryRequirements(usernameSchemaDr)
+export const getAccountResponseSchemaDr = dictionaryRequirements(nameSchemaDr)
 export const getAccountResponseSchema = (dictionary?: TDictionary<typeof getAccountResponseSchemaDr>) =>
   z.object({
     user: userSchema(dictionary),

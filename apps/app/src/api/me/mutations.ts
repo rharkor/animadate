@@ -10,12 +10,11 @@ import { ensureLoggedIn, handleApiError } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
 import { logger } from "@animadate/lib"
 import { DeleteObjectCommand } from "@aws-sdk/client-s3"
-import { Prisma } from "@prisma/client"
 
 export const updateUser = async ({ input, ctx: { session } }: apiInputFromSchema<typeof updateUserSchema>) => {
   ensureLoggedIn(session)
   try {
-    const { username, profilePictureKey } = input
+    const { name, profilePictureKey } = input
 
     const user = await prisma.user.findUnique({
       where: {
@@ -73,7 +72,7 @@ export const updateUser = async ({ input, ctx: { session } }: apiInputFromSchema
     const updatedUser = await prisma.user.update({
       where: { id: session.user.id },
       data: {
-        username,
+        name,
         profilePicture:
           profilePicture !== undefined && profilePicture !== null
             ? {
@@ -94,14 +93,6 @@ export const updateUser = async ({ input, ctx: { session } }: apiInputFromSchema
     }
     return data
   } catch (error: unknown) {
-    if (error instanceof Prisma.PrismaClientKnownRequestError) {
-      if (error.code === "P2002") {
-        const meta = error.meta
-        if ((meta?.target as Array<string>).includes("username")) {
-          return ApiError("username.exist")
-        }
-      }
-    }
     return handleApiError(error)
   }
 }

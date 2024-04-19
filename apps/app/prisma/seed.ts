@@ -39,9 +39,9 @@ async function main() {
             email: env.AUTH_ADMIN_EMAIL as string,
             password: await hash(env.AUTH_ADMIN_PASSWORD ?? "", 12),
             role: rolesAsObject.admin,
-            username: "admin",
             emailVerified: new Date(),
             hasPassword: true,
+            name: "Admin",
           },
         })
       )
