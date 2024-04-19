@@ -176,33 +176,36 @@ export function RegisterUserAuthForm({ searchParams, locale, dictionary, ...prop
     if (formStep === 1) {
       const currentPasswordRef = passwordRef.current
       if (!currentPasswordRef) return
-      currentPasswordRef.focus({
-        preventScroll: true,
-      })
+      setTimeout(() => {
+        currentPasswordRef.focus({
+          preventScroll: true,
+        })
+      }, 400)
     }
   }, [formStep])
 
   const isSuccess = registerMutation.isSuccess
 
   return (
-    <>
+    <div className="md:mt-3 md:rounded-large md:bg-content1/30 md:shadow-small md:backdrop-blur-xl">
       <form
         onSubmit={handleSubmit}
         {...props}
-        className={cn("relative -left-2 !mt-1 flex w-screen flex-col space-y-2 overflow-hidden p-1", props.className)}
+        className={cn(
+          "relative -left-2 !mt-1 flex w-screen flex-col space-y-2 overflow-hidden p-1",
+          "md:-left-0 md:!mt-0 md:w-[400px] md:px-8 md:py-6 md:pb-1",
+          props.className
+        )}
       >
         <motion.div
-          className="flex w-[200%] flex-row gap-2"
-          // style={{
-          //   transform: `translateX(-${(formStep / 2) * 100}%)`,
-          // }}
+          className="flex w-[calc(200%+36px)] flex-row gap-9"
           animate={{
-            translateX: `-${(formStep / 2) * 100}%`,
+            translateX: `calc(-${(formStep / 2) * 100}% - ${formStep * 18}px)`,
           }}
           transition={{ type: "spring", bounce: 0.3, duration: 0.7 }}
         >
           <div
-            className="flex-1 space-y-2 px-1 transition-all"
+            className="flex-1 space-y-2 px-1 transition-all md:px-0"
             aria-hidden={formStep !== 0}
             style={{
               pointerEvents: formStep !== 0 ? "none" : "auto",
@@ -233,7 +236,7 @@ export function RegisterUserAuthForm({ searchParams, locale, dictionary, ...prop
             />
           </div>
           <div
-            className="flex-1 space-y-2 px-1 transition-all"
+            className="flex-1 space-y-2 px-1 transition-all md:px-0"
             aria-hidden={formStep !== 1}
             style={{
               pointerEvents: formStep !== 1 ? "none" : "auto",
@@ -267,8 +270,8 @@ export function RegisterUserAuthForm({ searchParams, locale, dictionary, ...prop
             />
           </div>
         </motion.div>
-        <PrivacyAcceptance className="mx-1" dictionary={dictionary} />
-        <div className="mx-1 flex flex-row">
+        <PrivacyAcceptance className="mx-1 md:mx-0" dictionary={dictionary} />
+        <div className="mx-1 flex flex-row md:mx-0">
           <Button
             color="default"
             variant="flat"
@@ -315,7 +318,6 @@ export function RegisterUserAuthForm({ searchParams, locale, dictionary, ...prop
               onClick={handleNext}
               onKeyDown={(e) => {
                 if (e.defaultPrevented) return
-                e.preventDefault()
                 if (e.key === "Enter" || e.key === " ") {
                   handleNext(e)
                 }
@@ -330,7 +332,7 @@ export function RegisterUserAuthForm({ searchParams, locale, dictionary, ...prop
           )}
         </div>
       </form>
-      <h3 className="!mt-0 text-start text-sm text-slate-100">
+      <h3 className={cn("!mt-0 text-start text-sm text-slate-100", "md:px-8 md:py-6 md:pt-0")}>
         {dictionary.auth.alreadyHaveAnAccount}{" "}
         <Link className="text-sm" href={authRoutes.signIn[0]}>
           {dictionary.auth.login}
@@ -356,6 +358,6 @@ export function RegisterUserAuthForm({ searchParams, locale, dictionary, ...prop
         closeText={dictionary.cancel}
         onlyPrompt
       />
-    </>
+    </div>
   )
 }
