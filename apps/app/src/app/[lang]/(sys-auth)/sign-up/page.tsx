@@ -73,7 +73,7 @@ export default async function SignUpPage({
       </div>
       <div className="z-10 my-8 flex flex-col items-center gap-1 md:my-0">
         <Logo className="size-12 md:size-16" />
-        <h2 className={cn("text-xl font-medium md:hidden", fontMono.className)}>{dictionary.name}</h2>
+        <h2 className={cn("text-xl font-medium text-slate-50 md:hidden", fontMono.className)}>{dictionary.name}</h2>
       </div>
       <div className="z-10 flex w-full flex-col md:items-center">
         <h1 className={cn("text-2xl font-semibold text-slate-50 md:text-4xl", fontMono.className)}>
