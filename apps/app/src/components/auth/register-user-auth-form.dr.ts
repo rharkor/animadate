@@ -34,6 +34,7 @@ export const RegisterUserAuthFormDr = dictionaryRequirements(
       alreadyHaveAnAccount: true,
       login: true,
       name: true,
+      signUpSuccess: true,
     },
   },
   FormFieldDr,

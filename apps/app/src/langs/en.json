@@ -75,7 +75,8 @@
     "demoMode": "Demo mode",
     "alreadyHaveAnAccount": "Already have an account?",
     "login": "Login",
-    "name": "Name"
+    "name": "Name",
+    "signUpSuccess": "Account created"
   },
   "and": "and",
   "profile": "Profile",

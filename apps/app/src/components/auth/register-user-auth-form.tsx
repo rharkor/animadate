@@ -17,9 +17,10 @@ import { cn } from "@/lib/utils"
 import { handleMutationError } from "@/lib/utils/client-utils"
 import { logger } from "@animadate/lib"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Button, Link } from "@nextui-org/react"
+import { Button, Link, Spinner } from "@nextui-org/react"
 
 import TotpVerificationModal from "../profile/totp/totp-verification-modal"
+import CheckMarkAnimation from "../ui/check-mark/check-mark"
 import FormField from "../ui/form"
 
 import { formSchemaDr, RegisterUserAuthFormDr } from "./register-user-auth-form.dr"
@@ -148,9 +149,6 @@ export function RegisterUserAuthForm({ searchParams, locale, dictionary, ...prop
   }
 
   const onPrev = () => {
-    // Reset following forms
-    // form1.reset(undefined, { keepValues: true })
-
     setFormStep((prev) => prev - 1)
   }
 
@@ -182,6 +180,8 @@ export function RegisterUserAuthForm({ searchParams, locale, dictionary, ...prop
       })
     }
   }, [formStep])
+
+  const isSuccess = registerMutation.isSuccess
 
   return (
     <>
@@ -280,8 +280,29 @@ export function RegisterUserAuthForm({ searchParams, locale, dictionary, ...prop
             <ChevronLeft className="size-4 shrink-0" />
           </Button>
           {formStep === 1 ? (
-            <Button type="submit" isLoading={isLoading} color="primary" className="flex-1" key={"submit"}>
-              {dictionary.signUp}
+            <Button
+              type="submit"
+              isDisabled={isLoading}
+              color={isSuccess ? "success" : "primary"}
+              className="flex-1"
+              key={"submit"}
+              startContent={
+                isSuccess ? (
+                  <CheckMarkAnimation className="size-6 text-success-foreground" />
+                ) : isLoading ? (
+                  <Spinner
+                    classNames={{
+                      wrapper: "size-4",
+                    }}
+                    color="current"
+                    size="sm"
+                  />
+                ) : (
+                  <></>
+                )
+              }
+            >
+              {isSuccess ? dictionary.auth.signUpSuccess : dictionary.signUp}
             </Button>
           ) : (
             <Button
