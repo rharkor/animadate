@@ -210,5 +210,11 @@
   "somethingWentWrong": "Something went wrong",
   "tryAgain": "Try again",
   "goHome": "Go home",
-  "unknownError": "An unknown error occurred."
+  "unknownError": "An unknown error occurred.",
+  "nav": {
+    "match": "Match",
+    "activities": "Activities",
+    "notifications": "Notifications",
+    "profile": "Profile"
+  }
 }

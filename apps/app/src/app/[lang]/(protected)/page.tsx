@@ -19,7 +19,7 @@ export default async function Home({
   })
 
   return (
-    <main className="container m-auto flex min-h-screen flex-1 flex-col items-center justify-center gap-3">
+    <main className="container m-auto flex flex-1 flex-col items-center justify-center gap-3">
       <NavSettings lang={lang} />
       <h1 className="text-4xl font-bold">{dictionary.homePage.title}</h1>
       <nav className="flex flex-col items-center justify-center">
