@@ -29,7 +29,7 @@ export default function BottomBarItem({
         <Link
           href={route.route}
           className={cn(
-            "flex h-max w-full min-w-0 flex-col items-center justify-center rounded-none px-4 py-2 text-foreground transition-all",
+            "flex h-max w-full min-w-0 flex-col items-center justify-center rounded-none px-4 py-2 text-foreground transition-transform",
             {
               "text-primary": route.isActive,
             },
