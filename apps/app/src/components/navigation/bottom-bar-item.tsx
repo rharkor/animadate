@@ -33,7 +33,7 @@ export default function BottomBarItem({
             {
               "text-primary": route.isActive,
             },
-            "active:scale-[0.97]",
+            "!outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-opacity-50 active:scale-[0.97]",
             "sm:h-[60px] sm:w-[84px] sm:px-7"
           )}
           onClick={handleCreateRipple}
