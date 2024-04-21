@@ -51,7 +51,7 @@ export default function BottomBar({ dictionary }: { dictionary: TDictionary<type
       {/* Desktop anim */}
       <motion.div
         className={cn(
-          "absolute left-[23px] top-[calc(50%-22.5px)] z-0 h-[45px] w-[70px] rounded-full bg-primary/30 backdrop-blur-lg"
+          "absolute left-[23px] top-[calc(50%-22.5px)] z-0 h-[45px] w-[70px] rounded-full bg-primary/30 backdrop-blur-lg max-sm:hidden"
         )}
         style={{
           translateX: active ? getRouteIndexById(active) * 84 : 0,
