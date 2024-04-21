@@ -523,7 +523,7 @@ Splash screen:
 `npx pwa-asset-generator public/logo.svg public/icons -b "#ECF8FA" -p "calc(50vh - 7%) calc(50vw - 15%)" --splash-only`
 
 Icon:
-`npx pwa-asset-generator public/logo.svg public/icons -b "#ECF8FA" --icon-only`
+`npx pwa-asset-generator public/logo.svg public/icons -b "#ECF8FA" -p "calc(50vh - 23%) calc(50vw - 23%)" --icon-only`
 
 ## ❌ Common issues
 
