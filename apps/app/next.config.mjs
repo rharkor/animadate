@@ -1,5 +1,6 @@
 /* eslint-disable no-process-env */
 import bunldeAnalyzer from "@next/bundle-analyzer"
+import withSerwistInit from "@serwist/next"
 
 /**
  * @type {import('next').NextConfig}
@@ -49,5 +50,10 @@ let config = {
 }
 
 config = process.env.ANALYZE === "true" ? bunldeAnalyzer()(config) : config
+
+config = withSerwistInit({
+  swSrc: "src/sw.ts",
+  swDest: "public/sw.js",
+})(config)
 
 export default config

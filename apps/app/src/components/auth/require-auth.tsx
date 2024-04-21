@@ -14,7 +14,8 @@ export default async function requireAuth(callbackUrl?: string) {
     if (callbackUrl) {
       searchParams = "?" + new URLSearchParams({ callbackUrl }).toString()
     } else {
-      const baseUrl = headers().get("x-url")
+      const headersStore = headers()
+      const baseUrl = headersStore.get("x-url")
       if (!baseUrl) {
         logger.warn("No base url found in headers")
       } else {
