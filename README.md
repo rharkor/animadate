@@ -76,6 +76,7 @@ With this template, you get all the awesomeness you need:
     - [Git flow](#git-flow)
     - [Api development](#api-development)
       - [Api errors](#api-errors)
+    - [PWA Assets](#pwa-assets)
   - [❌ Common issues](#-common-issues)
     - [Cannot commit](#cannot-commit)
   - [☁️ Cloud deployment](#️-cloud-deployment)
@@ -515,6 +516,14 @@ For the interaction with the api you can use the `trpc` library. It's a library 
 #### Api errors
 
 All the possible errors are defined in `apps/app/src/langs/errors/<lang>.json`
+
+### PWA Assets
+
+Splash screen:
+`npx pwa-asset-generator public/logo.svg public/icons -b "#ECF8FA" -p "calc(50vh - 7%) calc(50vw - 15%)" --splash-only`
+
+Icon:
+`npx pwa-asset-generator public/logo.svg public/icons -b "#ECF8FA" -p "calc(50vh - 23%) calc(50vw - 23%)" --icon-only`
 
 ## ❌ Common issues
 

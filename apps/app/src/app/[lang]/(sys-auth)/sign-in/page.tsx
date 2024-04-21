@@ -38,7 +38,7 @@ export default async function SignInPage({
     )
   )
   return (
-    <main className="container mx-auto flex min-h-dvh flex-1 flex-col items-center justify-between gap-6 px-2 py-8 md:items-center md:justify-center md:gap-2">
+    <main className="container mx-auto flex flex-1 flex-col items-center justify-between gap-6 px-2 py-8 md:items-center md:justify-center md:gap-2">
       <div className="fixed left-0 top-0 z-0 min-h-full min-w-full blur-[2px]">
         <video
           autoPlay

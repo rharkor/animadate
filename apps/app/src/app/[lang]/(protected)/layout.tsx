@@ -1,9 +1,13 @@
 import requireAuth from "@/components/auth/require-auth"
 import NavSettings from "@/components/nav-settings"
+import BottomBar from "@/components/navigation/bottom-bar"
+import { BottomBarDr } from "@/components/navigation/bottom-bar.dr"
 import { lastLocaleExpirationInSeconds } from "@/constants"
 import { Locale } from "@/lib/i18n-config"
+import { getDictionary } from "@/lib/langs"
 import { prisma } from "@/lib/prisma"
 import { redis } from "@/lib/redis"
+import { dictionaryRequirements } from "@/lib/utils/dictionary"
 
 export default async function ProtectedLayout({
   children,
@@ -47,10 +51,13 @@ export default async function ProtectedLayout({
     await setLastLocale(lang)
   }
 
+  const dictionary = await getDictionary(lang, dictionaryRequirements(BottomBarDr))
+
   return (
     <>
       {children}
       <NavSettings lang={lang} />
+      <BottomBar dictionary={dictionary} />
     </>
   )
 }

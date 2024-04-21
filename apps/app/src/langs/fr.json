@@ -1,5 +1,8 @@
 {
   "name": "Animadate",
+  "app": {
+    "description": "Créez un profil pour votre chien, swipez, matchez et organisez des balades avec d'autres chiens et leurs propriétaires !"
+  },
   "errors": {
     "password": {
       "regex": "Le mot de passe doit contenir au moins une lettre majuscule, une lettre minuscule, un chiffre, et un caractère spécial.",
@@ -210,5 +213,11 @@
   "somethingWentWrong": "Quelque chose s'est mal passé",
   "tryAgain": "Ressayer",
   "goHome": "Aller à l'accueil",
-  "unknownError": "Erreur inconnue"
+  "unknownError": "Erreur inconnue",
+  "nav": {
+    "match": "Match",
+    "activities": "Activités",
+    "notifications": "Notifications",
+    "profile": "Profil"
+  }
 }

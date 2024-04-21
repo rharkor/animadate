@@ -26,23 +26,28 @@ function getLocale(request: NextRequest, cookiesLocale: string | undefined): str
 export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname
 
-  // Inject the current url in the headers
-  const rHeaders = new Headers(request.headers)
-  rHeaders.set("x-url", request.url)
-
   // `/_next/` and `/api/` are ignored by the watcher, but we need to ignore files in `public` manually.
   // If you have one
   if (
     [
-      "/favicon.ico",
       "/favicon.webp",
       "/robots.txt",
       "/sitemap.xml",
+      "/sw.js",
+      "/manifest.json",
       // Your other files in `public`
     ].includes(pathname) ||
-    pathname.match(/^\/[a-z]+\/_next$/)
+    pathname.match(/^\/[a-z]+\/_next$/) ||
+    // Sw
+    pathname.match(/^\/workbox-.+?/) ||
+    // Logos
+    pathname.match(/^\/logo.+?/)
   )
-    return
+    return NextResponse.next()
+
+  // Inject the current url in the headers
+  const rHeaders = new Headers(request.headers)
+  rHeaders.set("x-url", request.url)
 
   // Check if there is any supported locale in the pathname
   const pathnameIsMissingLocale = i18n.locales.every(
@@ -98,7 +103,6 @@ export const config = {
    * - api (API routes)
    * - _next/static (static files)
    * - _next/image (image optimization files)
-   * - favicon.ico (favicon file)
    */
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico|public).*)"],
+  matcher: ["/((?!api|_next/static|_next/image|public|icons).*)"],
 }

@@ -16,6 +16,21 @@ module.exports = {
         muted: "hsl(var(--nextui-default-100))",
         "muted-foreground": "hsl(var(--nextui-default-600))",
       },
+      keyframes: {
+        ripple: {
+          "0%": {
+            transform: "scale(0)",
+            opacity: 0.75,
+          },
+          "100%": {
+            transform: "scale(3)",
+            opacity: 0,
+          },
+        },
+      },
+      animation: {
+        ripple: "ripple 0.5s",
+      },
     },
   },
   darkMode: "class",
@@ -24,8 +39,8 @@ module.exports = {
       themes: {
         light: {
           colors: {
-            primary: "#7EE7FC",
-            focus: "#7EE7FC",
+            primary: "#6AD2E7",
+            focus: "#6AD2E7",
             background: "#ECF8FA",
           },
         },
