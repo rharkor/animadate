@@ -62,3 +62,7 @@ export const getImageUrl = (imageFile: z.infer<ReturnType<typeof fileSchemaMinim
   if (key.startsWith("https://") || key.startsWith("http://")) return key
   return "https://" + bucket + "." + endpoint + "/" + key
 }
+
+export const getFallbackAvatar = (name: string, scale: number = 75) => {
+  return `https://api.dicebear.com/8.x/avataaars-neutral/svg?seed=${name}&scale=${scale}`
+}

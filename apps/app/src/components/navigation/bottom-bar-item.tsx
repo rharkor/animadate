@@ -1,10 +1,10 @@
 import { Dispatch, SetStateAction } from "react"
 import Link from "next/link"
-import { Session } from "next-auth"
-import { useSession } from "next-auth/react"
 
 import { TRoute } from "@/constants/navigation"
+import { useAccount } from "@/contexts/account"
 import { cn } from "@/lib/utils"
+import { getFallbackAvatar, getImageUrl } from "@/lib/utils/client-utils"
 import { Avatar, Tooltip } from "@nextui-org/react"
 
 export default function BottomBarItem({
@@ -12,15 +12,13 @@ export default function BottomBarItem({
   createRipple,
   setWillActive,
   active,
-  ssrSession,
 }: {
   route: TRoute
   createRipple: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void
   setWillActive: Dispatch<SetStateAction<string | undefined>>
   active: string | undefined
-  ssrSession: Session
 }) {
-  const session = useSession().data ?? ssrSession
+  const account = useAccount()
 
   const handleCreateRipple = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
     const leftOfButton = event.currentTarget.getBoundingClientRect().left
@@ -29,7 +27,7 @@ export default function BottomBarItem({
     createRipple(event)
   }
 
-  const fallbackIcon = `https://api.dicebear.com/8.x/avataaars-neutral/svg?seed=${session.user.name}&scale=75`
+  const fallbackIcon = account.data?.user.name ? getFallbackAvatar(account.data.user.name) : undefined
 
   return (
     <li>
@@ -57,10 +55,11 @@ export default function BottomBarItem({
           )}
           {route.id === "profile" && (
             <Avatar
-              src={session.user.image ?? fallbackIcon}
+              src={account.data ? getImageUrl(account.data.user.profilePicture) ?? fallbackIcon : undefined}
               className={cn("!size-6 text-tiny", {
                 "border border-primary": route.isActive,
               })}
+              fallback={<></>}
             />
           )}
           <span className="text-xs sm:hidden">{route.name}</span>
