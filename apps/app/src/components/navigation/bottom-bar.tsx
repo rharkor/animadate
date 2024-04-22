@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { usePathname } from "next/navigation"
+import { Session } from "next-auth"
 import { motion } from "framer-motion"
 
 import { routes } from "@/constants/navigation"
@@ -13,7 +14,13 @@ import { BottomBarDr } from "./bottom-bar.dr"
 import BottomBarItem from "./bottom-bar-item"
 
 // Do not SSR this function because the active route will not be update on client side
-export default function BottomBar({ dictionary }: { dictionary: TDictionary<typeof BottomBarDr> }) {
+export default function BottomBar({
+  dictionary,
+  ssrSession,
+}: {
+  dictionary: TDictionary<typeof BottomBarDr>
+  ssrSession: Session
+}) {
   const pathname = usePathname()
   const ripple = useRipple()
 
@@ -43,6 +50,7 @@ export default function BottomBar({ dictionary }: { dictionary: TDictionary<type
             createRipple={ripple.onClick}
             active={active}
             setWillActive={setWillActive}
+            ssrSession={ssrSession}
           />
         ))}
       </ul>

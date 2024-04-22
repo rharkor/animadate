@@ -51,9 +51,12 @@ let config = {
 
 config = process.env.ANALYZE === "true" ? bunldeAnalyzer()(config) : config
 
-config = withSerwistInit({
-  swSrc: "src/sw.ts",
-  swDest: "public/sw.js",
-})(config)
+config =
+  process.env.ENV !== "development"
+    ? withSerwistInit({
+        swSrc: "src/sw.ts",
+        swDest: "public/sw.js",
+      })(config)
+    : config
 
 export default config

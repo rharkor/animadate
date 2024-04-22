@@ -57,7 +57,7 @@ export default async function ProtectedLayout({
     <>
       {children}
       <NavSettings lang={lang} />
-      <BottomBar dictionary={dictionary} />
+      <BottomBar dictionary={dictionary} ssrSession={session} />
     </>
   )
 }
