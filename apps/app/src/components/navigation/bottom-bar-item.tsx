@@ -58,8 +58,6 @@ export default function BottomBarItem({
           {route.id === "profile" && (
             <Avatar
               src={session.user.image ?? fallbackIcon}
-              showFallback={false}
-              fallback={<></>}
               className={cn("!size-6 text-tiny", {
                 "border border-primary": route.isActive,
               })}
