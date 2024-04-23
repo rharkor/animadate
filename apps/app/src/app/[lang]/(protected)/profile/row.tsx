@@ -1,7 +1,7 @@
 import { ChevronRight } from "lucide-react"
 
 import { cn } from "@/lib/utils"
-import { Button } from "@nextui-org/react"
+import { Button } from "@nextui-org/button"
 
 export default function Row({
   children,
