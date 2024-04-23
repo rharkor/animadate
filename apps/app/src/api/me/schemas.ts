@@ -23,10 +23,11 @@ export const userSchemaDr = dictionaryRequirements(nameSchemaDr)
 export const userSchema = (dictionary?: TDictionary<typeof userSchemaDr>) =>
   z.object({
     id: z.string(),
+    socialId: z.string(),
     email: z.string(),
     emailVerified: z.date().nullable(),
     profilePicture: fileSchemaMinimal().nullable(),
-    name: nameSchema(dictionary).nullable(),
+    name: nameSchema(dictionary),
     role: z.string(),
     hasPassword: z.boolean(),
     otpVerified: z.boolean(),

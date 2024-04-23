@@ -15,6 +15,8 @@ export default function Copiable({
   className,
   classNames,
   dictionary,
+  children,
+  onClick,
 }: {
   text: string | undefined
   isDisabled?: boolean
@@ -25,6 +27,8 @@ export default function Copiable({
     icon?: string
   }
   dictionary: TDictionary<typeof CopiableDr>
+  children?: React.ReactNode
+  onClick?: (textRef: React.RefObject<HTMLParagraphElement>) => void
 }) {
   const [isCopied, setIsCopied] = useState(false)
   const [isTooltipOpen, setIsTooltipOpen] = useState(false)
@@ -62,9 +66,9 @@ export default function Copiable({
           classNames?.text
         )}
         ref={textRef}
-        onClick={selectText}
+        onClick={onClick ? () => onClick(textRef) : selectText}
       >
-        {text}
+        {children ?? text}
       </p>
       <Tooltip
         isOpen={isTooltipOpen}

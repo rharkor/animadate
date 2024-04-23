@@ -219,5 +219,17 @@
     "activities": "Activités",
     "notifications": "Notifications",
     "profile": "Profil"
-  }
+  },
+  "personalInformations": "Informations personnelles",
+  "petProfile": "Profil de votre animal",
+  "myRelations": "Mes relations",
+  "other": "Autre",
+  "inviteYourFriend": "Invitez un ami",
+  "preferences": "Préférences",
+  "needHelp": "Besoin d'aide ?",
+  "helpUs": "Aidez-nous",
+  "security": "Sécurité",
+  "changeEmail": "Changer l'email",
+  "changePassword": "Changer le mot de passe",
+  "deleteYourAccount": "Supprimer le compte"
 }

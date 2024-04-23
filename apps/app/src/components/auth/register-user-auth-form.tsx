@@ -193,7 +193,7 @@ export function RegisterUserAuthForm({ searchParams, locale, dictionary, ...prop
         onSubmit={handleSubmit}
         {...props}
         className={cn(
-          "relative -left-2 !mt-1 flex w-screen flex-col space-y-2 overflow-hidden p-1",
+          "relative -left-3 !mt-1 flex w-screen flex-col space-y-2 overflow-hidden p-1 px-2",
           "md:-left-0 md:!mt-0 md:w-[400px] md:px-8 md:py-6 md:pb-1",
           props.className
         )}

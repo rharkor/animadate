@@ -11,6 +11,7 @@ declare module "next-auth" {
       role: string
       hasPassword: boolean
       emailVerified: Date | null
+      image: never
     }
   }
 }

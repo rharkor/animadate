@@ -39,7 +39,7 @@ export default async function SignUpPage({
   )
 
   return (
-    <main className="container mx-auto flex flex-1 flex-col items-center justify-between gap-6 px-2 py-8 md:items-center md:justify-center md:gap-2">
+    <main className="container mx-auto flex flex-1 flex-col items-center justify-between gap-6 px-3 py-8 md:justify-center md:gap-2">
       <div className="fixed left-0 top-0 z-0 min-h-full min-w-full blur-[2px]">
         <video
           autoPlay
@@ -68,8 +68,10 @@ export default async function SignUpPage({
         ></div>
       </div>
       <div className="z-10 my-8 flex flex-col items-center gap-1 md:my-0">
-        <Logo className="size-12 md:size-16" />
-        <h2 className={cn("text-xl font-medium text-slate-50 md:hidden", fontMono.className)}>{dictionary.name}</h2>
+        <Logo className="size-20 md:size-16" />
+        <h2 className={cn("text-2xl font-medium text-slate-50 md:hidden md:text-xl", fontMono.className)}>
+          {dictionary.name}
+        </h2>
       </div>
       <div className="z-10 flex w-full flex-col md:items-center">
         <h1 className={cn("text-2xl font-semibold text-slate-50 md:text-4xl", fontMono.className)}>

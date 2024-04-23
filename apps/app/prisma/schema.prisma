@@ -37,6 +37,8 @@ enum UserRole {
 
 model User {
   id             String    @id @default(cuid())
+  // Create a custom sequence that take some random numbers and add the incrementalId
+  socialId       String    @unique @default(dbgenerated("generate_random_social_id()"))
   name           String
   email          String    @unique
   emailVerified  DateTime?

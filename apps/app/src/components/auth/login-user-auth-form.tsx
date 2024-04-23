@@ -80,7 +80,7 @@ export function LoginUserAuthForm({ searchParams, dictionary, ...props }: UserAu
         {...props}
         className={cn(
           "relative !mt-1 flex w-full flex-col space-y-2",
-          "md:-left-0 md:!mt-0 md:w-[400px] md:px-8 md:py-6 md:pb-1",
+          "md:!mt-0 md:w-[400px] md:px-8 md:py-6 md:pb-1",
           props.className
         )}
       >

@@ -254,10 +254,7 @@ export default async function RootLayout({
           media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)"
         />
       </head>
-      <body
-        className={cn("h-dvh min-h-dvh bg-background font-sans antialiased", fontSans.variable)}
-        suppressHydrationWarning
-      >
+      <body className={cn("h-dvh bg-background font-sans antialiased", fontSans.variable)} suppressHydrationWarning>
         <RootProviders lang={params.lang as Locale}>{children}</RootProviders>
       </body>
     </html>

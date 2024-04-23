@@ -1,5 +1,4 @@
 import requireAuth from "@/components/auth/require-auth"
-import NavSettings from "@/components/nav-settings"
 import BottomBar from "@/components/navigation/bottom-bar"
 import { BottomBarDr } from "@/components/navigation/bottom-bar.dr"
 import { lastLocaleExpirationInSeconds } from "@/constants"
@@ -7,6 +6,7 @@ import { Locale } from "@/lib/i18n-config"
 import { getDictionary } from "@/lib/langs"
 import { prisma } from "@/lib/prisma"
 import { redis } from "@/lib/redis"
+import { serverTrpc } from "@/lib/trpc/server"
 import { dictionaryRequirements } from "@/lib/utils/dictionary"
 
 export default async function ProtectedLayout({
@@ -19,6 +19,7 @@ export default async function ProtectedLayout({
   }
 }) {
   const session = await requireAuth()
+  const account = await serverTrpc.me.getAccount()
 
   //* Set last locale
   // Get last locale from redis or db
@@ -56,8 +57,7 @@ export default async function ProtectedLayout({
   return (
     <>
       {children}
-      <NavSettings lang={lang} />
-      <BottomBar dictionary={dictionary} />
+      <BottomBar dictionary={dictionary} ssrAccount={account} />
     </>
   )
 }
