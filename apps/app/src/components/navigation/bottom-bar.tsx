@@ -40,11 +40,11 @@ export default function BottomBar({
     <nav
       className={cn(
         "z-50 w-screen bg-content1 shadow-large",
-        "sm:mx-auto sm:mb-4 sm:w-max sm:rounded-full sm:border sm:border-content2 sm:px-4"
+        "sm:mx-auto sm:mb-4 sm:w-max sm:rounded-full sm:border sm:border-content2"
       )}
     >
-      <div className="relative overflow-hidden">
-        <ul className="relative grid grid-cols-4 items-center gap-3 sm:gap-0">
+      <div className={cn("relative overflow-hidden", "sm:px-4")}>
+        <ul className="relative z-10 grid grid-cols-4 items-center gap-3 sm:gap-0">
           {resolvedRoutes.map((route, i) => (
             <BottomBarItem
               key={i}
