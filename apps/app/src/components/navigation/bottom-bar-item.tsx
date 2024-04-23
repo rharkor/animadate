@@ -62,8 +62,8 @@ export default function BottomBarItem({
             <Image
               src={getImageUrl(account.user.profilePicture) ?? fallbackIcon}
               alt="Profile Picture"
-              className={cn("!size-6 rounded-full border-2 bg-content3 text-tiny", {
-                "border border-primary": route.isActive,
+              className={cn("!size-6 rounded-full bg-content3", {
+                "border-2 border-primary": route.isActive,
               })}
               width={48}
               height={48}

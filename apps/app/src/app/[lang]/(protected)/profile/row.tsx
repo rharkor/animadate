@@ -18,12 +18,12 @@ export default function Row({
     <Button
       className={cn(
         "h-max w-full min-w-0 justify-between rounded-large bg-content1 p-2 !text-medium",
-        "!scale-100 text-primary data-[focus=true]:bg-primary/20",
+        "!scale-100 text-primary data-[focus=true]:bg-primary/10",
         {
           "rounded-none": placement === "center",
           "rounded-t-none": placement === "bottom",
           "rounded-b-none": placement === "top",
-          "data-[focus=true]:bg-danger/40 data-[focus-visible=true]:outline-danger": color === "danger",
+          "data-[focus=true]:bg-danger-100 data-[focus-visible=true]:outline-danger": color === "danger",
         },
         className
       )}

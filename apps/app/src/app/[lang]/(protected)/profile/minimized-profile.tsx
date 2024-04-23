@@ -1,13 +1,14 @@
 "use client"
 
+import Image from "next/image"
 import { z } from "zod"
 
 import { getAccountResponseSchema } from "@/api/me/schemas"
 import Copiable from "@/components/ui/copiable"
 import { useAccount } from "@/contexts/account"
 import { TDictionary } from "@/lib/langs"
+import { cn } from "@/lib/utils"
 import { getFallbackAvatar, getImageUrl } from "@/lib/utils/client-utils"
-import { Avatar } from "@nextui-org/react"
 
 import { MinimizedProfileDr } from "./minimized-profile.dr"
 
@@ -34,10 +35,12 @@ export default function MinimizedProfile({
 
   return (
     <section>
-      <Avatar
+      <Image
         src={getImageUrl(account.user.profilePicture) ?? fallbackIcon}
-        fallback={<></>}
-        className="mx-auto !size-20"
+        alt="Profile Picture"
+        className={cn("mx-auto !size-20 rounded-full bg-content3")}
+        width={80}
+        height={80}
       />
       <h2 className="mx-auto mt-2 text-center text-large">{account.user.name}</h2>
       <Copiable
