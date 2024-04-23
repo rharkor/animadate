@@ -61,51 +61,51 @@ export default async function Profile({
       <MinimizedProfile dictionary={dictionary} ssrAccount={account} />
       <Section title={dictionary.profile}>
         <Row placement="top">
-          <UserRound className="size-4" />
+          <UserRound className="size-5" />
           {dictionary.personalInformations}
         </Row>
         <Row placement="center">
-          <Dog className="size-4" />
+          <Dog className="size-5" />
           {dictionary.petProfile}
         </Row>
         <Row placement="bottom">
-          <ContactRound className="size-4" />
+          <ContactRound className="size-5" />
           {dictionary.myRelations}
         </Row>
       </Section>
       <Section title={dictionary.other}>
         <Row placement="top">
-          <Link className="size-4" />
+          <Link className="size-5" />
           {dictionary.inviteYourFriend}
         </Row>
         <Row placement="center">
-          <Settings2 className="size-4" />
+          <Settings2 className="size-5" />
           {dictionary.preferences}
         </Row>
         <Row placement="center">
-          <MessageCircleQuestion className="size-4" />
+          <MessageCircleQuestion className="size-5" />
           {dictionary.needHelp}
         </Row>
         <Row placement="bottom">
-          <HeartHandshake className="size-4" />
+          <HeartHandshake className="size-5" />
           {dictionary.helpUs}
         </Row>
       </Section>
       <Section title={dictionary.security}>
         <Row placement="top">
-          <Mail className="size-4" />
+          <Mail className="size-5" />
           {dictionary.changeEmail}
         </Row>
         <Row placement="center">
-          <KeyRound className="size-4" />
+          <KeyRound className="size-5" />
           {dictionary.changePassword}
         </Row>
         <Row placement="center" className="text-danger hover:!bg-danger-100" color="danger">
-          <LogOut className="size-4" />
+          <LogOut className="size-5" />
           {dictionary.signOut}
         </Row>
         <Row placement="bottom" className="bg-danger-50 text-danger hover:!bg-danger-100" color="danger">
-          <Trash className="size-4" />
+          <Trash className="size-5" />
           {dictionary.deleteYourAccount}
         </Row>
       </Section>
