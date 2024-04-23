@@ -1,5 +1,4 @@
 import requireAuth from "@/components/auth/require-auth"
-import NavSettings from "@/components/nav-settings"
 import BottomBar from "@/components/navigation/bottom-bar"
 import { BottomBarDr } from "@/components/navigation/bottom-bar.dr"
 import { lastLocaleExpirationInSeconds } from "@/constants"
@@ -56,7 +55,6 @@ export default async function ProtectedLayout({
   return (
     <>
       {children}
-      <NavSettings lang={lang} />
       <BottomBar dictionary={dictionary} />
     </>
   )

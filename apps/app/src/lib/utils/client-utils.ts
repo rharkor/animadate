@@ -64,5 +64,5 @@ export const getImageUrl = (imageFile: z.infer<ReturnType<typeof fileSchemaMinim
 }
 
 export const getFallbackAvatar = (name: string, scale: number = 75) => {
-  return `https://api.dicebear.com/8.x/avataaars-neutral/svg?seed=${name}&scale=${scale}`
+  return `https://api.dicebear.com/8.x/fun-emoji/svg?seed=${name}&scale=${scale}`
 }
