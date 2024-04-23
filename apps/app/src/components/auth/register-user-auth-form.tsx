@@ -188,7 +188,7 @@ export function RegisterUserAuthForm({ searchParams, locale, dictionary, ...prop
   const isSuccess = registerMutation.isSuccess
 
   return (
-    <div className="md:mt-3 md:rounded-large md:bg-content1/30 md:shadow-small md:backdrop-blur-xl">
+    <div className="md:mt-3 md:rounded-large md:bg-[#FAFFFF] md:shadow-small">
       <form
         onSubmit={handleSubmit}
         {...props}
@@ -271,7 +271,7 @@ export function RegisterUserAuthForm({ searchParams, locale, dictionary, ...prop
             />
           </div>
         </motion.div>
-        <PrivacyAcceptance className="mx-1 md:mx-0" dictionary={dictionary} />
+        <PrivacyAcceptance className="mx-1 text-muted md:mx-0 md:text-muted-foreground" dictionary={dictionary} />
         <div className="mx-1 flex flex-row md:mx-0">
           <Button
             color="default"
@@ -333,7 +333,7 @@ export function RegisterUserAuthForm({ searchParams, locale, dictionary, ...prop
           )}
         </div>
       </form>
-      <h3 className={cn("!mt-0 text-start text-sm text-slate-100", "md:px-8 md:py-6 md:pt-0")}>
+      <h3 className={cn("!mt-0 text-start text-sm text-slate-100", "md:px-8 md:py-6 md:pt-0 md:text-foreground")}>
         {dictionary.auth.alreadyHaveAnAccount}{" "}
         <Link className="text-sm" href={authRoutes.signIn[0]}>
           {dictionary.auth.login}
