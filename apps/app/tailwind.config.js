@@ -39,7 +39,10 @@ module.exports = {
       themes: {
         light: {
           colors: {
-            primary: "#6AD2E7",
+            primary: {
+              DEFAULT: "#6AD2E7",
+              900: "#D8E3E6",
+            },
             focus: "#6AD2E7",
             background: "#ECF8FA",
           },

@@ -12,7 +12,7 @@ export default function PrivacyAcceptance({
   className?: string
 }) {
   return (
-    <p className={cn("text-xs text-muted", className)}>
+    <p className={cn("text-xs", className)}>
       {dictionary.auth.clickingAggreement}{" "}
       <Link href="/terms" className="inline text-xs underline underline-offset-2 hover:text-primary">
         {dictionary.auth.termsOfService}
