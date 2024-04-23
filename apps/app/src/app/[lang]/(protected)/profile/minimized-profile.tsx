@@ -34,11 +34,11 @@ export default function MinimizedProfile({
   }
 
   return (
-    <section>
+    <section className="sm:max-w-lg">
       <Image
         src={getImageUrl(account.user.profilePicture) ?? fallbackIcon}
         alt="Profile Picture"
-        className={cn("mx-auto !size-20 rounded-full bg-content3")}
+        className={cn("mx-auto !size-20 rounded-full bg-content3 shadow sm:shadow-medium")}
         width={80}
         height={80}
       />

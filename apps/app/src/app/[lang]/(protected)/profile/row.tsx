@@ -23,6 +23,7 @@ export default function Row({
           "rounded-none": placement === "center",
           "rounded-t-none": placement === "bottom",
           "rounded-b-none": placement === "top",
+          "border-b border-default-100": placement !== "bottom" && placement !== "single",
           "data-[focus=true]:bg-danger-100 data-[focus-visible=true]:outline-danger": color === "danger",
         },
         className
@@ -31,7 +32,7 @@ export default function Row({
       color={color ?? "primary"}
     >
       <span
-        className={cn("text-foreground", {
+        className={cn("flex flex-row items-center gap-2 text-foreground", {
           "text-danger": color === "danger",
         })}
       >
