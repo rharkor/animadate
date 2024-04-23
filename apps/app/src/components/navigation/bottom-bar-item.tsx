@@ -1,24 +1,29 @@
 import { Dispatch, SetStateAction } from "react"
+import Image from "next/image"
 import Link from "next/link"
+import { z } from "zod"
 
+import { getAccountResponseSchema } from "@/api/me/schemas"
 import { TRoute } from "@/constants/navigation"
 import { useAccount } from "@/contexts/account"
 import { cn } from "@/lib/utils"
 import { getFallbackAvatar, getImageUrl } from "@/lib/utils/client-utils"
-import { Avatar, Tooltip } from "@nextui-org/react"
+import { Tooltip } from "@nextui-org/react"
 
 export default function BottomBarItem({
   route,
   createRipple,
   setWillActive,
   active,
+  ssrAccount,
 }: {
   route: TRoute
   createRipple: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void
   setWillActive: Dispatch<SetStateAction<string | undefined>>
   active: string | undefined
+  ssrAccount: z.infer<ReturnType<typeof getAccountResponseSchema>>
 }) {
-  const account = useAccount()
+  const account = useAccount().data ?? ssrAccount
 
   const handleCreateRipple = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
     const leftOfButton = event.currentTarget.getBoundingClientRect().left
@@ -27,7 +32,7 @@ export default function BottomBarItem({
     createRipple(event)
   }
 
-  const fallbackIcon = account.data?.user.name ? getFallbackAvatar(account.data.user.name) : undefined
+  const fallbackIcon = getFallbackAvatar(account.user.name)
 
   return (
     <li>
@@ -54,12 +59,14 @@ export default function BottomBarItem({
             />
           )}
           {route.id === "profile" && (
-            <Avatar
-              src={account.data ? getImageUrl(account.data.user.profilePicture) ?? fallbackIcon : undefined}
-              className={cn("!size-6 text-tiny", {
+            <Image
+              src={getImageUrl(account.user.profilePicture) ?? fallbackIcon}
+              alt="Profile Picture"
+              className={cn("!size-6 rounded-full border-2 bg-content3 text-tiny", {
                 "border border-primary": route.isActive,
               })}
-              fallback={<></>}
+              width={48}
+              height={48}
             />
           )}
           <span className="text-xs sm:hidden">{route.name}</span>
