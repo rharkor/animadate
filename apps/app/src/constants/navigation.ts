@@ -41,6 +41,6 @@ export const routes: (
     id: "profile",
     name: dictionary.nav.profile,
     route: "/profile",
-    isActive: pathname.match(/^\/[a-z]+\/profile\/?$/) !== null,
+    isActive: pathname.match(/^\/[a-z]+\/profile\/?/) !== null,
   },
 ]

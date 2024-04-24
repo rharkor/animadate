@@ -34,7 +34,7 @@ export default function MinimizedProfile({
   }
 
   return (
-    <section className="sm:max-w-lg">
+    <section>
       <Image
         src={getImageUrl(account.user.profilePicture) ?? fallbackIcon}
         alt="Profile Picture"
