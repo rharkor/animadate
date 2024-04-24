@@ -7,7 +7,6 @@ import {
   Mail,
   MessageCircleQuestion,
   Settings2,
-  Trash,
   UserRound,
 } from "lucide-react"
 
@@ -17,6 +16,8 @@ import { serverTrpc } from "@/lib/trpc/server"
 import { cn } from "@/lib/utils"
 import { dictionaryRequirements } from "@/lib/utils/dictionary"
 
+import DeleteAccount from "./delete-account"
+import { DeleteAccountDr } from "./delete-account.dr"
 import MinimizedProfile from "./minimized-profile"
 import { MinimizedProfileDr } from "./minimized-profile.dr"
 import Row from "./row"
@@ -50,7 +51,8 @@ export default async function Profile({
         deleteYourAccount: true,
       },
       MinimizedProfileDr,
-      SignOutDr
+      SignOutDr,
+      DeleteAccountDr
     )
   )
 
@@ -103,10 +105,7 @@ export default async function Profile({
             {dictionary.changePassword}
           </Row>
           <SignOut dictionary={dictionary} />
-          <Row placement="bottom" className="bg-danger-50 text-danger hover:!bg-danger-100" color="danger">
-            <Trash className="size-5" />
-            {dictionary.deleteYourAccount}
-          </Row>
+          <DeleteAccount dictionary={dictionary} />
         </Section>
       </div>
     </main>
