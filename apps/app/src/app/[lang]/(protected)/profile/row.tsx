@@ -19,12 +19,14 @@ export default function Row({
   className,
   color,
   href,
+  onPress,
 }: {
   children: React.ReactNode
   placement: "top" | "center" | "bottom" | "single"
   className?: string
   color?: "default" | "success" | "primary" | "secondary" | "warning" | "danger"
   href?: string
+  onPress?: () => void
 }) {
   return (
     <Comp href={href}>
@@ -43,6 +45,7 @@ export default function Row({
         )}
         variant="light"
         color={color ?? "primary"}
+        onPress={onPress}
       >
         <span
           className={cn("flex flex-row items-center gap-2 text-foreground", {
