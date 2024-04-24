@@ -1,4 +1,7 @@
 {
+  "tokenInvalid": "Token invalid.",
+  "alreadyYourEmail": "This is already your email.",
+  "rateLimitChangeEmail": "You can change your email only 3 times per day.",
   "fileNotFound": "File not found.",
   "couldNotIdentifyIp": "Could not identify your IP address.",
   "tooManyRequests": "Too many requests. Please try again in a few minutes.",
@@ -7,9 +10,7 @@
   "otpSecretAlreadyExists": "You already have an OTP secret.",
   "otpSecretNotFound": "OTP secret not found.",
   "demoAdminCannotHaveOtpSecret": "The administator cannot have an OTP secret in demo mode.",
-  "email": {
-    "exist": "Email already exists."
-  },
+  "emailAlreadyInUse": "Email already in use.",
   "unknownError": "An unknown error has occurred. Please try again later.",
   "invalidCredentials": "Invalid credentials. Please try again.",
   "unauthorized": "You have been logged out. Please sign in again.",

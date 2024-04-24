@@ -240,3 +240,16 @@ export function merge<T extends object, R extends object[]>(target: T, ...source
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return sources.reduce((acc, curr) => mergeTwo(acc, curr as any), target) as T
 }
+
+export function generateOTP(length: number = 6) {
+  // Declare a digits variable
+  // which stores all digits
+  const digits = "0123456789"
+  let OTP = ""
+  const len = digits.length
+  for (let i = 0; i < length; i++) {
+    OTP += digits[Math.floor(Math.random() * len)]
+  }
+
+  return OTP
+}

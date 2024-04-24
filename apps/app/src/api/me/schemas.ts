@@ -198,3 +198,25 @@ export const needHelpResponseSchema = () =>
   z.object({
     success: z.boolean(),
   })
+
+export const changeEmailSchemaDr = dictionaryRequirements(emailSchemaDr)
+export const changeEmailSchema = (dictionary?: TDictionary<typeof changeEmailSchemaDr>) =>
+  z.object({
+    email: emailSchema(dictionary),
+    password: z.string(),
+  })
+
+export const changeEmailResponseSchema = () =>
+  z.object({
+    success: z.boolean(),
+  })
+
+export const validateChangeEmailSchema = () =>
+  z.object({
+    token: z.string(),
+  })
+
+export const validateChangeEmailResponseSchema = () =>
+  z.object({
+    success: z.boolean(),
+  })

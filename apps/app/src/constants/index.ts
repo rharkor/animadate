@@ -14,6 +14,7 @@ export const emailVerificationExpiration = 1000 * 60 * 60 * 24 * 3 // 3 days
 export const resendEmailVerificationExpiration = 1000 * 60 * 2 // 5 minutes
 export const defaultMaxPerPage = 100
 export const maxUploadSize = 1024 * 1024 * 10 // 10 MB
+export const changeEmailTokenExpiration = 1000 * 60 * 60 * 3 // 3 hours
 
 export const otpWindow = 1
 
