@@ -56,59 +56,61 @@ export default async function Profile({
   const account = await serverTrpc.me.getAccount()
 
   return (
-    <main className={cn("container m-auto flex flex-1 flex-col items-center gap-3 overflow-auto p-3")}>
-      <h1 className="sr-only">{dictionary.profile}</h1>
-      <MinimizedProfile dictionary={dictionary} ssrAccount={account} />
-      <Section title={dictionary.profile}>
-        <Row placement="top">
-          <UserRound className="size-5" />
-          {dictionary.personalInformations}
-        </Row>
-        <Row placement="center">
-          <Dog className="size-5" />
-          {dictionary.petProfile}
-        </Row>
-        <Row placement="bottom">
-          <ContactRound className="size-5" />
-          {dictionary.myRelations}
-        </Row>
-      </Section>
-      <Section title={dictionary.other}>
-        <Row placement="top">
-          <Link className="size-5" />
-          {dictionary.inviteYourFriend}
-        </Row>
-        <Row placement="center">
-          <Settings2 className="size-5" />
-          {dictionary.preferences}
-        </Row>
-        <Row placement="center">
-          <MessageCircleQuestion className="size-5" />
-          {dictionary.needHelp}
-        </Row>
-        <Row placement="bottom">
-          <HeartHandshake className="size-5" />
-          {dictionary.helpUs}
-        </Row>
-      </Section>
-      <Section title={dictionary.security}>
-        <Row placement="top">
-          <Mail className="size-5" />
-          {dictionary.changeEmail}
-        </Row>
-        <Row placement="center">
-          <KeyRound className="size-5" />
-          {dictionary.changePassword}
-        </Row>
-        <Row placement="center" className="text-danger hover:!bg-danger-100" color="danger">
-          <LogOut className="size-5" />
-          {dictionary.signOut}
-        </Row>
-        <Row placement="bottom" className="bg-danger-50 text-danger hover:!bg-danger-100" color="danger">
-          <Trash className="size-5" />
-          {dictionary.deleteYourAccount}
-        </Row>
-      </Section>
+    <main className={cn("container m-auto flex-1 overflow-auto p-3")}>
+      <div className="mx-auto flex flex-col items-center gap-3 sm:max-w-lg">
+        <h1 className="sr-only">{dictionary.profile}</h1>
+        <MinimizedProfile dictionary={dictionary} ssrAccount={account} />
+        <Section title={dictionary.profile}>
+          <Row placement="top">
+            <UserRound className="size-5" />
+            {dictionary.personalInformations}
+          </Row>
+          <Row placement="center">
+            <Dog className="size-5" />
+            {dictionary.petProfile}
+          </Row>
+          <Row placement="bottom">
+            <ContactRound className="size-5" />
+            {dictionary.myRelations}
+          </Row>
+        </Section>
+        <Section title={dictionary.other}>
+          <Row placement="top">
+            <Link className="size-5" />
+            {dictionary.inviteYourFriend}
+          </Row>
+          <Row placement="center">
+            <Settings2 className="size-5" />
+            {dictionary.preferences}
+          </Row>
+          <Row placement="center" href="/profile/need-help">
+            <MessageCircleQuestion className="size-5" />
+            {dictionary.needHelp}
+          </Row>
+          <Row placement="bottom">
+            <HeartHandshake className="size-5" />
+            {dictionary.helpUs}
+          </Row>
+        </Section>
+        <Section title={dictionary.security}>
+          <Row placement="top">
+            <Mail className="size-5" />
+            {dictionary.changeEmail}
+          </Row>
+          <Row placement="center">
+            <KeyRound className="size-5" />
+            {dictionary.changePassword}
+          </Row>
+          <Row placement="center" className="text-danger hover:!bg-danger-100" color="danger">
+            <LogOut className="size-5" />
+            {dictionary.signOut}
+          </Row>
+          <Row placement="bottom" className="bg-danger-50 text-danger hover:!bg-danger-100" color="danger">
+            <Trash className="size-5" />
+            {dictionary.deleteYourAccount}
+          </Row>
+        </Section>
+      </div>
     </main>
   )
 }

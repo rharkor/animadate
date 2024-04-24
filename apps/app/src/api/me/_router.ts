@@ -7,6 +7,8 @@ import {
   getAccountResponseSchema,
   getActiveSessionsResponseSchema,
   getActiveSessionsSchema,
+  needHelpResponseSchema,
+  needHelpSchema,
   resetPasswordResponseSchema,
   resetPasswordSchema,
   sendVerificationEmailResponseSchema,
@@ -27,7 +29,7 @@ import { sendVerificationEmail, verifyEmail } from "./email/mutations"
 import { forgotPassword, resetPassword } from "./password/mutations"
 import { deleteSession } from "./sessions/mutations"
 import { getActiveSessions } from "./sessions/queries"
-import { deleteAccount, updateUser } from "./mutations"
+import { deleteAccount, needHelp, updateUser } from "./mutations"
 import { getAccount } from "./queries"
 
 export const meRouter = router({
@@ -57,4 +59,5 @@ export const meRouter = router({
     .output(sendVerificationEmailResponseSchema())
     .mutation(sendVerificationEmail),
   verifyEmail: publicProcedure.input(verifyEmailSchema()).output(verifyEmailResponseSchema()).mutation(verifyEmail),
+  needHelp: authenticatedProcedure.input(needHelpSchema()).output(needHelpResponseSchema()).mutation(needHelp),
 })

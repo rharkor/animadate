@@ -176,3 +176,25 @@ export const signUpResponseSchema = (dictionary?: TDictionary<typeof signUpRespo
   z.object({
     user: userSchema(dictionary),
   })
+
+export const needHelpSchemaDr = dictionaryRequirements(
+  {
+    errors: {
+      messageMinLength: true,
+    },
+  },
+  emailSchemaDr,
+  nameSchemaDr
+)
+export const needHelpSchema = (dictionary?: TDictionary<typeof needHelpSchemaDr>) =>
+  z.object({
+    locale: z.string(),
+    name: nameSchema(dictionary),
+    email: emailSchema(dictionary),
+    message: z.string().min(10, dictionary?.errors.messageMinLength.replace("{size}", "10")),
+  })
+
+export const needHelpResponseSchema = () =>
+  z.object({
+    success: z.boolean(),
+  })

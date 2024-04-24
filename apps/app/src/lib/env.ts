@@ -37,19 +37,19 @@ export const env = createEnv({
       .transform((value) => value === "true"),
     ENV: z.enum(["development", "staging", "preproduction", "production"]),
     VERCEL_URL: z.string().optional(),
-    SMTP_HOST: z.string().optional(),
+    SMTP_HOST: z.string().min(1),
     SMTP_PORT: z
       .string()
-      .transform((value) => parseInt(value))
-      .optional(),
-    SMTP_USERNAME: z.string().optional(),
-    SMTP_PASSWORD: z.string().optional(),
-    SMTP_FROM_NAME: z.string().optional(),
-    SMTP_FROM_EMAIL: z.string().optional(),
-    SUPPORT_EMAIL: z.string().optional(),
-    S3_REGION: z.string().optional(),
-    S3_ACCESS_KEY_ID: z.string().optional(),
-    S3_SECRET_ACCESS_KEY: z.string().optional(),
+      .min(1)
+      .transform((value) => parseInt(value)),
+    SMTP_USERNAME: z.string().min(1),
+    SMTP_PASSWORD: z.string().min(1),
+    SMTP_FROM_NAME: z.string().min(1),
+    SMTP_FROM_EMAIL: z.string().min(1),
+    SUPPORT_EMAIL: z.string().min(1),
+    S3_REGION: z.string().min(1),
+    S3_ACCESS_KEY_ID: z.string().min(1),
+    S3_SECRET_ACCESS_KEY: z.string().min(1),
     ENABLE_S3_SERVICE: z
       .enum(["true", "false"])
       .optional()

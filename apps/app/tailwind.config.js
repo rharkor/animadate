@@ -44,7 +44,7 @@ module.exports = {
               900: "#D8E3E6",
             },
             focus: "#6AD2E7",
-            background: "#ECF8FA",
+            background: "#E2EFF1",
           },
         },
         dark: {

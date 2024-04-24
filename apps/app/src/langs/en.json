@@ -37,7 +37,8 @@
     "otpInvalid": "Invalid OTP code.",
     "emailNotVerified": "Please, verify your email.",
     "fileTooLarge": "File too large.",
-    "passwordsDoNotMatch": "Passwords do not match."
+    "passwordsDoNotMatch": "Passwords do not match.",
+    "messageMinLength": "The message must be at least {size} characters long."
   },
   "home": "Home",
   "homePage": {
@@ -231,5 +232,11 @@
   "security": "Security",
   "changeEmail": "Change email",
   "changePassword": "Change password",
-  "deleteYourAccount": "Delete your account"
+  "deleteYourAccount": "Delete your account",
+  "writeYourMessage": "Write your message",
+  "needHelpMessageLabel": "How can we help you?",
+  "submit": "Submit",
+  "contactEmail": "Contact email",
+  "needHelpDescription": "If you have any questions, suggestions or problems, please do not hesitate to contact us. We will respond to you as soon as possible.",
+  "submitSuccess": "Message sent"
 }
