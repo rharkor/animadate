@@ -4,11 +4,9 @@ import {
   HeartHandshake,
   KeyRound,
   Link,
-  LogOut,
   Mail,
   MessageCircleQuestion,
   Settings2,
-  Trash,
   UserRound,
 } from "lucide-react"
 
@@ -18,10 +16,14 @@ import { serverTrpc } from "@/lib/trpc/server"
 import { cn } from "@/lib/utils"
 import { dictionaryRequirements } from "@/lib/utils/dictionary"
 
+import DeleteAccount from "./delete-account"
+import { DeleteAccountDr } from "./delete-account.dr"
 import MinimizedProfile from "./minimized-profile"
 import { MinimizedProfileDr } from "./minimized-profile.dr"
 import Row from "./row"
 import Section from "./section"
+import SignOut from "./sign-out"
+import { SignOutDr } from "./sign-out.dr"
 
 export default async function Profile({
   params: { lang },
@@ -47,9 +49,10 @@ export default async function Profile({
         changeEmail: true,
         changePassword: true,
         deleteYourAccount: true,
-        signOut: true,
       },
-      MinimizedProfileDr
+      MinimizedProfileDr,
+      SignOutDr,
+      DeleteAccountDr
     )
   )
 
@@ -101,14 +104,8 @@ export default async function Profile({
             <KeyRound className="size-5" />
             {dictionary.changePassword}
           </Row>
-          <Row placement="center" className="text-danger hover:!bg-danger-100" color="danger">
-            <LogOut className="size-5" />
-            {dictionary.signOut}
-          </Row>
-          <Row placement="bottom" className="bg-danger-50 text-danger hover:!bg-danger-100" color="danger">
-            <Trash className="size-5" />
-            {dictionary.deleteYourAccount}
-          </Row>
+          <SignOut dictionary={dictionary} />
+          <DeleteAccount dictionary={dictionary} />
         </Section>
       </div>
     </main>

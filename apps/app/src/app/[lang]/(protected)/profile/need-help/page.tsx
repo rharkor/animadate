@@ -7,7 +7,7 @@ import { Locale } from "@/lib/i18n-config"
 import { getDictionary } from "@/lib/langs"
 import { cn } from "@/lib/utils"
 import { dictionaryRequirements } from "@/lib/utils/dictionary"
-import { Link } from "@nextui-org/react"
+import { Link } from "@nextui-org/link"
 
 import NeedHelpForm from "./form"
 import { NeedHelpFormDr } from "./form.dr"
