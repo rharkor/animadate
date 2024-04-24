@@ -14,7 +14,7 @@ export const localesDetailed = {
 } as const
 
 export const i18n = {
-  defaultLocale: "en",
+  defaultLocale: "fr",
   locales: Object.keys(localesDetailed) as Array<keyof typeof localesDetailed>,
 } as const
 
