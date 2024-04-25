@@ -247,5 +247,7 @@
   "changeEmailTokenSentByMail": "An email has been sent to the indicated address. Please enter the verification code to change your email.",
   "token": "Token",
   "changedEmailSuccessfully": "Email changed successfully.",
-  "currentEmail": "Current email"
+  "currentEmail": "Current email",
+  "currentPassword": "Current password",
+  "success": "Success"
 }

@@ -57,16 +57,16 @@ export default function ChangeEmail({
 
   const changeEmailMutation = trpc.me.changeEmail.useMutation({
     onError: (error) => {
-      const translatedError = handleMutationError(error, dictionary, router, { showNotification: false })
-      if (error.message.includes("password")) {
+      const { message, code } = handleMutationError(error, dictionary, router, { showNotification: false })
+      if (code?.toLowerCase().includes("password")) {
         return form0.setError("password", {
           type: "manual",
-          message: translatedError.message,
+          message: message,
         })
-      } else if (error.message.includes("email")) {
+      } else if (code?.toLowerCase().includes("email")) {
         return form0.setError("email", {
           type: "manual",
-          message: translatedError.message,
+          message: message,
         })
       } else {
         handleMutationError(error, dictionary, router)
@@ -93,9 +93,14 @@ export default function ChangeEmail({
     await validateChangeEmailMutation.mutateAsync(data)
     utils.me.getAccount.invalidate()
     toast.success(dictionary.changedEmailSuccessfully)
-    // Close the modal after 1 second
-    await sleep(1000)
+    // Close the modal after 1.5 second
+    await sleep(1500)
     onClose()
+    form0.reset()
+    form1.reset()
+    setFormStep(0)
+    changeEmailMutation.reset()
+    validateChangeEmailMutation.reset()
   }
 
   const isLoading = formStep === 0 ? changeEmailMutation.isLoading : validateChangeEmailMutation.isLoading
@@ -134,7 +139,7 @@ export default function ChangeEmail({
                 </p>
                 <FormField label={dictionary.newEmail} type="email" form={form0} name="email" />
                 <FormField
-                  label={dictionary.password}
+                  label={dictionary.currentPassword}
                   type="password-eye-slash"
                   form={form0}
                   name="password"
@@ -166,7 +171,7 @@ export default function ChangeEmail({
               {dictionary.previous}
             </Button>
             <Button
-              color="primary"
+              color={isSuccess ? "success" : "primary"}
               type="submit"
               form={formStep === 0 ? "change-email" : "validate-change-email"}
               isDisabled={isLoading}
@@ -186,7 +191,7 @@ export default function ChangeEmail({
                 )
               }
             >
-              {formStep === 0 ? dictionary.next : dictionary.change}
+              {isSuccess ? dictionary.success : formStep === 0 ? dictionary.next : dictionary.change}
             </Button>
           </ModalFooter>
         </ModalContent>

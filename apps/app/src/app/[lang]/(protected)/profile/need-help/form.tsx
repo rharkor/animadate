@@ -46,7 +46,7 @@ export default function NeedHelpForm({
     await needHelpMutation.mutateAsync(data)
     // Sleep for 1s to let the user see the success message
     toast.success(dictionary.submitSuccess)
-    await sleep(1000)
+    await sleep(1500)
     router.push("/profile")
   }
 

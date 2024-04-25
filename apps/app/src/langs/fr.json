@@ -230,8 +230,8 @@
   "needHelp": "Besoin d'aide ?",
   "helpUs": "Aidez-nous",
   "security": "Sécurité",
-  "changeEmail": "Changer l'email",
-  "changePassword": "Changer le mot de passe",
+  "changeEmail": "Changer d'email",
+  "changePassword": "Changer de mot de passe",
   "deleteYourAccount": "Supprimer le compte",
   "writeYourMessage": "Ecrivez votre message",
   "needHelpMessageLabel": "Comment pouvons-nous vous aider ?",
@@ -247,5 +247,7 @@
   "changeEmailTokenSentByMail": "Un email a été envoyé à l'adresse indiquée. Veuillez entrer le code de vérification pour changer votre email.",
   "token": "Code de vérification",
   "changedEmailSuccessfully": "Email changé avec succès",
-  "currentEmail": "Email actuel"
+  "currentEmail": "Email actuel",
+  "currentPassword": "Mot de passe actuel",
+  "success": "Succès"
 }

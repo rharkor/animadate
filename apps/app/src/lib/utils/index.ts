@@ -128,7 +128,7 @@ export const handleApiError = <T extends TRPCClientErrorLike<AppRouter>>(
     unknownError: true
   }>,
   router: AppRouterInstance
-): T => {
+): T & { code: string | undefined; message: string } => {
   try {
     const parsedError = JSON.parse(error.message) as TErrorMessage | string
     if (typeof parsedError === "string") {
@@ -139,6 +139,7 @@ export const handleApiError = <T extends TRPCClientErrorLike<AppRouter>>(
       return {
         ...error,
         message: translatedError,
+        code: undefined,
       }
     }
 
@@ -151,12 +152,14 @@ export const handleApiError = <T extends TRPCClientErrorLike<AppRouter>>(
     return {
       ...error,
       message: translatedError,
+      code: parsedError.code,
     }
   } catch (e) {
     const translatedError = dictionary.unknownError
     return {
       ...error,
       message: translatedError,
+      code: "unknownError",
     }
   }
 }
