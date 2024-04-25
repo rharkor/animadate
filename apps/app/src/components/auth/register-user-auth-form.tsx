@@ -77,13 +77,15 @@ export function RegisterUserAuthForm({ searchParams, locale, dictionary, ...prop
   const registerMutation = trpc.auth.register.useMutation({
     onError: (error) => {
       setIsLoading(false)
-      const translatedError = handleMutationError(error, dictionary, router, { showNotification: false })
-      if (error.message.includes("email")) {
+      const { message, code } = handleMutationError(error, dictionary, router, { showNotification: false })
+      if (code?.toLowerCase().includes("email")) {
         setFormStep(0)
         return form0.setError("email", {
           type: "manual",
-          message: translatedError.message,
+          message,
         })
+      } else {
+        handleMutationError(error, dictionary, router)
       }
     },
     meta: {

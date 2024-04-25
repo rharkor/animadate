@@ -75,7 +75,7 @@ export const register = async ({ input }: apiInputFromSchema<typeof signUpSchema
         const meta = error.meta
         if (!meta) return ApiError("accountAlreadyExists")
         if ((meta.target as Array<string>).includes("email")) {
-          return ApiError("email.exist")
+          return ApiError("emailAlreadyInUse")
         }
       }
     }

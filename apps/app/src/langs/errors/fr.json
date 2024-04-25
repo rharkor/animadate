@@ -1,4 +1,8 @@
 {
+  "invalidPassword": "Mot de passe invalide.",
+  "tokenInvalid": "Code de vérification invalide.",
+  "alreadyYourEmail": "C'est déjà votre email.",
+  "rateLimitChangeEmail": "Vous ne pouvez changer votre email que 3 fois par jour.",
   "fileNotFound": "Fichier introuvable.",
   "couldNotIdentifyIp": "Impossible d'identifier votre adresse IP.",
   "tooManyRequests": "Trop de requêtes. Veuillez réessayer dans quelques minutes.",
@@ -7,9 +11,7 @@
   "otpSecretAlreadyExists": "Un secret OTP existe déjà.",
   "otpSecretNotFound": "Secret OTP introuvable.",
   "demoAdminCannotHaveOtpSecret": "L'administrateur en mode démo ne peut pas avoir de secret OTP.",
-  "email": {
-    "exist": "Cet email existe déjà."
-  },
+  "emailAlreadyInUse": "Cet email est déjà utilisé.",
   "unknownError": "Une erreur inconnue s'est produite. Veuillez ressayer plus tard.",
   "invalidCredentials": "Les informations d'identification sont invalides.",
   "unauthorized": "Vous avez été déconnecté. Veuillez vous reconnecter.",

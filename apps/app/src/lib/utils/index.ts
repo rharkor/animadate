@@ -128,7 +128,7 @@ export const handleApiError = <T extends TRPCClientErrorLike<AppRouter>>(
     unknownError: true
   }>,
   router: AppRouterInstance
-): T => {
+): T & { code: string | undefined; message: string } => {
   try {
     const parsedError = JSON.parse(error.message) as TErrorMessage | string
     if (typeof parsedError === "string") {
@@ -139,6 +139,7 @@ export const handleApiError = <T extends TRPCClientErrorLike<AppRouter>>(
       return {
         ...error,
         message: translatedError,
+        code: undefined,
       }
     }
 
@@ -151,12 +152,14 @@ export const handleApiError = <T extends TRPCClientErrorLike<AppRouter>>(
     return {
       ...error,
       message: translatedError,
+      code: parsedError.code,
     }
   } catch (e) {
     const translatedError = dictionary.unknownError
     return {
       ...error,
       message: translatedError,
+      code: "unknownError",
     }
   }
 }
@@ -239,4 +242,17 @@ export function merge<T extends object, R extends object[]>(target: T, ...source
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return sources.reduce((acc, curr) => mergeTwo(acc, curr as any), target) as T
+}
+
+export function generateOTP(length: number = 6) {
+  // Declare a digits variable
+  // which stores all digits
+  const digits = "0123456789"
+  let OTP = ""
+  const len = digits.length
+  for (let i = 0; i < length; i++) {
+    OTP += digits[Math.floor(Math.random() * len)]
+  }
+
+  return OTP
 }

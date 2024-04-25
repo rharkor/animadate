@@ -1,4 +1,6 @@
 import {
+  changeEmailResponseSchema,
+  changeEmailSchema,
   deleteAccountResponseSchema,
   deleteSessionResponseSchema,
   deleteSessionSchema,
@@ -15,6 +17,8 @@ import {
   sendVerificationEmailSchema,
   updateUserResponseSchema,
   updateUserSchema,
+  validateChangeEmailResponseSchema,
+  validateChangeEmailSchema,
   verifyEmailResponseSchema,
   verifyEmailSchema,
 } from "@/api/me/schemas"
@@ -25,7 +29,7 @@ import {
   router,
 } from "@/lib/server/trpc"
 
-import { sendVerificationEmail, verifyEmail } from "./email/mutations"
+import { changeEmail, sendVerificationEmail, validateChangeEmail, verifyEmail } from "./email/mutations"
 import { forgotPassword, resetPassword } from "./password/mutations"
 import { deleteSession } from "./sessions/mutations"
 import { getActiveSessions } from "./sessions/queries"
@@ -60,4 +64,12 @@ export const meRouter = router({
     .mutation(sendVerificationEmail),
   verifyEmail: publicProcedure.input(verifyEmailSchema()).output(verifyEmailResponseSchema()).mutation(verifyEmail),
   needHelp: authenticatedProcedure.input(needHelpSchema()).output(needHelpResponseSchema()).mutation(needHelp),
+  changeEmail: authenticatedProcedure
+    .input(changeEmailSchema())
+    .output(changeEmailResponseSchema())
+    .mutation(changeEmail),
+  validateChangeEmail: authenticatedProcedure
+    .input(validateChangeEmailSchema())
+    .output(validateChangeEmailResponseSchema())
+    .mutation(validateChangeEmail),
 })

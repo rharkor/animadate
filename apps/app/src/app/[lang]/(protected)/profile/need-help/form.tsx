@@ -1,12 +1,11 @@
 "use client"
 
 import { useRouter } from "next/navigation"
-import { Session } from "next-auth"
 import { Controller, useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { z } from "zod"
 
-import { needHelpSchema } from "@/api/me/schemas"
+import { getAccountResponseSchema, needHelpSchema } from "@/api/me/schemas"
 import CheckMarkAnimation from "@/components/ui/check-mark/check-mark"
 import FormField from "@/components/ui/form"
 import { Locale } from "@/lib/i18n-config"
@@ -22,21 +21,22 @@ const formSchema = needHelpSchema
 
 export default function NeedHelpForm({
   dictionary,
-  ssrSession,
+  ssrAccount,
   lang,
 }: {
   dictionary: TDictionary<typeof NeedHelpFormDr>
-  ssrSession: Session | null
+  ssrAccount: z.infer<ReturnType<typeof getAccountResponseSchema>>
   lang: Locale
 }) {
+  const account = trpc.me.getAccount.useQuery().data ?? ssrAccount
   const router = useRouter()
   const needHelpMutation = trpc.me.needHelp.useMutation()
 
   const form = useForm<z.infer<ReturnType<typeof formSchema>>>({
     resolver: zodResolver(formSchema(dictionary)),
     values: {
-      name: ssrSession?.user?.name ?? "",
-      email: ssrSession?.user.email ?? "",
+      name: account.user.name ?? "",
+      email: account.user.email ?? "",
       message: "",
       locale: lang,
     },
@@ -46,7 +46,7 @@ export default function NeedHelpForm({
     await needHelpMutation.mutateAsync(data)
     // Sleep for 1s to let the user see the success message
     toast.success(dictionary.submitSuccess)
-    await sleep(1000)
+    await sleep(1500)
     router.push("/profile")
   }
 

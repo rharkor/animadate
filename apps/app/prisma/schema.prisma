@@ -56,11 +56,21 @@ model User {
   otpVerified                Boolean                     @default(false)
   uploadsInProgress          FileUploading[]
 
-  pet Pet?
+  pet              Pet?
+  changeEmailToken ChangeEmailToken?
 
   // Timestamps
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model ChangeEmailToken {
+  identifier String   @unique
+  token      String   @unique // OTP code
+  newEmail   String
+  expires    DateTime
+  user       User     @relation(fields: [identifier], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
 }
 
 enum CHARACTERISTIC {

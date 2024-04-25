@@ -141,7 +141,7 @@ export const needHelp = async ({ input, ctx: { session } }: apiInputFromSchema<t
     //* Rate limit (5 requests per day)
     const { success } = await rateLimiter(`need-help:${session.user.id}`, 5, 60 * 60 * 24)
     if (!success) {
-      return ApiError("tooManyRequests")
+      return ApiError("tooManyRequests", "TOO_MANY_REQUESTS")
     }
 
     //* Mail to the support

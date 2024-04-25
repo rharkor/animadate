@@ -24,7 +24,7 @@ export const handleQueryError = <T extends TRPCClientErrorLike<AppRouter>>(
   }>,
   router: AppRouterInstance,
   opts: TOptions = { showNotification: true }
-): T => {
+): T & { code: string | undefined; message: string } => {
   const resp = handleApiError(error, dictionary, router)
   logger.error("Query error:", resp)
   if (opts.showNotification) {
@@ -42,7 +42,7 @@ export const handleMutationError = <T extends TRPCClientErrorLike<AppRouter>>(
   }>,
   router: AppRouterInstance,
   opts: TOptions = { showNotification: true }
-): T => {
+): T & { code: string | undefined; message: string } => {
   const resp = handleApiError(error, dictionary, router)
   logger.error("Mutation error:", resp)
   if (opts.showNotification) {
