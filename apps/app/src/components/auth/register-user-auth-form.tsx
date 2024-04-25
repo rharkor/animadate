@@ -84,6 +84,8 @@ export function RegisterUserAuthForm({ searchParams, locale, dictionary, ...prop
           type: "manual",
           message: translatedError.message,
         })
+      } else {
+        handleMutationError(error, dictionary, router)
       }
     },
     meta: {

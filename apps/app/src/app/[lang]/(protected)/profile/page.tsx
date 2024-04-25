@@ -4,7 +4,6 @@ import {
   HeartHandshake,
   KeyRound,
   Link,
-  Mail,
   MessageCircleQuestion,
   Settings2,
   UserRound,
@@ -16,6 +15,8 @@ import { serverTrpc } from "@/lib/trpc/server"
 import { cn } from "@/lib/utils"
 import { dictionaryRequirements } from "@/lib/utils/dictionary"
 
+import ChangeEmail from "./change-email"
+import { ChangeEmailDr } from "./change-email.dr"
 import DeleteAccount from "./delete-account"
 import { DeleteAccountDr } from "./delete-account.dr"
 import MinimizedProfile from "./minimized-profile"
@@ -46,13 +47,13 @@ export default async function Profile({
         needHelp: true,
         helpUs: true,
         security: true,
-        changeEmail: true,
         changePassword: true,
         deleteYourAccount: true,
       },
       MinimizedProfileDr,
       SignOutDr,
-      DeleteAccountDr
+      DeleteAccountDr,
+      ChangeEmailDr
     )
   )
 
@@ -96,10 +97,7 @@ export default async function Profile({
           </Row>
         </Section>
         <Section title={dictionary.security}>
-          <Row placement="top">
-            <Mail className="size-5" />
-            {dictionary.changeEmail}
-          </Row>
+          <ChangeEmail dictionary={dictionary} ssrEmail={account.user.email} />
           <Row placement="center">
             <KeyRound className="size-5" />
             {dictionary.changePassword}

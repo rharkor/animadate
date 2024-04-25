@@ -238,5 +238,14 @@
   "submit": "Submit",
   "contactEmail": "Contact email",
   "needHelpDescription": "If you have any questions, suggestions or problems, please do not hesitate to contact us. We will respond to you as soon as possible.",
-  "submitSuccess": "Message sent"
+  "submitSuccess": "Message sent",
+  "tokenInvalid": "Token invalid.",
+  "next": "Next",
+  "previous": "Previous",
+  "change": "Change",
+  "newEmail": "New email",
+  "changeEmailTokenSentByMail": "An email has been sent to the indicated address. Please enter the verification code to change your email.",
+  "token": "Token",
+  "changedEmailSuccessfully": "Email changed successfully.",
+  "currentEmail": "Current email"
 }

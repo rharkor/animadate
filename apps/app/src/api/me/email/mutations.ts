@@ -160,6 +160,12 @@ export const changeEmail = async ({ input, ctx: { session } }: apiInputFromSchem
   try {
     const { email, password } = input
 
+    //* Rate limit (10 requests per hour)
+    const { success } = await rateLimiter(`want-change-email:${session.user.id}`, 10, 60 * 60)
+    if (!success) {
+      return ApiError("tooManyAttempts", "TOO_MANY_REQUESTS")
+    }
+
     const user = await prisma.user.findUnique({
       where: {
         id: session.user.id,
@@ -180,7 +186,7 @@ export const changeEmail = async ({ input, ctx: { session } }: apiInputFromSchem
 
     const isPasswordValid = await bcryptCompare(password, user.password)
     if (!isPasswordValid) {
-      return ApiError("invalidCredentials", "BAD_REQUEST")
+      return ApiError("invalidPassword", "BAD_REQUEST")
     }
 
     if (email === user.email) {

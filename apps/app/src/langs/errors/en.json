@@ -1,4 +1,5 @@
 {
+  "invalidPassword": "Invalid password.",
   "tokenInvalid": "Token invalid.",
   "alreadyYourEmail": "This is already your email.",
   "rateLimitChangeEmail": "You can change your email only 3 times per day.",

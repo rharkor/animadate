@@ -211,9 +211,12 @@ export const changeEmailResponseSchema = () =>
     success: z.boolean(),
   })
 
-export const validateChangeEmailSchema = () =>
+export const validateChangeEmailSchemaDr = dictionaryRequirements({
+  tokenInvalid: true,
+})
+export const validateChangeEmailSchema = (dictionary?: TDictionary<typeof validateChangeEmailSchemaDr>) =>
   z.object({
-    token: z.string(),
+    token: z.string().min(1, dictionary?.tokenInvalid),
   })
 
 export const validateChangeEmailResponseSchema = () =>
