@@ -114,6 +114,7 @@ export default function ChangePassword({ dictionary }: { dictionary: TDictionary
                 form={form}
                 name="currentPassword"
                 autoComplete="current-password"
+                autoFocus
               />
               <FormField
                 label={dictionary.newPassword}

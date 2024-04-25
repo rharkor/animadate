@@ -137,7 +137,7 @@ export default function ChangeEmail({
                 <p className="text-sm text-muted-foreground">
                   {dictionary.currentEmail}: {curEmail}
                 </p>
-                <FormField label={dictionary.newEmail} type="email" form={form0} name="email" />
+                <FormField label={dictionary.newEmail} type="email" form={form0} name="email" autoFocus />
                 <FormField
                   label={dictionary.currentPassword}
                   type="password-eye-slash"
