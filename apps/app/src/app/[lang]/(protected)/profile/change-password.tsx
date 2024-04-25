@@ -93,7 +93,7 @@ export default function ChangePassword({ dictionary }: { dictionary: TDictionary
 
   return (
     <>
-      <Row placement="top" onPress={onOpenChange}>
+      <Row placement="center" onPress={onOpenChange}>
         <KeyRound className="size-5" />
         {dictionary.changePassword}
       </Row>
