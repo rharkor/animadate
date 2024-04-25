@@ -77,6 +77,7 @@ With this template, you get all the awesomeness you need:
     - [Api development](#api-development)
       - [Api errors](#api-errors)
     - [PWA Assets](#pwa-assets)
+    - [Production demo in local](#production-demo-in-local)
   - [❌ Common issues](#-common-issues)
     - [Cannot commit](#cannot-commit)
   - [☁️ Cloud deployment](#️-cloud-deployment)
@@ -524,6 +525,12 @@ Splash screen:
 
 Icon:
 `npx pwa-asset-generator public/logo.svg public/icons -b "#ECF8FA" -p "calc(50vh - 23%) calc(50vw - 23%)" --icon-only`
+
+### Production demo in local
+
+```bash
+docker build -f apps/app/Dockerfile -t test --network host . && docker run -e PORT=8080 --network host test
+```
 
 ## ❌ Common issues
 
