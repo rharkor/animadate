@@ -19,6 +19,7 @@
   "dependencies": {
     "@animadate/lib": "*",
     "@animadate/scripts": "*",
+    "@animadate/emails": "*",
     "@animadate/tsconfig": "*",
     "@aws-sdk/client-s3": "^3.454.0",
     "@aws-sdk/s3-presigned-post": "^3.454.0",
