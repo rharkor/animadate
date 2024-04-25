@@ -33,6 +33,7 @@ export default function ChangeEmail({
   ssrEmail: string
 }) {
   const router = useRouter()
+  const utils = trpc.useUtils()
   const curEmail = trpc.me.getAccount.useQuery().data?.user.email ?? ssrEmail
   const { isOpen, onOpenChange, onClose } = useDisclosure()
 
@@ -90,6 +91,7 @@ export default function ChangeEmail({
   const validateChangeEmailMutation = trpc.me.validateChangeEmail.useMutation()
   const handleValidateChangeEmail = async (data: z.infer<ReturnType<typeof form1Schema>>) => {
     await validateChangeEmailMutation.mutateAsync(data)
+    utils.me.getAccount.invalidate()
     toast.success(dictionary.changedEmailSuccessfully)
     // Close the modal after 1 second
     await sleep(1000)
