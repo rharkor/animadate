@@ -27,5 +27,6 @@
   "s3ServiceDisabled": "S3 service disabled.",
   "registrationDisabled": "Registration disabled.",
   "cannotResetAdminPasswordInDemoMode": "You cannot reset the admin password in demo mode.",
-  "userDoesNotHaveAPassword": "This user does not have a password."
+  "userDoesNotHaveAPassword": "This user does not have a password.",
+  "newPasswordSameAsCurrentPassword": "The new password is the same as the current password."
 }
