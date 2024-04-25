@@ -161,14 +161,8 @@ export default function ChangeEmail({
             </motion.div>
           </ModalBody>
           <ModalFooter>
-            <Button
-              variant="flat"
-              onPress={onPrevious}
-              className={cn({
-                hidden: formStep === 0,
-              })}
-            >
-              {dictionary.previous}
+            <Button variant="flat" onPress={formStep === 0 ? onClose : onPrevious}>
+              {formStep === 0 ? dictionary.cancel : dictionary.previous}
             </Button>
             <Button
               color={isSuccess ? "success" : "primary"}

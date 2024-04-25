@@ -16,6 +16,7 @@ export const ChangeEmailDr = dictionaryRequirements(
     unknownError: true,
     currentPassword: true,
     success: true,
+    cancel: true,
   },
   changeEmailSchemaDr,
   validateChangeEmailSchemaDr

@@ -1,13 +1,4 @@
-import {
-  ContactRound,
-  Dog,
-  HeartHandshake,
-  KeyRound,
-  Link,
-  MessageCircleQuestion,
-  Settings2,
-  UserRound,
-} from "lucide-react"
+import { ContactRound, Dog, HeartHandshake, Link, MessageCircleQuestion, Settings2, UserRound } from "lucide-react"
 
 import { Locale } from "@/lib/i18n-config"
 import { getDictionary } from "@/lib/langs"
@@ -17,6 +8,8 @@ import { dictionaryRequirements } from "@/lib/utils/dictionary"
 
 import ChangeEmail from "./change-email"
 import { ChangeEmailDr } from "./change-email.dr"
+import ChangePassword from "./change-password"
+import { ChangePasswordDr } from "./change-password.dr"
 import DeleteAccount from "./delete-account"
 import { DeleteAccountDr } from "./delete-account.dr"
 import MinimizedProfile from "./minimized-profile"
@@ -47,13 +40,13 @@ export default async function Profile({
         needHelp: true,
         helpUs: true,
         security: true,
-        changePassword: true,
         deleteYourAccount: true,
       },
       MinimizedProfileDr,
       SignOutDr,
       DeleteAccountDr,
-      ChangeEmailDr
+      ChangeEmailDr,
+      ChangePasswordDr
     )
   )
 
@@ -98,10 +91,7 @@ export default async function Profile({
         </Section>
         <Section title={dictionary.security}>
           <ChangeEmail dictionary={dictionary} ssrEmail={account.user.email} />
-          <Row placement="center">
-            <KeyRound className="size-5" />
-            {dictionary.changePassword}
-          </Row>
+          <ChangePassword dictionary={dictionary} />
           <SignOut dictionary={dictionary} />
           <DeleteAccount dictionary={dictionary} />
         </Section>

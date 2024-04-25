@@ -1,6 +1,8 @@
 import {
   changeEmailResponseSchema,
   changeEmailSchema,
+  changePasswordResponseSchema,
+  changePasswordSchema,
   deleteAccountResponseSchema,
   deleteSessionResponseSchema,
   deleteSessionSchema,
@@ -30,7 +32,7 @@ import {
 } from "@/lib/server/trpc"
 
 import { changeEmail, sendVerificationEmail, validateChangeEmail, verifyEmail } from "./email/mutations"
-import { forgotPassword, resetPassword } from "./password/mutations"
+import { changePassword, forgotPassword, resetPassword } from "./password/mutations"
 import { deleteSession } from "./sessions/mutations"
 import { getActiveSessions } from "./sessions/queries"
 import { deleteAccount, needHelp, updateUser } from "./mutations"
@@ -72,4 +74,8 @@ export const meRouter = router({
     .input(validateChangeEmailSchema())
     .output(validateChangeEmailResponseSchema())
     .mutation(validateChangeEmail),
+  changePassword: authenticatedProcedure
+    .input(changePasswordSchema())
+    .output(changePasswordResponseSchema())
+    .mutation(changePassword),
 })

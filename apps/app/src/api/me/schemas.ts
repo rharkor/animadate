@@ -223,3 +223,16 @@ export const validateChangeEmailResponseSchema = () =>
   z.object({
     success: z.boolean(),
   })
+
+export const changePasswordSchemaDr = dictionaryRequirements(passwordSchemaWithRegexDr)
+
+export const changePasswordSchema = (dictionary?: TDictionary<typeof changePasswordSchemaDr>) =>
+  z.object({
+    currentPassword: z.string(),
+    newPassword: passwordSchemaWithRegex(dictionary),
+  })
+
+export const changePasswordResponseSchema = () =>
+  z.object({
+    success: z.boolean(),
+  })

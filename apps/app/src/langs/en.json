@@ -249,5 +249,7 @@
   "changedEmailSuccessfully": "Email changed successfully.",
   "currentEmail": "Current email",
   "currentPassword": "Current password",
-  "success": "Success"
+  "success": "Success",
+  "changedPasswordSuccessfully": "Password changed successfully.",
+  "newPassword": "New password"
 }
