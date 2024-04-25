@@ -1,4 +1,5 @@
 import { headers } from "next/headers"
+import Link from "next/link"
 import { ChevronLeft } from "lucide-react"
 
 import { fontSans } from "@/lib/fonts"
@@ -7,7 +8,7 @@ import { getDictionary } from "@/lib/langs"
 import { serverTrpc } from "@/lib/trpc/server"
 import { cn } from "@/lib/utils"
 import { dictionaryRequirements } from "@/lib/utils/dictionary"
-import { Link } from "@nextui-org/link"
+import { Button } from "@nextui-org/react"
 
 import NeedHelpForm from "./form"
 import { NeedHelpFormDr } from "./form.dr"
@@ -37,10 +38,16 @@ export default async function NeedHelp({
   return (
     <main className={cn("container m-auto flex-1 overflow-auto p-3")}>
       <div className="mx-auto flex flex-col gap-3 sm:max-w-lg">
-        <Link href={"/profile"}>
-          <ChevronLeft className="mr-2 size-4" />
+        <Button
+          as={Link}
+          href={"/profile"}
+          variant="flat"
+          className="w-max"
+          size="sm"
+          startContent={<ChevronLeft className="size-4" />}
+        >
           {dictionary.back}
-        </Link>
+        </Button>
         <h1 className={cn("text-xl md:text-3xl", fontSans.className)}>{dictionary.needHelp}</h1>
         <NeedHelpForm dictionary={dictionary} ssrAccount={account} lang={lang} />
       </div>
