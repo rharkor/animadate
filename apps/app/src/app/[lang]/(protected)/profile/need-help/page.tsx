@@ -1,3 +1,4 @@
+import { headers } from "next/headers"
 import { ChevronLeft } from "lucide-react"
 
 import { fontSans } from "@/lib/fonts"
@@ -18,6 +19,8 @@ export default async function NeedHelp({
     lang: Locale
   }
 }) {
+  headers()
+
   const dictionary = await getDictionary(
     lang,
     dictionaryRequirements(

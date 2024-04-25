@@ -1,3 +1,4 @@
+import { headers } from "next/headers"
 import { ContactRound, Dog, HeartHandshake, Link, MessageCircleQuestion, Settings2, UserRound } from "lucide-react"
 
 import { Locale } from "@/lib/i18n-config"
@@ -26,6 +27,7 @@ export default async function Profile({
     lang: Locale
   }
 }) {
+  headers()
   const dictionary = await getDictionary(
     lang,
     dictionaryRequirements(
