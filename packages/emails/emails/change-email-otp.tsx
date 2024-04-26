@@ -1,37 +1,35 @@
+import { muted } from "contants"
 import * as React from "react"
 
 import { Body } from "@animadate/emails/components/body"
-import { Button } from "@animadate/emails/components/button"
 import { Card } from "@animadate/emails/components/card"
 import { Container } from "@animadate/emails/components/container"
 import { Footer } from "@animadate/emails/components/footer"
-import { Head, Html, Img, Preview, Text } from "@react-email/components"
+import { CodeInline, Head, Html, Img, Preview, Text } from "@react-email/components"
 
-interface VerifyEmailProps {
-  verificationLink: string
+interface ChangeEmailProps {
   previewText: string
+  code: string
   logoUrl: string
   name: string
   supportEmail: string
   titleText: string
   footerText: string
   contentTitle: string
-  actionText: string
   heyText: string
 }
 
-export const VerifyEmail = ({
-  verificationLink,
+export const ChangeEmail = ({
   previewText,
+  code,
   logoUrl,
   name,
   supportEmail,
   titleText,
   footerText,
   contentTitle,
-  actionText,
   heyText,
-}: VerifyEmailProps) => (
+}: ChangeEmailProps) => (
   <Html>
     <Head />
     <Preview>{previewText}</Preview>
@@ -44,31 +42,32 @@ export const VerifyEmail = ({
             {heyText} <strong>{name}</strong>!
           </Text>
           <Text style={text}>{contentTitle}</Text>
-          <Button href={verificationLink}>{actionText}</Button>
+          <div style={codeContainerStyle}>
+            <CodeInline>{code}</CodeInline>
+          </div>
         </Card>
-        <Footer supportEmail={supportEmail} footerText={footerText} />
+        <Footer supportEmail={supportEmail} footerText={footerText} logoUrl={logoUrl} />
       </Container>
     </Body>
   </Html>
 )
 
-export const previewProps: VerifyEmailProps = {
+export const previewProps: ChangeEmailProps = {
   logoUrl: "https://animadate-public.s3.fr-par.scw.cloud/logo.png",
   name: "John Doe",
-  previewText: "Verify your email address to complete your registration.",
+  previewText: "New email address verification code.",
   supportEmail: "support@animadate.com",
-  verificationLink: "https://animadate.com/verify-email?token=abc123",
-  titleText: "Verify your email address",
+  code: "123456",
+  titleText: "Validate your new email",
   footerText:
     "This email was sent to you as part of our account services. If you have any questions, please contact us at",
   contentTitle:
-    "Thanks for signing up for Animadate. To complete your registration, we just need to verify your email address.",
-  actionText: "Verify email",
+    "You have requested to change your email address. Please use the following code to validate your request.",
   heyText: "Hey",
 }
-VerifyEmail.PreviewProps = previewProps
+ChangeEmail.PreviewProps = previewProps
 
-export default VerifyEmail
+export default ChangeEmail
 
 const title = {
   fontSize: "24px",
@@ -78,4 +77,14 @@ const title = {
 const text = {
   margin: "0 0 10px 0",
   textAlign: "left",
+} as const
+
+const codeContainerStyle = {
+  backgroundColor: muted,
+  borderRadius: "12px",
+  fontSize: "22px",
+  padding: "10px",
+  width: "max-content",
+  textAlign: "center",
+  margin: "1rem auto 0",
 } as const
