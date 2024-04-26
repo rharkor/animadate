@@ -1,14 +1,12 @@
 import * as React from "react"
 
 import { Body } from "@animadate/emails/components/body"
-import { Button } from "@animadate/emails/components/button"
 import { Card } from "@animadate/emails/components/card"
 import { Container } from "@animadate/emails/components/container"
 import { Footer } from "@animadate/emails/components/footer"
 import { Head, Html, Img, Preview, Text } from "@react-email/components"
 
-interface VerifyEmailProps {
-  verificationLink: string
+interface NeedHelpConfirmationProps {
   previewText: string
   logoUrl: string
   name: string
@@ -16,12 +14,10 @@ interface VerifyEmailProps {
   titleText: string
   footerText: string
   contentTitle: string
-  actionText: string
   heyText: string
 }
 
-export const VerifyEmail = ({
-  verificationLink,
+export const NeedHelpConfirmation = ({
   previewText,
   logoUrl,
   name,
@@ -29,9 +25,8 @@ export const VerifyEmail = ({
   titleText,
   footerText,
   contentTitle,
-  actionText,
   heyText,
-}: VerifyEmailProps) => (
+}: NeedHelpConfirmationProps) => (
   <Html>
     <Head />
     <Preview>{previewText}</Preview>
@@ -44,7 +39,6 @@ export const VerifyEmail = ({
             {heyText} <strong>{name}</strong>!
           </Text>
           <Text style={text}>{contentTitle}</Text>
-          <Button href={verificationLink}>{actionText}</Button>
         </Card>
         <Footer supportEmail={supportEmail} footerText={footerText} logoUrl={logoUrl} />
       </Container>
@@ -52,23 +46,20 @@ export const VerifyEmail = ({
   </Html>
 )
 
-export const previewProps: VerifyEmailProps = {
+export const previewProps: NeedHelpConfirmationProps = {
   logoUrl: "https://animadate-public.s3.fr-par.scw.cloud/logo.png",
   name: "John Doe",
-  previewText: "Verify your email address to complete your registration.",
+  previewText: "Message to confirm your request.",
   supportEmail: "support@animadate.com",
-  verificationLink: "https://animadate.com/verify-email?token=abc123",
-  titleText: "Verify your email address",
+  titleText: "Your request has been sent",
   footerText:
     "This email was sent to you as part of our account services. If you have any questions, please contact us at",
-  contentTitle:
-    "Thanks for signing up for Animadate. To complete your registration, we just need to verify your email address.",
-  actionText: "Verify email",
+  contentTitle: "We have received your message and will get back to you as soon as possible.",
   heyText: "Hey",
 }
-VerifyEmail.PreviewProps = previewProps
+NeedHelpConfirmation.PreviewProps = previewProps
 
-export default VerifyEmail
+export default NeedHelpConfirmation
 
 const title = {
   fontSize: "24px",

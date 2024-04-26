@@ -7,8 +7,8 @@ import { Container } from "@animadate/emails/components/container"
 import { Footer } from "@animadate/emails/components/footer"
 import { Head, Html, Img, Preview, Text } from "@react-email/components"
 
-interface VerifyEmailProps {
-  verificationLink: string
+interface ResetPasswordProps {
+  resetLink: string
   previewText: string
   logoUrl: string
   name: string
@@ -20,8 +20,8 @@ interface VerifyEmailProps {
   heyText: string
 }
 
-export const VerifyEmail = ({
-  verificationLink,
+export const ResetPassword = ({
+  resetLink,
   previewText,
   logoUrl,
   name,
@@ -31,7 +31,7 @@ export const VerifyEmail = ({
   contentTitle,
   actionText,
   heyText,
-}: VerifyEmailProps) => (
+}: ResetPasswordProps) => (
   <Html>
     <Head />
     <Preview>{previewText}</Preview>
@@ -44,7 +44,7 @@ export const VerifyEmail = ({
             {heyText} <strong>{name}</strong>!
           </Text>
           <Text style={text}>{contentTitle}</Text>
-          <Button href={verificationLink}>{actionText}</Button>
+          <Button href={resetLink}>{actionText}</Button>
         </Card>
         <Footer supportEmail={supportEmail} footerText={footerText} logoUrl={logoUrl} />
       </Container>
@@ -52,23 +52,22 @@ export const VerifyEmail = ({
   </Html>
 )
 
-export const previewProps: VerifyEmailProps = {
+export const previewProps: ResetPasswordProps = {
   logoUrl: "https://animadate-public.s3.fr-par.scw.cloud/logo.png",
   name: "John Doe",
-  previewText: "Verify your email address to complete your registration.",
+  previewText: "Reset password request.",
   supportEmail: "support@animadate.com",
-  verificationLink: "https://animadate.com/verify-email?token=abc123",
-  titleText: "Verify your email address",
+  resetLink: "https://animadate.com/reset-password?token=abc123",
+  titleText: "Reset your password",
   footerText:
     "This email was sent to you as part of our account services. If you have any questions, please contact us at",
-  contentTitle:
-    "Thanks for signing up for Animadate. To complete your registration, we just need to verify your email address.",
-  actionText: "Verify email",
+  contentTitle: "You recently requested to reset your password for your account. Click the button below to reset it.",
+  actionText: "Reset your password",
   heyText: "Hey",
 }
-VerifyEmail.PreviewProps = previewProps
+ResetPassword.PreviewProps = previewProps
 
-export default VerifyEmail
+export default ResetPassword
 
 const title = {
   fontSize: "24px",

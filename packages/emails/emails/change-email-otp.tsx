@@ -1,11 +1,11 @@
-import { muted } from "contants"
 import * as React from "react"
 
 import { Body } from "@animadate/emails/components/body"
 import { Card } from "@animadate/emails/components/card"
 import { Container } from "@animadate/emails/components/container"
 import { Footer } from "@animadate/emails/components/footer"
-import { CodeInline, Head, Html, Img, Preview, Text } from "@react-email/components"
+import { muted } from "@animadate/emails/contants"
+import { CodeInline, Container as OContainer, Head, Html, Img, Preview, Text } from "@react-email/components"
 
 interface ChangeEmailProps {
   previewText: string
@@ -42,9 +42,9 @@ export const ChangeEmail = ({
             {heyText} <strong>{name}</strong>!
           </Text>
           <Text style={text}>{contentTitle}</Text>
-          <div style={codeContainerStyle}>
+          <OContainer style={codeContainerStyle}>
             <CodeInline>{code}</CodeInline>
-          </div>
+          </OContainer>
         </Card>
         <Footer supportEmail={supportEmail} footerText={footerText} logoUrl={logoUrl} />
       </Container>
