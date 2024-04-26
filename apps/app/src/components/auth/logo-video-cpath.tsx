@@ -1,4 +1,4 @@
-import { videoLink, videoPosterLink } from "@/constants/images"
+import { videoLink, videoPosterLink } from "@/constants/medias"
 import { cn } from "@/lib/utils"
 
 export default function LogoVideoCPath({ className }: { className?: string }) {

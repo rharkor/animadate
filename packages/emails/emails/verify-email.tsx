@@ -63,7 +63,7 @@ export const previewProps: VerifyEmailProps = {
     "This email was sent to you as part of our account services. If you have any questions, please contact us at",
   contentTitle:
     "Thanks for signing up for Animadate. To complete your registration, we just need to verify your email address.",
-  actionText: "Verify email address",
+  actionText: "Verify email",
   heyText: "Hey",
 }
 GithubAccessTokenEmail.PreviewProps = previewProps

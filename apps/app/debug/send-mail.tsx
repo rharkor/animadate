@@ -1,12 +1,10 @@
-import React from "react"
-
 import { env } from "@/lib/env"
 import { sendMail } from "@/lib/mailer"
 import VerifyEmail, { previewProps } from "@animadate/emails/emails/verify-email"
 import { render } from "@react-email/render"
 
 const main = async () => {
-  const element = <VerifyEmail {...previewProps} />
+  const element = VerifyEmail(previewProps)
   const text = render(element, {
     plainText: true,
   })
