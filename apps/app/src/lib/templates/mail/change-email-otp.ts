@@ -1,3 +1,5 @@
+//TODO Remove
+
 export const subject = "Change email verification"
 
 export const plainText = (otp: string, locale: string) => {
