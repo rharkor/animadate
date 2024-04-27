@@ -2,6 +2,7 @@ import requireAuth from "@/components/auth/require-auth"
 import BottomBar from "@/components/navigation/bottom-bar"
 import { BottomBarDr } from "@/components/navigation/bottom-bar.dr"
 import { lastLocaleExpirationInSeconds } from "@/constants"
+import SigningOutProvider from "@/contexts/signing-out/provider"
 import { Locale } from "@/lib/i18n-config"
 import { getDictionary } from "@/lib/langs"
 import { prisma } from "@/lib/prisma"
@@ -55,9 +56,9 @@ export default async function ProtectedLayout({
   const dictionary = await getDictionary(lang, dictionaryRequirements(BottomBarDr))
 
   return (
-    <>
+    <SigningOutProvider>
       {children}
       <BottomBar dictionary={dictionary} ssrAccount={account} />
-    </>
+    </SigningOutProvider>
   )
 }
