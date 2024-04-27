@@ -161,7 +161,7 @@ export const providersByName: {
 }, {})
 
 export const nextAuth = NextAuth({
-  secret: env.NEXTAUTH_SECRET,
+  secret: env.AUTH_SECRET,
   adapter: PrismaAdapter(prisma), //? Require to use database
   providers,
   callbacks: {

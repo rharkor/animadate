@@ -24,7 +24,7 @@ async function getLocale(request: NextRequest): Promise<string | undefined> {
     salt: authCookieName,
     cookieName: authCookieName,
     // eslint-disable-next-line no-process-env
-    secret: process.env.NEXTAUTH_SECRET as string,
+    secret: process.env.AUTH_SECRET as string,
   })) as (JWT & Session["user"]) | null
   if (session && session.lastLocale) {
     const lastLocale = session.lastLocale as string

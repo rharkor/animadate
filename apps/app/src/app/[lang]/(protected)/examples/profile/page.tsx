@@ -40,7 +40,7 @@ export default async function Profile({
   )
   const session = await nextAuth.auth()
 
-  const hasVerifiedEmail = Boolean(session?.user.emailVerified)
+  const hasVerifiedEmail = Boolean(session?.user?.emailVerified)
 
   return (
     <main className="container m-auto flex flex-1 flex-col items-center justify-center p-6 pb-20">

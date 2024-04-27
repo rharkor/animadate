@@ -26,8 +26,10 @@ export const handleApiError = (error: unknown) => {
   }
 }
 
-export function ensureLoggedIn(session: Session | null | undefined): asserts session is Session {
-  if (!session) {
+export function ensureLoggedIn(
+  session: Session | null | undefined
+): asserts session is Session & { user: NonNullable<Session["user"]> } {
+  if (!session || !session.user) {
     const data: TErrorMessage = { message: "You must be logged in to access this resource", code: "UNAUTHORIZED" }
     throw new TRPCError({
       code: "UNAUTHORIZED",
