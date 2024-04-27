@@ -80,7 +80,7 @@ const main = async () => {
       options.ignoreMatches.push("eslint-config-custom")
     } else if (pkg == path.join(rootPath, "configs", "prettier")) {
       options.ignoreMatches.push("prettier", "prettier-plugin-tailwindcss")
-    } else if (pkg === path.join(rootPath, "@animadate/emails")) {
+    } else if (pkg === path.join(rootPath, "emails")) {
       options.ignoreMatches.push("@animadate/emails")
     }
 
