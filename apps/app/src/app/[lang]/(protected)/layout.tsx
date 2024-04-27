@@ -3,6 +3,8 @@ import BottomBar from "@/components/navigation/bottom-bar"
 import { BottomBarDr } from "@/components/navigation/bottom-bar.dr"
 import { lastLocaleExpirationInSeconds } from "@/constants"
 import SigningOutProvider from "@/contexts/signing-out/provider"
+import VerifyEmailProvider from "@/contexts/verify-email/provider"
+import { VerifyEmailDr } from "@/contexts/verify-email/verify-email.dr"
 import { Locale } from "@/lib/i18n-config"
 import { getDictionary } from "@/lib/langs"
 import { prisma } from "@/lib/prisma"
@@ -53,12 +55,14 @@ export default async function ProtectedLayout({
     await setLastLocale(lang)
   }
 
-  const dictionary = await getDictionary(lang, dictionaryRequirements(BottomBarDr))
+  const dictionary = await getDictionary(lang, dictionaryRequirements(BottomBarDr, VerifyEmailDr))
 
   return (
     <SigningOutProvider>
-      {children}
-      <BottomBar dictionary={dictionary} ssrAccount={account} />
+      <VerifyEmailProvider dictionary={dictionary}>
+        {children}
+        <BottomBar dictionary={dictionary} ssrAccount={account} />
+      </VerifyEmailProvider>
     </SigningOutProvider>
   )
 }
