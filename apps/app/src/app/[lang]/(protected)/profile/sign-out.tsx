@@ -19,7 +19,7 @@ export default function SignOut({ dictionary }: { dictionary: TDictionary<typeof
   const session = useSession()
   const router = useRouter()
 
-  const currentSession = session.data?.user.uuid
+  const currentSession = session.data?.user?.uuid
 
   const deleteSessionMutation = trpc.me.deleteSession.useMutation()
 

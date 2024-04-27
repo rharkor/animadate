@@ -78,7 +78,7 @@ export default async function Profile({
             <Link className="size-5" />
             {dictionary.inviteYourFriend}
           </Row>
-          <Row placement="center">
+          <Row placement="center" href="/profile/preferences">
             <Settings2 className="size-5" />
             {dictionary.preferences}
           </Row>

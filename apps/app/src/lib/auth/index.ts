@@ -1,20 +1,20 @@
-import { NextAuthOptions, Session } from "next-auth"
+import NextAuth, { Session } from "next-auth"
 import Credentials from "next-auth/providers/credentials"
 import GithubProvider from "next-auth/providers/github"
 import { Provider } from "next-auth/providers/index"
 import { randomUUID } from "crypto"
 import * as OTPAuth from "otpauth"
-import requestIp from "request-ip"
+import requestIp, { RequestHeaders } from "request-ip"
 import { z } from "zod"
 
 import { sendVerificationEmail } from "@/api/me/email/mutations"
 import { otpWindow } from "@/constants"
-import { authRoutes, SESSION_MAX_AGE } from "@/constants/auth"
+import { authCookieName, authRoutes, SESSION_MAX_AGE } from "@/constants/auth"
 import { env } from "@/lib/env"
 import { i18n } from "@/lib/i18n-config"
 import { ITrpcContext } from "@/types"
 import { logger } from "@animadate/lib"
-import { PrismaAdapter } from "@next-auth/prisma-adapter"
+import { PrismaAdapter } from "@auth/prisma-adapter"
 
 import { signInSchema } from "../../api/auth/schemas"
 import { sessionsSchema } from "../../api/me/schemas"
@@ -37,7 +37,7 @@ export const providers: Provider[] = [
       password: { label: "Password", type: "password" },
     },
     authorize: async (credentials, req) => {
-      const referer = req.headers?.referer ?? ""
+      const referer = req.headers?.get("referer") ?? ""
       const refererUrl = ensureRelativeUrl(referer)
       const lang = i18n.locales.find((locale) => refererUrl.startsWith(`/${locale}/`)) ?? i18n.defaultLocale
       const dr = dictionaryRequirements(
@@ -77,6 +77,7 @@ export const providers: Provider[] = [
           password: true,
           emailVerified: true,
           hasPassword: true,
+          lastLocale: true,
         },
       })
 
@@ -100,8 +101,16 @@ export const providers: Provider[] = [
       //* Store user agent and ip address in session
       const uuid = randomUUID()
       try {
-        const ua = req.headers?.["user-agent"] ?? ""
-        const ip = requestIp.getClientIp(req) ?? ""
+        const ua = req.headers.get("user-agent") ?? ""
+        const parsedHeaders: RequestHeaders = {}
+        req.headers.forEach((value, key) => {
+          parsedHeaders[key] = value
+        })
+        const ip =
+          requestIp.getClientIp({
+            ...req,
+            headers: parsedHeaders,
+          }) ?? ""
         const expires = new Date(Date.now() + SESSION_MAX_AGE * 1000)
         const body: z.infer<ReturnType<typeof sessionsSchema>> = {
           id: uuid,
@@ -127,6 +136,7 @@ export const providers: Provider[] = [
         uuid,
         emailVerified: user.emailVerified,
         hasPassword: user.hasPassword,
+        lastLocale: user.lastLocale,
       }
     },
   }),
@@ -150,7 +160,7 @@ export const providersByName: {
   return acc
 }, {})
 
-export const nextAuthOptions: NextAuthOptions = {
+export const nextAuth = NextAuth({
   secret: env.NEXTAUTH_SECRET,
   adapter: PrismaAdapter(prisma), //? Require to use database
   providers,
@@ -165,6 +175,7 @@ export const nextAuthOptions: NextAuthOptions = {
         if ("role" in user) token.role = user.role as string
         if ("uuid" in user) token.uuid = user.uuid as string
         if ("emailVerified" in user) token.emailVerified = user.emailVerified as Date
+        if ("lastLocale" in user) token.lastLocale = user.lastLocale as string | null
         //* Send verification email if needed
         if (user.email && "emailVerified" in user && !user.emailVerified) {
           const dbUser = await prisma.user.findUnique({
@@ -194,54 +205,12 @@ export const nextAuthOptions: NextAuthOptions = {
         // logger.debug("User not found", token.id)
         return {} as Session
       }
-      //* Verify that the session still exists
-      if (dbUser.hasPassword && (!token.uuid || typeof token.uuid !== "string")) {
-        logger.debug("Missing token uuid")
-        return {} as Session
-      }
-      if (token.uuid) {
-        const getRedisSession = async () => {
-          const key = `session:${dbUser.id}:${token.uuid}`
-          const loginSession = await redis.get(key)
-          if (!loginSession) {
-            logger.debug("Session not found", token.uuid)
-            return {} as Session
-          }
-
-          //? Only if lastUsedAt is older than 1 minute (avoid spamming the redis server)
-          const data = JSON.parse(loginSession) as z.infer<ReturnType<typeof sessionsSchema>>
-          if (data.lastUsedAt) {
-            const lastUsedAt = new Date(data.lastUsedAt)
-            const now = new Date()
-            const diff = now.getTime() - lastUsedAt.getTime()
-            if (diff > 1000 * 60) {
-              return
-            }
-          }
-          //? Update session lastUsed
-          const remainingTtl = await redis.ttl(key)
-          //! Do not await to make the requests faster
-          redis.setex(
-            key,
-            remainingTtl,
-            JSON.stringify({
-              ...(JSON.parse(loginSession) as object),
-              lastUsedAt: new Date(),
-            })
-          )
-          return
-        }
-        const res = await getRedisSession()
-
-        if (res !== undefined) {
-          return res
-        }
-      }
       //* Fill session with user data
       const name = dbUser.name
       const role = dbUser.role
       const hasPassword = dbUser.hasPassword
       const emailVerified = dbUser.emailVerified
+      const lastLocale = dbUser.lastLocale
       //* Fill session with token data
       const uuid = "uuid" in token ? token.uuid : undefined
       const sessionFilled = {
@@ -254,6 +223,7 @@ export const nextAuthOptions: NextAuthOptions = {
           uuid,
           hasPassword,
           emailVerified,
+          lastLocale,
         },
       }
       return sessionFilled
@@ -307,14 +277,14 @@ export const nextAuthOptions: NextAuthOptions = {
     strategy: "jwt", //? Strategy database could not work with credentials provider for security reasons
     maxAge: SESSION_MAX_AGE,
   },
-  logger: {
-    error(code, metadata) {
-      if (["CLIENT_FETCH_ERROR", "JWT_SESSION_ERROR"].includes(code)) return
-      logger.error("error", code)
-      logger.error(metadata)
+  cookies: {
+    sessionToken: {
+      name: authCookieName,
     },
+  },
+  logger: {
     warn(code) {
       logger.warn("warn", code)
     },
   },
-}
+})

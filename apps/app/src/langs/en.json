@@ -1,4 +1,5 @@
 {
+  "lang": "en",
   "name": "Animadate",
   "app": {
     "description": "Create a profile for your dog, swipe, match, and organize walks with other dogs and their owners!"
@@ -256,5 +257,6 @@
     "title": "Verify your email",
     "description": "An email verification has been sent to you. Please follow the instructions in the email to verify your email address.",
     "notReceived": "Didn't receive the email? No problem, check your spam or send another one with the button below."
-  }
+  },
+  "language": "Language"
 }
