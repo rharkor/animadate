@@ -5,7 +5,7 @@ import { z } from "zod"
 
 import { getAccountResponseSchema } from "@/api/me/schemas"
 import Copiable from "@/components/ui/copiable"
-import { useAccount } from "@/contexts/account"
+import { useAccount } from "@/hooks/account"
 import { TDictionary } from "@/lib/langs"
 import { cn } from "@/lib/utils"
 import { getFallbackAvatar, getImageUrl } from "@/lib/utils/client-utils"

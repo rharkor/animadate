@@ -5,3 +5,5 @@ export const portraitPosterLink = "https://animadate-public.s3.fr-par.scw.cloud/
 
 export const videoLink = "https://animadate-public.s3.fr-par.scw.cloud/dogs/portrait.mp4"
 export const videoPosterLink = "https://animadate-public.s3.fr-par.scw.cloud/dogs/portrait.webp"
+
+export const logoUrl = "https://animadate-public.s3.fr-par.scw.cloud/logo.png"

@@ -8,6 +8,7 @@ import { z } from "zod"
 import { getAccountResponseSchema, needHelpSchema } from "@/api/me/schemas"
 import CheckMarkAnimation from "@/components/ui/check-mark/check-mark"
 import FormField from "@/components/ui/form"
+import { useAccount } from "@/hooks/account"
 import { Locale } from "@/lib/i18n-config"
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
@@ -28,7 +29,7 @@ export default function NeedHelpForm({
   ssrAccount: z.infer<ReturnType<typeof getAccountResponseSchema>>
   lang: Locale
 }) {
-  const account = trpc.me.getAccount.useQuery().data ?? ssrAccount
+  const account = useAccount().data ?? ssrAccount
   const router = useRouter()
   const needHelpMutation = trpc.me.needHelp.useMutation()
 

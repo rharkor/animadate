@@ -6,6 +6,7 @@ import { signOut, useSession } from "next-auth/react"
 import { LogOut } from "lucide-react"
 
 import { authRoutes } from "@/constants/auth"
+import { useIsSigningOut } from "@/contexts/signing-out/utils"
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
 import { logger } from "@animadate/lib"
@@ -23,7 +24,9 @@ export default function SignOut({ dictionary }: { dictionary: TDictionary<typeof
   const deleteSessionMutation = trpc.me.deleteSession.useMutation()
 
   const [signOutLoading, setSignOutLoading] = useState(false)
+  const { setIsSigningOut } = useIsSigningOut()
   const handleSignOut = async () => {
+    setIsSigningOut(true)
     setSignOutLoading(true)
     try {
       //? Before signing out, we want to delete the session from the server

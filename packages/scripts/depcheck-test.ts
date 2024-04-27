@@ -44,7 +44,8 @@ const main = async () => {
         "@react-aria/ssr",
         "@react-aria/visually-hidden",
         "cron",
-        "autoprefixer"
+        "autoprefixer",
+        "@react-email/render"
       )
     } else if (pkg === path.join(appsRootPath, "landing")) {
       options.ignoreMatches.push("@types/react-dom")
@@ -79,6 +80,8 @@ const main = async () => {
       options.ignoreMatches.push("eslint-config-custom")
     } else if (pkg == path.join(rootPath, "configs", "prettier")) {
       options.ignoreMatches.push("prettier", "prettier-plugin-tailwindcss")
+    } else if (pkg === path.join(rootPath, "emails")) {
+      options.ignoreMatches.push("@animadate/emails")
     }
 
     await depcheck(pkg, options).then(async (unused) => {

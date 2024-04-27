@@ -78,6 +78,7 @@ With this template, you get all the awesomeness you need:
       - [Api errors](#api-errors)
     - [PWA Assets](#pwa-assets)
     - [Production demo in local](#production-demo-in-local)
+    - [Test email](#test-email)
   - [❌ Common issues](#-common-issues)
     - [Cannot commit](#cannot-commit)
   - [☁️ Cloud deployment](#️-cloud-deployment)
@@ -530,6 +531,14 @@ Icon:
 
 ```bash
 docker build -f apps/app/Dockerfile -t test --network host . && docker run -e PORT=8080 --network host test
+```
+
+### Test email
+
+To test the email sending you can use the following command (in apps/app):
+
+```bash
+npx tsx ./debug/send-mail.tsx
 ```
 
 ## ❌ Common issues

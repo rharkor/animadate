@@ -2,19 +2,22 @@ import { z } from "zod"
 
 import { needHelpResponseSchema, needHelpSchema, updateUserResponseSchema, updateUserSchema } from "@/api/me/schemas"
 import { rolesAsObject } from "@/constants"
+import { logoUrl } from "@/constants/medias"
 import { env } from "@/lib/env"
 import { i18n, Locale } from "@/lib/i18n-config"
+import { _getDictionary } from "@/lib/langs"
 import { sendMail } from "@/lib/mailer"
 import { prisma } from "@/lib/prisma"
 import rateLimiter from "@/lib/rate-limit"
 import { s3Client } from "@/lib/s3"
-import * as needHelpConfirm from "@/lib/templates/mail/need-help-confirm"
-import * as needHelpSupport from "@/lib/templates/mail/need-help-support"
 import { ApiError } from "@/lib/utils/server-utils"
 import { ensureLoggedIn, handleApiError } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
+import NeedHelpConfirmationTemplate from "@animadate/emails/emails/need-help-confirmation"
+import NeedHelpSupportTemplate from "@animadate/emails/emails/need-help-support"
 import { logger } from "@animadate/lib"
 import { DeleteObjectCommand } from "@aws-sdk/client-s3"
+import { render } from "@react-email/render"
 
 export const updateUser = async ({ input, ctx: { session } }: apiInputFromSchema<typeof updateUserSchema>) => {
   ensureLoggedIn(session)
@@ -145,31 +148,66 @@ export const needHelp = async ({ input, ctx: { session } }: apiInputFromSchema<t
     }
 
     //* Mail to the support
+    const supportDictionary = await _getDictionary("transactionals", "en", {
+      footer: true,
+      needHelpRequest: true,
+      needSHelp: true,
+    })
+    const supportElement = NeedHelpSupportTemplate({
+      footerText: supportDictionary.footer,
+      logoUrl,
+      message,
+      previewText: supportDictionary.needHelpRequest,
+      supportEmail: env.SUPPORT_EMAIL,
+      titleText: supportDictionary.needSHelp,
+      user: {
+        email,
+        name,
+        id: session.user.id,
+      },
+    })
+    const supportText = render(supportElement, {
+      plainText: true,
+    })
+    const supportHtml = render(supportElement)
     await sendMail({
       from: `"${env.SMTP_FROM_NAME}" <${env.SMTP_FROM_EMAIL}>`,
       to: env.SUPPORT_EMAIL,
-      subject: needHelpSupport.subject,
+      subject: supportDictionary.needHelpRequest,
       replyTo: email,
-      text: needHelpSupport.plainText(message, {
-        email,
-        name,
-        id: session.user.id,
-      }),
-      html: needHelpSupport.html(message, {
-        email,
-        name,
-        id: session.user.id,
-      }),
+      text: supportText,
+      html: supportHtml,
     })
 
     //* Mail to the user
     const locale = i18n.locales.includes(localeWanted) ? (localeWanted as Locale) : i18n.defaultLocale
+    const confirmationDictionary = await _getDictionary("transactionals", locale, {
+      hey: true,
+      messageWillGetBack: true,
+      yourRequestHasBeenSent: true,
+      footer: true,
+    })
+    const confirmationElement = NeedHelpConfirmationTemplate({
+      contentTitle: confirmationDictionary.messageWillGetBack,
+      footerText: confirmationDictionary.footer,
+      heyText: confirmationDictionary.hey,
+      logoUrl,
+      name,
+      previewText: confirmationDictionary.yourRequestHasBeenSent,
+      supportEmail: env.SUPPORT_EMAIL,
+      titleText: confirmationDictionary.yourRequestHasBeenSent,
+    })
+    const confirmationText = render(confirmationElement, {
+      plainText: true,
+    })
+    const confirmationHtml = render(confirmationElement)
+
     await sendMail({
       from: `"${env.SMTP_FROM_NAME}" <${env.SMTP_FROM_EMAIL}>`,
       to: email,
-      subject: needHelpConfirm.subject,
-      text: needHelpConfirm.plainText(locale),
-      html: needHelpConfirm.html(locale),
+      subject: confirmationDictionary.yourRequestHasBeenSent,
+      text: confirmationText,
+      html: confirmationHtml,
     })
 
     const data: z.infer<ReturnType<typeof needHelpResponseSchema>> = {
