@@ -8,7 +8,7 @@ import { getDictionary } from "@/lib/langs"
 import { serverTrpc } from "@/lib/trpc/server"
 import { cn } from "@/lib/utils"
 import { dictionaryRequirements } from "@/lib/utils/dictionary"
-import { Button } from "@nextui-org/react"
+import { Button } from "@nextui-org/button"
 
 import NeedHelpForm from "./form"
 import { NeedHelpFormDr } from "./form.dr"

@@ -15,7 +15,6 @@
     "@react-email/components": "0.0.16",
     "react-email": "2.1.1",
     "react": "18.2.0",
-    "@animadate/lib": "*",
     "@animadate/scripts": "*",
     "@animadate/tsconfig": "*",
     "eslint-config-custom": "*",
