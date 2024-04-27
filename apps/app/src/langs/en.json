@@ -251,5 +251,10 @@
   "currentPassword": "Current password",
   "success": "Success",
   "changedPasswordSuccessfully": "Password changed successfully.",
-  "newPassword": "New password"
+  "newPassword": "New password",
+  "verifyEmailModal": {
+    "title": "Verify your email",
+    "description": "An email verification has been sent to you. Please follow the instructions in the email to verify your email address.",
+    "notReceived": "Didn't receive the email? No problem, check your spam or send another one with the button below."
+  }
 }
