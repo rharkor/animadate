@@ -12,6 +12,7 @@ import { changeEmailSchema, validateChangeEmailSchema } from "@/api/me/schemas"
 import CheckMarkAnimation from "@/components/ui/check-mark/check-mark"
 import FormField from "@/components/ui/form"
 import { ModalHeader, ModalTitle } from "@/components/ui/modal"
+import { useAccount } from "@/hooks/account"
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
 import { cn, sleep } from "@/lib/utils"
@@ -34,7 +35,7 @@ export default function ChangeEmail({
 }) {
   const router = useRouter()
   const utils = trpc.useUtils()
-  const curEmail = trpc.me.getAccount.useQuery().data?.user.email ?? ssrEmail
+  const curEmail = useAccount().data?.user.email ?? ssrEmail
   const { isOpen, onOpenChange, onClose } = useDisclosure()
 
   const [formStep, setFormStep] = useState(0)

@@ -36,9 +36,7 @@ export const NeedHelpSupport = ({
     <Body>
       <Container>
         <Img src={logoUrl} width="32" height="32" alt="Animadate" />
-        <Text style={title}>
-          {user.name} {titleText}
-        </Text>
+        <Text style={title}>{titleText.replace("{name}", user.name)}</Text>
         <Card>
           <OContainer style={messageContainer}>
             <pre style={messageText}>{message}</pre>
@@ -58,7 +56,7 @@ export const previewProps: NeedHelpSupportProps = {
   logoUrl: "https://animadate-public.s3.fr-par.scw.cloud/logo.png",
   previewText: "Need help request.",
   supportEmail: "support@animadate.com",
-  titleText: "need's help",
+  titleText: "{name} need's help",
   footerText:
     "This email was sent to you as part of our account services. If you have any questions, please contact us at",
   user: {

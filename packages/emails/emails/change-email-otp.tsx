@@ -55,10 +55,10 @@ export const ChangeEmail = ({
 export const previewProps: ChangeEmailProps = {
   logoUrl: "https://animadate-public.s3.fr-par.scw.cloud/logo.png",
   name: "John Doe",
-  previewText: "New email address verification code.",
+  previewText: "Confirm your new email",
   supportEmail: "support@animadate.com",
   code: "123456",
-  titleText: "Validate your new email",
+  titleText: "Confirm your new email",
   footerText:
     "This email was sent to you as part of our account services. If you have any questions, please contact us at",
   contentTitle:

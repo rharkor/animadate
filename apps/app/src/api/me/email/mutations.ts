@@ -19,10 +19,10 @@ import { _getDictionary } from "@/lib/langs"
 import { sendMail } from "@/lib/mailer"
 import { prisma } from "@/lib/prisma"
 import rateLimiter from "@/lib/rate-limit"
-import * as changeEmailOtpTemplate from "@/lib/templates/mail/change-email-otp"
 import { generateOTP } from "@/lib/utils"
 import { ApiError, ensureLoggedIn, handleApiError } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
+import ChangeEmailOTPTemplate from "@animadate/emails/emails/change-email-otp"
 import VerifyEmail from "@animadate/emails/emails/verify-email"
 import { logger } from "@animadate/lib"
 import { render } from "@react-email/render"
@@ -203,6 +203,7 @@ export const changeEmail = async ({ input, ctx: { session } }: apiInputFromSchem
         password: true,
         lastLocale: true,
         email: true,
+        name: true,
       },
     })
     if (!user) {
@@ -254,12 +255,35 @@ export const changeEmail = async ({ input, ctx: { session } }: apiInputFromSchem
 
     // Send the OTP to the new email
     if (env.NEXT_PUBLIC_ENABLE_MAILING_SERVICE === true) {
+      const locale = (user.lastLocale as Locale) ?? i18n.defaultLocale
+      const mailDict = await _getDictionary("transactionals", locale, {
+        footer: true,
+        confirmYourNewEmail: true,
+        changeEmailAddressDescription: true,
+        hey: true,
+      })
+      const element = ChangeEmailOTPTemplate({
+        footerText: mailDict.footer,
+        logoUrl,
+        heyText: mailDict.hey,
+        code: otp,
+        contentTitle: mailDict.changeEmailAddressDescription,
+        name: user.name,
+        previewText: mailDict.confirmYourNewEmail,
+        titleText: mailDict.confirmYourNewEmail,
+        supportEmail: env.SUPPORT_EMAIL,
+      })
+      const text = render(element, {
+        plainText: true,
+      })
+      const html = render(element)
+
       await sendMail({
         from: `"${env.SMTP_FROM_NAME}" <${env.SMTP_FROM_EMAIL}>`,
         to: email,
-        subject: changeEmailOtpTemplate.subject,
-        text: changeEmailOtpTemplate.plainText(otp, user.lastLocale ?? i18n.defaultLocale),
-        html: changeEmailOtpTemplate.html(otp, user.lastLocale ?? i18n.defaultLocale),
+        subject: mailDict.confirmYourNewEmail,
+        text,
+        html,
       })
     } else {
       logger.debug("Email verification disabled")

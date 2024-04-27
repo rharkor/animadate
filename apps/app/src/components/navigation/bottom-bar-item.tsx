@@ -5,7 +5,7 @@ import { z } from "zod"
 
 import { getAccountResponseSchema } from "@/api/me/schemas"
 import { TRoute } from "@/constants/navigation"
-import { useAccount } from "@/contexts/account"
+import { useAccount } from "@/hooks/account"
 import { cn } from "@/lib/utils"
 import { getFallbackAvatar, getImageUrl } from "@/lib/utils/client-utils"
 import { Tooltip } from "@nextui-org/react"
