@@ -57,9 +57,11 @@ export default async function ProtectedLayout({
 
   const dictionary = await getDictionary(lang, dictionaryRequirements(BottomBarDr, VerifyEmailDr))
 
+  const emailNotVerified = account.user.emailVerified === null
+
   return (
     <SigningOutProvider>
-      <VerifyEmailProvider dictionary={dictionary}>
+      <VerifyEmailProvider dictionary={dictionary} emailNotVerifiedSSR={emailNotVerified}>
         {children}
         <BottomBar dictionary={dictionary} ssrAccount={account} />
       </VerifyEmailProvider>

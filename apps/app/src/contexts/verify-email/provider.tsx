@@ -16,21 +16,25 @@ import { VerifyEmailDr } from "./verify-email.dr"
 export default function VerifyEmailProvider({
   children,
   dictionary,
+  emailNotVerifiedSSR,
 }: {
   children: React.ReactNode
   dictionary: TDictionary<typeof VerifyEmailDr>
+  emailNotVerifiedSSR: boolean
 }) {
   const account = useAccount()
   const utils = trpc.useUtils()
   const [isModalOpen, setIsModalOpen] = useState(false)
 
+  const emailNotVerified = account.data ? account.data.user.emailVerified === null : emailNotVerifiedSSR
+
   useEffect(() => {
-    if (account.data?.user.emailVerified === null) {
+    if (emailNotVerified) {
       setIsModalOpen(true)
     } else {
       setIsModalOpen(false)
     }
-  }, [account.data])
+  }, [account.data, emailNotVerified])
 
   // Poll for email verification status if not verified and modal is open
   useEffect(() => {
