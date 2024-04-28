@@ -1,4 +1,3 @@
-import { headers } from "next/headers"
 import Link from "next/link"
 import { ChevronLeft } from "lucide-react"
 
@@ -10,6 +9,8 @@ import { cn } from "@/lib/utils"
 import { dictionaryRequirements } from "@/lib/utils/dictionary"
 import { Button } from "@nextui-org/button"
 
+import { containerClassName } from "../utils"
+
 export default async function Preferences({
   params: { lang },
 }: {
@@ -17,8 +18,6 @@ export default async function Preferences({
     lang: Locale
   }
 }) {
-  headers()
-
   const dictionary = await getDictionary(
     lang,
     dictionaryRequirements({
@@ -31,7 +30,7 @@ export default async function Preferences({
 
   return (
     <main className={cn("container m-auto flex-1 overflow-auto p-3")}>
-      <div className="mx-auto flex flex-col gap-3 sm:max-w-lg">
+      <div className={containerClassName}>
         <Button
           as={Link}
           href={"/profile"}

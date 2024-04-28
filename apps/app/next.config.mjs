@@ -53,6 +53,9 @@ let config = {
       {
         hostname: "api.dicebear.com",
       },
+      {
+        hostname: "animadate-data.s3.fr-par.scw.cloud",
+      },
     ],
   },
 }

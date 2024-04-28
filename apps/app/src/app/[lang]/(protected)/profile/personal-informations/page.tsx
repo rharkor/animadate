@@ -8,30 +8,31 @@ import { getDictionary } from "@/lib/langs"
 import { serverTrpc } from "@/lib/trpc/server"
 import { cn } from "@/lib/utils"
 import { dictionaryRequirements } from "@/lib/utils/dictionary"
-import { Button } from "@nextui-org/button"
+import { Button } from "@nextui-org/react"
 
 import { containerClassName } from "../utils"
 
-import NeedHelpForm from "./form"
-import { NeedHelpFormDr } from "./form.dr"
+import UpdateAvatar from "./update-avatar"
+import { UpdateAvatarDr } from "./update-avatar.dr"
 
-export default async function NeedHelp({
+export default async function PersonalInformations({
   params: { lang },
 }: {
   params: {
     lang: Locale
   }
 }) {
+  // Required due to the use of serverTrpc
   headers()
 
   const dictionary = await getDictionary(
     lang,
     dictionaryRequirements(
       {
-        needHelp: true,
         back: true,
+        personalInformations: true,
       },
-      NeedHelpFormDr
+      UpdateAvatarDr
     )
   )
 
@@ -39,7 +40,7 @@ export default async function NeedHelp({
 
   return (
     <main className={cn("container m-auto flex-1 overflow-auto p-3")}>
-      <div className={containerClassName}>
+      <section className={containerClassName}>
         <Button
           as={Link}
           href={"/profile"}
@@ -50,9 +51,12 @@ export default async function NeedHelp({
         >
           {dictionary.back}
         </Button>
-        <h1 className={cn("text-xl md:text-3xl", fontSans.className)}>{dictionary.needHelp}</h1>
-        <NeedHelpForm dictionary={dictionary} ssrAccount={account} lang={lang} />
-      </div>
+        <h1 className={cn("text-xl md:text-3xl", fontSans.className)}>{dictionary.personalInformations}</h1>
+        <div>
+          <UpdateAvatar dictionary={dictionary} ssrAccount={account} />
+          <h2 className="mx-auto mt-2 text-center text-large">{account.user.name}</h2>
+        </div>
+      </section>
     </main>
   )
 }

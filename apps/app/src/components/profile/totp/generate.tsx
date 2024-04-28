@@ -1,10 +1,10 @@
 "use client"
 
 import React, { useCallback, useEffect, useState } from "react"
+import { Trash } from "lucide-react"
 import { QRCodeSVG } from "qrcode.react"
 import { toast } from "react-toastify"
 
-import { Icons } from "@/components/icons"
 import { ModalHeader, ModalTitle } from "@/components/ui/modal"
 import OtpInput from "@/components/ui/otp-input"
 import { useAccount } from "@/hooks/account"
@@ -204,7 +204,7 @@ export default function GenerateTotp({
                                 setMnemonicVerif(newMnemonicVerif.join(" "))
                               }}
                             >
-                              <Icons.trash className="size-4" />
+                              <Trash className="size-4" />
                             </Button>
                           </p>
                         ))}

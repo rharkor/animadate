@@ -1,30 +1,35 @@
 "use client"
 
 import { useState } from "react"
-import { Camera, Trash } from "lucide-react"
+import Image from "next/image"
+import { Camera, Pencil, Trash } from "lucide-react"
 import { toast } from "react-toastify"
+import { z } from "zod"
 
+import { getAccountResponseSchema } from "@/api/me/schemas"
+import FileUpload from "@/components/ui/file-upload"
+import { ModalHeader, ModalTitle } from "@/components/ui/modal"
 import { maxUploadSize } from "@/constants"
 import { useAccount } from "@/hooks/account"
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
 import { cn } from "@/lib/utils"
-import { getImageUrl } from "@/lib/utils/client-utils"
+import { getFallbackAvatar, getImageUrl } from "@/lib/utils/client-utils"
 import { logger } from "@animadate/lib"
-import { Avatar, Button, Modal, ModalBody, ModalContent, Skeleton, Spinner } from "@nextui-org/react"
+import { Button, Modal, ModalBody, ModalContent, Spinner } from "@nextui-org/react"
 
-import FileUpload from "../ui/file-upload"
-import { ModalHeader, ModalTitle } from "../ui/modal"
-
-import { UpdateAvatarDr } from "./avatar.dr"
+import { UpdateAvatarDr } from "./update-avatar.dr"
 
 export default function UpdateAvatar({
-  account,
   dictionary,
+  ssrAccount,
 }: {
-  account: ReturnType<typeof useAccount>
   dictionary: TDictionary<typeof UpdateAvatarDr>
+  ssrAccount: z.infer<ReturnType<typeof getAccountResponseSchema>>
 }) {
+  const account = useAccount().data ?? ssrAccount
+  const fallbackIcon = getFallbackAvatar(account.user.name)
+
   const utils = trpc.useUtils()
 
   const getPresignedUrlMutation = trpc.upload.presignedUrl.useMutation()
@@ -101,60 +106,48 @@ export default function UpdateAvatar({
     setShowModal(false)
   }
 
-  const [showModal, _setShowModal] = useState(false)
-  const setShowModal = (show: boolean) => {
-    if (show) {
-      const active = document.activeElement as HTMLButtonElement | null
-      active?.blur()
-    }
-    _setShowModal(show)
-  }
+  const [showModal, setShowModal] = useState(false)
+  const hasProfilePicture = account.user.profilePicture
 
   return (
     <>
-      <div className={cn("group relative h-20 w-20 rounded-full")}>
-        <Skeleton isLoaded={!account.isLoading} className={cn("rounded-full")}>
-          <Avatar
-            className="!size-20 text-large"
-            src={getImageUrl(account.data?.user.profilePicture) || undefined}
-            name={account.data?.user.name || undefined}
-            onClick={() => setShowModal(true)}
-          />
-        </Skeleton>
-        <Button
-          className={cn(
-            "upload-group group absolute inset-0 flex h-[unset] cursor-pointer items-center justify-center overflow-hidden rounded-full bg-muted/10 opacity-0 backdrop-blur-sm transition-all duration-200",
-            "focus:opacity-100 group-hover:opacity-100 group-focus:opacity-100",
-            {
-              hidden: account.isLoading,
-            }
-          )}
-          onPress={() => setShowModal(true)}
-        >
-          <Camera className="size-8 transition-all duration-250 group-[.upload-group]:active:scale-95" />
-        </Button>
-        <Button
-          color="danger"
-          className={cn(
-            "absolute right-0 top-0 h-[unset] min-w-0 rounded-full p-1.5 text-foreground opacity-0 transition-all duration-200 focus:opacity-100 group-hover:opacity-100 group-focus:opacity-100",
-            {
-              hidden: account.isLoading || !account.data?.user.profilePicture,
-            }
-          )}
-          onPress={() => handleDelete()}
-        >
-          {updateUserMutation.isLoading ? (
-            <Spinner
-              classNames={{
-                wrapper: "size-4",
-              }}
-              color="current"
-              size="sm"
-            />
-          ) : (
-            <Trash className="size-4" />
-          )}
-        </Button>
+      <div className={cn("group relative mx-auto w-max rounded-full")}>
+        <Image
+          src={getImageUrl(account.user.profilePicture) ?? fallbackIcon}
+          alt="Profile Picture"
+          className={cn("!size-40 rounded-full bg-content3 shadow sm:shadow-medium")}
+          width={160}
+          height={160}
+          onClick={() => setShowModal(true)}
+        />
+        <div className="absolute right-0 top-0 space-x-1">
+          <Button
+            className={cn("h-max min-w-0 rounded-full p-2 shadow")}
+            onPress={() => setShowModal(true)}
+            color="primary"
+          >
+            {hasProfilePicture ? <Pencil className="size-4" /> : <Camera className="size-4" />}
+          </Button>
+          <Button
+            color="danger"
+            className={cn("h-max min-w-0 rounded-full p-2 shadow", {
+              hidden: !hasProfilePicture,
+            })}
+            onPress={() => handleDelete()}
+          >
+            {updateUserMutation.isLoading ? (
+              <Spinner
+                classNames={{
+                  wrapper: "size-4",
+                }}
+                color="current"
+                size="sm"
+              />
+            ) : (
+              <Trash className="size-4" />
+            )}
+          </Button>
+        </div>
       </div>
       <Modal isOpen={showModal} onOpenChange={(open) => setShowModal(open)}>
         <ModalContent>

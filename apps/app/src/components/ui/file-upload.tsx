@@ -1,14 +1,12 @@
 "use client"
 
 import { InputHTMLAttributes, useCallback, useEffect, useState } from "react"
-import { Crop, Upload } from "lucide-react"
+import { Crop, Trash, Upload } from "lucide-react"
 import { Accept, useDropzone } from "react-dropzone"
 
 import { TDictionary } from "@/lib/langs"
 import { bytesToMegabytes, cn } from "@/lib/utils"
 import { Button, useDisclosure } from "@nextui-org/react"
-
-import { Icons } from "../icons"
 
 import { FileDr, FileUploadDr } from "./file-upload.dr"
 import ImageCrop from "./image-crop"
@@ -47,7 +45,7 @@ function File({
             <Crop className="size-4" />
           </Button>
           <Button color="danger" className="h-[unset] min-w-0 shrink-0 rounded-full p-1" onPress={() => removeFile(i)}>
-            <Icons.trash className="size-4" />
+            <Trash className="size-4" />
           </Button>
         </div>
       </div>
