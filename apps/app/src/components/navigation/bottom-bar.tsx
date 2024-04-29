@@ -39,7 +39,7 @@ export default function BottomBar({
   return (
     <nav
       className={cn(
-        "z-50 w-screen bg-content1 shadow-large",
+        "z-30 w-screen bg-content1 shadow-large",
         "sm:mx-auto sm:mb-4 sm:w-max sm:rounded-full sm:border sm:border-content2"
       )}
     >

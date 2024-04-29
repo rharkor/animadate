@@ -9,3 +9,5 @@ export const authRoutes = {
 
 export const minPasswordLength = 8
 export const maxPasswordLength = 25
+
+export const authCookieName = "animadate-session-token"

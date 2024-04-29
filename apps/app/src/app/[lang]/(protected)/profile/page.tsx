@@ -19,6 +19,7 @@ import Row from "./row"
 import Section from "./section"
 import SignOut from "./sign-out"
 import { SignOutDr } from "./sign-out.dr"
+import { containerClassName } from "./utils"
 
 export default async function Profile({
   params: { lang },
@@ -27,7 +28,9 @@ export default async function Profile({
     lang: Locale
   }
 }) {
+  // Required due to the use of serverTrpc
   headers()
+
   const dictionary = await getDictionary(
     lang,
     dictionaryRequirements(
@@ -56,11 +59,11 @@ export default async function Profile({
 
   return (
     <main className={cn("container m-auto flex-1 overflow-auto p-3")}>
-      <div className="mx-auto flex flex-col items-center gap-3 sm:max-w-lg">
+      <div className={cn(containerClassName, "items-center")}>
         <h1 className="sr-only">{dictionary.profile}</h1>
         <MinimizedProfile dictionary={dictionary} ssrAccount={account} />
         <Section title={dictionary.profile}>
-          <Row placement="top">
+          <Row placement="top" href="/profile/personal-informations">
             <UserRound className="size-5" />
             {dictionary.personalInformations}
           </Row>
@@ -78,7 +81,7 @@ export default async function Profile({
             <Link className="size-5" />
             {dictionary.inviteYourFriend}
           </Row>
-          <Row placement="center">
+          <Row placement="center" href="/profile/preferences">
             <Settings2 className="size-5" />
             {dictionary.preferences}
           </Row>
@@ -92,8 +95,8 @@ export default async function Profile({
           </Row>
         </Section>
         <Section title={dictionary.security}>
-          <ChangeEmail dictionary={dictionary} ssrEmail={account.user.email} />
-          <ChangePassword dictionary={dictionary} />
+          <ChangeEmail dictionary={dictionary} ssrEmail={account.user.email} placement="top" />
+          <ChangePassword dictionary={dictionary} placement="center" />
           <SignOut dictionary={dictionary} />
           <DeleteAccount dictionary={dictionary} />
         </Section>

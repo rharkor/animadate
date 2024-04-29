@@ -38,9 +38,10 @@ export default function MinimizedProfile({
       <Image
         src={getImageUrl(account.user.profilePicture) ?? fallbackIcon}
         alt="Profile Picture"
-        className={cn("mx-auto !size-20 rounded-full bg-content3 shadow sm:shadow-medium")}
+        className={cn("mx-auto !size-20 rounded-full bg-content3 object-cover shadow sm:shadow-medium")}
         width={80}
         height={80}
+        priority
       />
       <h2 className="mx-auto mt-2 text-center text-large">{account.user.name}</h2>
       <Copiable

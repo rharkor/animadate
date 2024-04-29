@@ -20,7 +20,7 @@ export default function VerifyEmailButton({
   dictionary: TDictionary<typeof VerifyEmailButtonDr>
 }) {
   const account = useAccount()
-  const hasVerifiedEmail = session.user.emailVerified || !!account.data?.user.emailVerified
+  const hasVerifiedEmail = session.user?.emailVerified || !!account.data?.user.emailVerified
 
   const resendVerificationEmailMutation = trpc.me.sendVerificationEmail.useMutation({
     onSuccess: () => {
@@ -29,12 +29,12 @@ export default function VerifyEmailButton({
   })
 
   const handleResendVerificationEmail = () => {
-    if (!session.user.email) {
+    if (!session.user?.email) {
       logger.error("No email found in session")
       return
     }
     resendVerificationEmailMutation.mutate({
-      email: session.user.email,
+      email: session.user?.email,
     })
   }
 

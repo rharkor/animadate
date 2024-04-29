@@ -1,19 +1,35 @@
 import type { NextRequest } from "next/server"
 import { NextResponse } from "next/server"
+import { Session } from "next-auth"
+import { getToken, JWT } from "next-auth/jwt"
 import Negotiator from "negotiator"
 
 import { i18n } from "@/lib/i18n-config"
 import { match as matchLocale } from "@formatjs/intl-localematcher"
 
+import { authCookieName } from "./constants/auth"
+
 const blackListedPaths = ["healthz", "api/healthz", "health", "ping", "api/ping"]
 
-function getLocale(request: NextRequest, cookiesLocale: string | undefined): string | undefined {
-  if (cookiesLocale) return cookiesLocale
+async function getLocale(request: NextRequest): Promise<string | undefined> {
   // Negotiator expects plain object so we need to transform headers
   const negotiatorHeaders: Record<string, string> = {}
   request.headers.forEach((value, key) => (negotiatorHeaders[key] = value))
 
   const locales: string[] = i18n.locales as unknown as string[]
+
+  //* Redirect the user based on the locale configured
+  const session = (await getToken({
+    req: request,
+    salt: authCookieName,
+    cookieName: authCookieName,
+    // eslint-disable-next-line no-process-env
+    secret: process.env.AUTH_SECRET as string,
+  })) as (JWT & Session["user"]) | null
+  if (session && session.lastLocale) {
+    const lastLocale = session.lastLocale as string
+    if (lastLocale) return lastLocale
+  }
 
   // Use negotiator and intl-localematcher to get best locale
   const languages = new Negotiator({ headers: negotiatorHeaders }).languages(locales)
@@ -23,7 +39,7 @@ function getLocale(request: NextRequest, cookiesLocale: string | undefined): str
   return locale
 }
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname
 
   // `/_next/` and `/api/` are ignored by the watcher, but we need to ignore files in `public` manually.
@@ -81,7 +97,7 @@ export function middleware(request: NextRequest) {
 
   // Redirect if there is no locale
   if (pathnameIsNotBlacklisted) {
-    const locale = getLocale(request, cookiesLocales)
+    const locale = await getLocale(request)
 
     // e.g. incoming request is /products
     // The new URL is now /en-US/products

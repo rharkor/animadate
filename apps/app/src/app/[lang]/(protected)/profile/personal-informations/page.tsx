@@ -10,28 +10,37 @@ import { cn } from "@/lib/utils"
 import { dictionaryRequirements } from "@/lib/utils/dictionary"
 import { Button } from "@nextui-org/button"
 
+import ChangeEmail from "../change-email"
+import { ChangeEmailDr } from "../change-email.dr"
+import ChangePassword from "../change-password"
+import { ChangePasswordDr } from "../change-password.dr"
+import Section from "../section"
 import { containerClassName } from "../utils"
 
-import NeedHelpForm from "./form"
-import { NeedHelpFormDr } from "./form.dr"
+import UpdatePersonalInformations from "./update"
+import { UpdatePersonalInformationsDr } from "./update.dr"
 
-export default async function NeedHelp({
+export default async function PersonalInformations({
   params: { lang },
 }: {
   params: {
     lang: Locale
   }
 }) {
+  // Required due to the use of serverTrpc
   headers()
 
   const dictionary = await getDictionary(
     lang,
     dictionaryRequirements(
       {
-        needHelp: true,
         back: true,
+        personalInformations: true,
+        security: true,
       },
-      NeedHelpFormDr
+      UpdatePersonalInformationsDr,
+      ChangeEmailDr,
+      ChangePasswordDr
     )
   )
 
@@ -39,7 +48,7 @@ export default async function NeedHelp({
 
   return (
     <main className={cn("container m-auto flex-1 overflow-auto p-3")}>
-      <div className={containerClassName}>
+      <section className={containerClassName}>
         <Button
           as={Link}
           href={"/profile"}
@@ -50,9 +59,13 @@ export default async function NeedHelp({
         >
           {dictionary.back}
         </Button>
-        <h1 className={cn("text-xl md:text-3xl", fontSans.className)}>{dictionary.needHelp}</h1>
-        <NeedHelpForm dictionary={dictionary} ssrAccount={account} lang={lang} />
-      </div>
+        <h1 className={cn("text-xl md:text-3xl", fontSans.className)}>{dictionary.personalInformations}</h1>
+        <UpdatePersonalInformations dictionary={dictionary} ssrAccount={account} />
+        <Section title={dictionary.security}>
+          <ChangeEmail dictionary={dictionary} ssrEmail={account.user.email} placement="top" />
+          <ChangePassword dictionary={dictionary} placement="bottom" />
+        </Section>
+      </section>
     </main>
   )
 }

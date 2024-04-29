@@ -13,7 +13,7 @@ export default function SignoutButton({ children }: { children: React.ReactNode 
   const session = useSession()
   const router = useRouter()
 
-  const currentSession = session.data?.user.uuid
+  const currentSession = session.data?.user?.uuid
 
   const deleteSessionMutation = trpc.me.deleteSession.useMutation()
 

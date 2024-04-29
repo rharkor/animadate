@@ -164,10 +164,13 @@ export const handleApiError = <T extends TRPCClientErrorLike<AppRouter>>(
   }
 }
 
-export function bytesToMegabytes(bytes: number, round?: boolean): number {
-  const megabytes = bytes / (1024 * 1024)
-  if (round) return Math.round(megabytes * 100) / 100
-  return megabytes
+export function bytesToUnit(bytes: number, unit: "megabytes" | "kilobytes", round?: boolean): number {
+  const units = {
+    megabytes: bytes / (1024 * 1024),
+    kilobytes: bytes / 1024,
+  }
+  if (round) return Math.round(units[unit] * 100) / 100
+  return units[unit]
 }
 
 export function stringToSlug(string: string): string {

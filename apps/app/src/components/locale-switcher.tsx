@@ -5,9 +5,18 @@ import { usePathname } from "next/navigation"
 import { useRouter } from "next/navigation"
 
 import { Locale, localesDetailed } from "@/lib/i18n-config"
-import { Avatar, Select, SelectItem } from "@nextui-org/react"
+import { cn } from "@/lib/utils"
+import { Avatar, Select, SelectItem, Spinner } from "@nextui-org/react"
 
-export default function LocaleSwitcher({ lang }: { lang: Locale }) {
+export default function LocaleSwitcher({
+  lang,
+  size = "sm",
+  className,
+}: {
+  lang: Locale
+  size?: "sm" | "md" | "lg"
+  className?: string
+}) {
   const pathName = usePathname()
   const router = useRouter()
   const redirectedPathName = (locale: Locale) => {
@@ -24,6 +33,7 @@ export default function LocaleSwitcher({ lang }: { lang: Locale }) {
   }
 
   const [dynamicLocale, setDynamicLocale] = useState<Locale>(lang)
+  const isLoading = dynamicLocale !== lang
 
   if (!localesDetailed[lang]) return null
 
@@ -36,10 +46,38 @@ export default function LocaleSwitcher({ lang }: { lang: Locale }) {
         handleLocaleChange(locale)
         setDynamicLocale(locale)
       }}
-      className="w-[150px]"
+      className={cn("w-[150px]", className)}
+      classNames={{
+        innerWrapper: cn({
+          "gap-3": size === "lg",
+        }),
+      }}
       aria-label={localesDetailed[lang].nativeName}
-      startContent={<Avatar alt={lang} className="!size-4 shrink-0" src={localesDetailed[lang].flag} />}
-      size="sm"
+      startContent={
+        isLoading ? (
+          <Spinner
+            classNames={{
+              wrapper: cn("shrink-0", {
+                "!size-4": size === "sm",
+                "!size-5": size === "md",
+                "!size-6": size === "lg",
+              }),
+            }}
+            color="current"
+          />
+        ) : (
+          <Avatar
+            alt={lang}
+            className={cn("shrink-0", {
+              "!size-4": size === "sm",
+              "!size-5": size === "md",
+              "!size-6": size === "lg",
+            })}
+            src={localesDetailed[lang].flag}
+          />
+        )
+      }
+      size={size}
       selectionMode="single"
     >
       {Object.entries(localesDetailed).map(([locale, details]) => (
