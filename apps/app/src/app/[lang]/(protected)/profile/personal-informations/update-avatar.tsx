@@ -121,6 +121,7 @@ export default function UpdateAvatar({
           width={128}
           height={128}
           onClick={() => setShowModal(true)}
+          priority
         />
         <div
           className={cn("absolute right-0 top-0 space-x-1 transition-all", {
