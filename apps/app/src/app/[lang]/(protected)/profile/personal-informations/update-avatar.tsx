@@ -115,12 +115,18 @@ export default function UpdateAvatar({
         <Image
           src={getImageUrl(account.user.profilePicture) ?? fallbackIcon}
           alt="Profile Picture"
-          className={cn("!size-40 cursor-pointer rounded-full bg-content3 object-cover shadow sm:shadow-medium")}
-          width={160}
-          height={160}
+          className={cn(
+            "size-28 cursor-pointer rounded-full bg-content3 object-cover shadow sm:size-32 sm:shadow-medium"
+          )}
+          width={128}
+          height={128}
           onClick={() => setShowModal(true)}
         />
-        <div className="absolute right-0 top-0 space-x-1">
+        <div
+          className={cn("absolute right-0 top-0 space-x-1 transition-all", {
+            "-right-4": hasProfilePicture,
+          })}
+        >
           <Button
             className={cn("h-max min-w-0 rounded-full p-2 shadow")}
             onPress={() => setShowModal(true)}
@@ -138,7 +144,7 @@ export default function UpdateAvatar({
             {updateUserMutation.isLoading ? (
               <Spinner
                 classNames={{
-                  wrapper: "size-4",
+                  wrapper: "!size-4",
                 }}
                 color="current"
                 size="sm"
