@@ -115,7 +115,7 @@ export default function UpdateAvatar({
         <Image
           src={getImageUrl(account.user.profilePicture) ?? fallbackIcon}
           alt="Profile Picture"
-          className={cn("!size-40 rounded-full bg-content3 shadow sm:shadow-medium")}
+          className={cn("!size-40 cursor-pointer rounded-full bg-content3 object-cover shadow sm:shadow-medium")}
           width={160}
           height={160}
           onClick={() => setShowModal(true)}
@@ -167,6 +167,8 @@ export default function UpdateAvatar({
                   "image/jpeg": [".jpg", ".jpeg"],
                 }}
                 disabled={uploading}
+                singleDisplay
+                singleDisplayClassName="rounded-full"
               />
               <Button color="primary" type="submit" isDisabled={uploading || !file} isLoading={uploading}>
                 {dictionary.updateAvatar}

@@ -54,7 +54,7 @@ export default async function PersonalInformations({
         <h1 className={cn("text-xl md:text-3xl", fontSans.className)}>{dictionary.personalInformations}</h1>
         <div>
           <UpdateAvatar dictionary={dictionary} ssrAccount={account} />
-          <h2 className="mx-auto mt-2 text-center text-large">{account.user.name}</h2>
+          <h2 className="mx-auto mt-2 text-center text-xl">{account.user.name}</h2>
         </div>
       </section>
     </main>
