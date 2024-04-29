@@ -106,7 +106,7 @@
   "delete": "Delete",
   "yes": "Yes",
   "no": "No",
-  "needSavePopup": "Be careful, there are still unsaved changes!",
+  "needSavePopup": "Some changes have not been saved",
   "reset": "Reset",
   "saveChanges": "Save changes",
   "email": "Email",

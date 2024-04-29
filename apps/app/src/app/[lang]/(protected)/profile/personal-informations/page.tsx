@@ -10,10 +10,15 @@ import { cn } from "@/lib/utils"
 import { dictionaryRequirements } from "@/lib/utils/dictionary"
 import { Button } from "@nextui-org/react"
 
+import ChangeEmail from "../change-email"
+import { ChangeEmailDr } from "../change-email.dr"
+import ChangePassword from "../change-password"
+import { ChangePasswordDr } from "../change-password.dr"
+import Section from "../section"
 import { containerClassName } from "../utils"
 
-import UpdateAvatar from "./update-avatar"
-import { UpdateAvatarDr } from "./update-avatar.dr"
+import UpdatePersonalInformations from "./update"
+import { UpdatePersonalInformationsDr } from "./update.dr"
 
 export default async function PersonalInformations({
   params: { lang },
@@ -31,8 +36,11 @@ export default async function PersonalInformations({
       {
         back: true,
         personalInformations: true,
+        security: true,
       },
-      UpdateAvatarDr
+      UpdatePersonalInformationsDr,
+      ChangeEmailDr,
+      ChangePasswordDr
     )
   )
 
@@ -52,10 +60,11 @@ export default async function PersonalInformations({
           {dictionary.back}
         </Button>
         <h1 className={cn("text-xl md:text-3xl", fontSans.className)}>{dictionary.personalInformations}</h1>
-        <div>
-          <UpdateAvatar dictionary={dictionary} ssrAccount={account} />
-          <h2 className="mx-auto mt-2 text-center text-xl">{account.user.name}</h2>
-        </div>
+        <UpdatePersonalInformations dictionary={dictionary} ssrAccount={account} />
+        <Section title={dictionary.security}>
+          <ChangeEmail dictionary={dictionary} ssrEmail={account.user.email} placement="top" />
+          <ChangePassword dictionary={dictionary} placement="bottom" />
+        </Section>
       </section>
     </main>
   )

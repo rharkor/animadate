@@ -25,6 +25,7 @@ export default function Copiable({
     text?: string
     button?: string
     icon?: string
+    container?: string
   }
   dictionary: TDictionary<typeof CopiableDr>
   children?: React.ReactNode
@@ -55,7 +56,7 @@ export default function Copiable({
   }
 
   return (
-    <div className="copiable group flex flex-row items-center gap-1">
+    <div className={cn("copiable group flex flex-row items-center gap-1", classNames?.container)}>
       <p
         className={cn(
           "block cursor-pointer rounded-small border border-foreground-300/20 bg-foreground-200/20 p-[3px] px-2 text-xs",

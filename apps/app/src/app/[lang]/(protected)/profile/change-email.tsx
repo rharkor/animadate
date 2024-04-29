@@ -29,9 +29,11 @@ const form1Schema = validateChangeEmailSchema
 export default function ChangeEmail({
   dictionary,
   ssrEmail,
+  placement,
 }: {
   dictionary: TDictionary<typeof ChangeEmailDr>
   ssrEmail: string
+  placement: Parameters<typeof Row>[number]["placement"]
 }) {
   const router = useRouter()
   const utils = trpc.useUtils()
@@ -109,7 +111,7 @@ export default function ChangeEmail({
 
   return (
     <>
-      <Row placement="top" onPress={onOpenChange}>
+      <Row placement={placement} onPress={onOpenChange}>
         <Mail className="size-5" />
         {dictionary.changeEmail}
       </Row>

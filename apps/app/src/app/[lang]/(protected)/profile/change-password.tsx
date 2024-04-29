@@ -44,7 +44,13 @@ const formSchema = (dictionary: TDictionary<typeof formSchemaDr>) =>
       }
     })
 
-export default function ChangePassword({ dictionary }: { dictionary: TDictionary<typeof ChangePasswordDr> }) {
+export default function ChangePassword({
+  dictionary,
+  placement,
+}: {
+  dictionary: TDictionary<typeof ChangePasswordDr>
+  placement: Parameters<typeof Row>[number]["placement"]
+}) {
   const router = useRouter()
   const { isOpen, onOpenChange, onClose } = useDisclosure()
 
@@ -93,7 +99,7 @@ export default function ChangePassword({ dictionary }: { dictionary: TDictionary
 
   return (
     <>
-      <Row placement="center" onPress={onOpenChange}>
+      <Row placement={placement} onPress={onOpenChange}>
         <KeyRound className="size-5" />
         {dictionary.changePassword}
       </Row>

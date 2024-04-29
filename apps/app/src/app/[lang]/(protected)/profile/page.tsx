@@ -95,8 +95,8 @@ export default async function Profile({
           </Row>
         </Section>
         <Section title={dictionary.security}>
-          <ChangeEmail dictionary={dictionary} ssrEmail={account.user.email} />
-          <ChangePassword dictionary={dictionary} />
+          <ChangeEmail dictionary={dictionary} ssrEmail={account.user.email} placement="top" />
+          <ChangePassword dictionary={dictionary} placement="center" />
           <SignOut dictionary={dictionary} />
           <DeleteAccount dictionary={dictionary} />
         </Section>

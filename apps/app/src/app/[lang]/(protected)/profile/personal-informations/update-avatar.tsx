@@ -10,7 +10,6 @@ import { getAccountResponseSchema } from "@/api/me/schemas"
 import FileUpload from "@/components/ui/file-upload"
 import { ModalHeader, ModalTitle } from "@/components/ui/modal"
 import { maxUploadSize } from "@/constants"
-import { useAccount } from "@/hooks/account"
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
 import { cn } from "@/lib/utils"
@@ -22,12 +21,11 @@ import { UpdateAvatarDr } from "./update-avatar.dr"
 
 export default function UpdateAvatar({
   dictionary,
-  ssrAccount,
+  account,
 }: {
   dictionary: TDictionary<typeof UpdateAvatarDr>
-  ssrAccount: z.infer<ReturnType<typeof getAccountResponseSchema>>
+  account: z.infer<ReturnType<typeof getAccountResponseSchema>>
 }) {
-  const account = useAccount().data ?? ssrAccount
   const fallbackIcon = getFallbackAvatar(account.user.name)
 
   const utils = trpc.useUtils()
@@ -116,28 +114,28 @@ export default function UpdateAvatar({
           src={getImageUrl(account.user.profilePicture) ?? fallbackIcon}
           alt="Profile Picture"
           className={cn(
-            "size-28 cursor-pointer rounded-full bg-content3 object-cover shadow sm:size-32 sm:shadow-medium"
+            "size-20 cursor-pointer rounded-full bg-content3 object-cover shadow sm:size-24 sm:shadow-medium"
           )}
           width={128}
           height={128}
-          onClick={() => setShowModal(true)}
+          // onClick={() => setShowModal(true)}
           priority
         />
         <div
-          className={cn("absolute right-0 top-0 space-x-1 transition-all", {
-            "-right-4": hasProfilePicture,
+          className={cn("flex flex-row justify-center gap-2 transition-all", {
+            "absolute right-0 top-0": !hasProfilePicture,
           })}
         >
           <Button
-            className={cn("h-max min-w-0 rounded-full p-2 shadow")}
+            className={cn("h-max min-w-0 rounded-full p-1.5 shadow sm:p-2")}
             onPress={() => setShowModal(true)}
             color="primary"
           >
-            {hasProfilePicture ? <Pencil className="size-4" /> : <Camera className="size-4" />}
+            {hasProfilePicture ? <Pencil className="size-3 sm:size-4" /> : <Camera className="size-3 sm:size-4" />}
           </Button>
           <Button
             color="danger"
-            className={cn("h-max min-w-0 rounded-full p-2 shadow", {
+            className={cn("h-max min-w-0 rounded-full p-1.5 shadow sm:p-2", {
               hidden: !hasProfilePicture,
             })}
             onPress={() => handleDelete()}
@@ -145,13 +143,13 @@ export default function UpdateAvatar({
             {updateUserMutation.isLoading ? (
               <Spinner
                 classNames={{
-                  wrapper: "!size-4",
+                  wrapper: "!size-3 sm:!size-4",
                 }}
                 color="current"
                 size="sm"
               />
             ) : (
-              <Trash className="size-4" />
+              <Trash className="size-3 sm:size-4" />
             )}
           </Button>
         </div>

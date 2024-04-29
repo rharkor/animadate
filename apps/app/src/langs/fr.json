@@ -106,7 +106,7 @@
   "delete": "Supprimer",
   "yes": "Oui",
   "no": "Non",
-  "needSavePopup": "Vous avez des modifications non enregistrées !",
+  "needSavePopup": "Vous avez des modifications non enregistrées",
   "reset": "Réinitialiser",
   "saveChanges": "Sauvegarder",
   "email": "Email",
