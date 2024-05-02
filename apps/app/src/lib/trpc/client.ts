@@ -8,7 +8,6 @@ import { getUrl } from "./utils"
 export const trpc = createTRPCReact<AppRouter>({})
 
 export const trpcClient = trpc.createClient({
-  transformer: SuperJSON,
   links: [
     // adds pretty logs to your console in development and logs errors in production
     loggerLink({
@@ -30,6 +29,7 @@ export const trpcClient = trpc.createClient({
     // }),
     httpBatchLink({
       url: getUrl(),
+      transformer: SuperJSON,
     }),
   ],
 })

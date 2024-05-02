@@ -6,4 +6,4 @@ import { createContext } from "./context"
 /**
  * This client invokes procedures directly on the server without fetching over HTTP.
  */
-export const serverTrpc = createCallerFactory(appRouter)(createContext())
+export const serverTrpc = createCallerFactory(appRouter)(createContext(undefined, true))
