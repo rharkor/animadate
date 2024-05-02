@@ -17,10 +17,13 @@ export const getAccount = async ({ ctx: { session } }: apiInputFromSchema<undefi
       },
       include: {
         profilePicture: true,
+        pet: true,
       },
     })
     if (!account) return ApiError("userNotFound", "NOT_FOUND")
-    const data: z.infer<ReturnType<typeof getAccountResponseSchema>> = { user: account }
+    const data: z.infer<ReturnType<typeof getAccountResponseSchema>> = {
+      user: { ...account, hasPetProfile: !!account.pet },
+    }
     return data
   } catch (error: unknown) {
     return handleApiError(error)

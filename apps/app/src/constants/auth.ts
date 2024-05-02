@@ -4,6 +4,7 @@ export const authRoutes = {
   signIn: ["/sign-in", "/login", "/signin"],
   signUp: ["/sign-up", "/register", "/signup"],
   redirectAfterSignIn: "/",
+  redirectAfterSignUp: "/profile/pet-profile",
   redirectOnUnhauthorized: "/sign-in",
 }
 

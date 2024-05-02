@@ -56,6 +56,7 @@ let config = {
       {
         hostname: "animadate-data.s3.fr-par.scw.cloud",
       },
+      { hostname: "animadate-public.s3.fr-par.scw.cloud" },
     ],
   },
 }

@@ -156,7 +156,7 @@ export function LoginUserAuthForm({ searchParams, dictionary, ...props }: UserAu
           {dictionary.signIn}
         </Button>
       </form>
-      <h3 className={cn("!mt-0 text-start text-sm text-slate-100", "md:px-8 md:py-6 md:pt-0 md:text-foreground")}>
+      <h3 className={cn("!mt-0 text-start text-sm text-slate-50", "md:px-8 md:py-6 md:pt-0 md:text-foreground")}>
         {dictionary.auth.doNotHaveAccount}{" "}
         <Link className="text-sm" href={authRoutes.signUp[0]}>
           {dictionary.auth.signUp}

@@ -12,7 +12,7 @@ import { ModalHeader, ModalTitle } from "@/components/ui/modal"
 import { maxUploadSize } from "@/constants"
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
-import { cn } from "@/lib/utils"
+import { bytesToUnit, cn } from "@/lib/utils"
 import { getFallbackAvatar, getImageUrl } from "@/lib/utils/client-utils"
 import { logger } from "@animadate/lib"
 import { Button, Modal, ModalBody, ModalContent, Spinner } from "@nextui-org/react"
@@ -43,7 +43,9 @@ export default function UpdateAvatar({
       return
     }
     if (file.size > maxUploadSize) {
-      toast.error(dictionary.errors.fileTooLarge)
+      toast.error(
+        dictionary.errors.fileTooLarge.replace("{max}", bytesToUnit(maxUploadSize, "megabytes").toString() + "Mo")
+      )
       return
     }
     setUploading(true)
@@ -79,7 +81,9 @@ export default function UpdateAvatar({
           const xmlDoc = parser.parseFromString(xml, "text/xml")
           const error = xmlDoc.getElementsByTagName("Message")[0]
           if (error.textContent === "Your proposed upload exceeds the maximum allowed size") {
-            toast.error(dictionary.errors.fileTooLarge)
+            toast.error(
+              dictionary.errors.fileTooLarge.replace("{max}", bytesToUnit(maxUploadSize, "megabytes").toString() + "Mo")
+            )
           } else {
             toast.error(dictionary.unknownError)
           }
@@ -118,7 +122,6 @@ export default function UpdateAvatar({
           )}
           width={128}
           height={128}
-          // onClick={() => setShowModal(true)}
           priority
         />
         <div
@@ -174,6 +177,7 @@ export default function UpdateAvatar({
                 disabled={uploading}
                 singleDisplay
                 singleDisplayClassName="rounded-full"
+                canTakePhoto
               />
               <Button color="primary" type="submit" isDisabled={uploading || !file} isLoading={uploading}>
                 {dictionary.updateAvatar}

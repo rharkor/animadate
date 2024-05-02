@@ -259,3 +259,7 @@ export function generateOTP(length: number = 6) {
 
   return OTP
 }
+
+export function chain<T>(...fns: ((arg: T) => T)[]) {
+  return (arg: T) => fns.reduce((acc, fn) => fn(acc), arg)
+}

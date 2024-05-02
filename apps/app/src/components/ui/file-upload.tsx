@@ -2,17 +2,18 @@
 
 import { InputHTMLAttributes, useCallback, useEffect, useMemo, useState } from "react"
 import Image from "next/image"
-import { Crop, Trash, Upload } from "lucide-react"
+import { Camera, Crop, Images, Trash, Upload } from "lucide-react"
 import { Accept, useDropzone } from "react-dropzone"
 
+import { useCamera } from "@/contexts/camera/utils"
 import { TDictionary } from "@/lib/langs"
 import { bytesToUnit, cn } from "@/lib/utils"
-import { Button, useDisclosure } from "@nextui-org/react"
+import { Button, Divider, useDisclosure } from "@nextui-org/react"
 
 import { FileUploadDr } from "./file-upload.dr"
 import ImageCrop from "./image-crop"
 
-function File({
+function FileDisplay({
   file,
   i,
   removeFile,
@@ -42,11 +43,25 @@ function File({
           <Button
             color="primary"
             className="h-[unset] min-w-0 shrink-0 rounded-full p-1"
-            onPress={() => onCroppingOpen(i)}
+            onClick={() => onCroppingOpen(i)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                onCroppingOpen(i)
+              }
+            }}
           >
             <Crop className="size-4" />
           </Button>
-          <Button color="danger" className="h-[unset] min-w-0 shrink-0 rounded-full p-1" onPress={() => removeFile(i)}>
+          <Button
+            color="danger"
+            className="h-[unset] min-w-0 shrink-0 rounded-full p-1"
+            onClick={() => removeFile(i)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                removeFile(i)
+              }
+            }}
+          >
             <Trash className="size-4" />
           </Button>
         </div>
@@ -67,6 +82,11 @@ export type TFileUploadProps = Omit<
   dictionary: TDictionary<typeof FileUploadDr>
   singleDisplay?: boolean
   singleDisplayClassName?: string
+  imageCropProps?: Omit<
+    Parameters<typeof ImageCrop>[0],
+    "originalFile" | "setFile" | "onOpenChange" | "isOpen" | "dictionary"
+  >
+  canTakePhoto?: boolean
 }
 
 export default function FileUpload({
@@ -78,13 +98,17 @@ export default function FileUpload({
   dictionary,
   singleDisplay,
   singleDisplayClassName,
+  imageCropProps,
+  canTakePhoto,
   ...props
 }: TFileUploadProps) {
-  const { acceptedFiles, getRootProps, getInputProps, isDragAccept, isDragReject } = useDropzone({
+  const { acceptedFiles, getRootProps, getInputProps, isDragAccept, isDragReject, open } = useDropzone({
     accept,
     maxFiles,
     multiple: maxFiles !== 1,
   })
+  const { takePhoto, onClose: takePhotoOnClose, showModal: takePhotoShowModal } = useCamera()
+
   const [files, setFiles] = useState<File[]>([])
   const [croppedFiles, setCroppedFiles] = useState<File[]>([])
   useEffect(() => {
@@ -92,6 +116,7 @@ export default function FileUpload({
     onFilesChange?.(acceptedFiles)
     setFiles(acceptedFiles)
     setCroppedFiles(acceptedFiles)
+    if (takePhotoShowModal) takePhotoOnClose()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [acceptedFiles])
 
@@ -135,6 +160,15 @@ export default function FileUpload({
     [_onCroppingOpen]
   )
 
+  const handleTakePhoto = useCallback(async () => {
+    const file = await takePhoto({
+      openGalery: open,
+    })
+    onFilesChange?.([file])
+    setFiles([file])
+    setCroppedFiles([file])
+  }, [onFilesChange, takePhoto, open])
+
   return (
     <>
       <div className="flex flex-col gap-2">
@@ -149,26 +183,49 @@ export default function FileUpload({
             />
           </div>
         ) : (
-          <div
-            {...getRootProps()}
-            className={cn(
-              "flex h-[250px] cursor-pointer flex-col items-center justify-center gap-4 rounded-medium border border-dashed border-transparent bg-muted/20 p-2 px-6 text-foreground transition-all",
-              {
-                "hover:border-primary hover:bg-muted/40 focus:border-primary focus:bg-muted/40": !disabled,
-                "border-primary bg-muted/50": isDragAccept,
-                "border-danger bg-danger/40": isDragReject,
-              },
-              className
+          <>
+            {canTakePhoto && (
+              <>
+                <Button
+                  color="primary"
+                  className="w-full"
+                  onPress={handleTakePhoto}
+                  startContent={<Camera className="size-4" />}
+                >
+                  {dictionary.takePhoto}
+                </Button>
+                <div className="flex w-full flex-row items-center gap-2">
+                  <Divider className="w-[unset] flex-1" />
+                  <p>{dictionary.or}</p>
+                  <Divider className="w-[unset] flex-1" />
+                </div>
+              </>
             )}
-          >
-            <input type="file" {...getInputProps()} disabled={disabled} {...props} />
-            <Upload className="size-12" />
-            <p className="text-center text-sm text-foreground/80">{dictionary.uploadDescription}</p>
-          </div>
+            <Button className="w-full sm:hidden" onPress={open} startContent={<Images className="size-4" />}>
+              {dictionary.selectPhoto}
+            </Button>
+            <div
+              {...getRootProps()}
+              className={cn(
+                "flex h-[250px] cursor-pointer flex-col items-center justify-center gap-4 rounded-medium border border-dashed border-transparent bg-muted/20 p-2 px-6 text-foreground transition-all",
+                "max-sm:hidden",
+                {
+                  "hover:border-primary hover:bg-muted/40 focus:border-primary focus:bg-muted/40": !disabled,
+                  "border-primary bg-muted/50": isDragAccept,
+                  "border-danger bg-danger/40": isDragReject,
+                },
+                className
+              )}
+            >
+              <input type="file" {...getInputProps()} disabled={disabled} {...props} />
+              <Upload className="size-12" />
+              <p className="text-center text-sm text-foreground/80">{dictionary.uploadDescription}</p>
+            </div>
+          </>
         )}
         <ul className="flex flex-col gap-2">
           {croppedFiles.map((file, i) => (
-            <File file={file} i={i} removeFile={removeFile} key={i} onCroppingOpen={onCroppingOpen} />
+            <FileDisplay file={file} i={i} removeFile={removeFile} key={i} onCroppingOpen={onCroppingOpen} />
           ))}
         </ul>
       </div>
@@ -178,6 +235,7 @@ export default function FileUpload({
         onOpenChange={onCroppingOpenChange}
         isOpen={isCroppingOpen}
         dictionary={dictionary}
+        {...imageCropProps}
       />
     </>
   )

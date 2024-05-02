@@ -541,15 +541,16 @@ export default function ImageCrop({
   isOpen,
   onOpenChange,
   dictionary,
+  ...props
 }: {
   originalFile: File
   setFile: (file: File) => void
   isOpen: boolean
   onOpenChange: () => void
   dictionary: TDictionary<typeof ImageCropDr>
-}) {
+} & Omit<Parameters<typeof Modal>[0], "children" | "isOpen" | "onOpenChange" | "size">) {
   return (
-    <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="2xl">
+    <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="2xl" {...props}>
       <ModalContent>
         {(onClose) => (
           <>

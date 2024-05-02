@@ -7,3 +7,8 @@ export const videoLink = "https://animadate-public.s3.fr-par.scw.cloud/dogs/port
 export const videoPosterLink = "https://animadate-public.s3.fr-par.scw.cloud/dogs/portrait.webp"
 
 export const logoUrl = "https://animadate-public.s3.fr-par.scw.cloud/logo.png"
+
+export const petProfileImagesPlaceholder = Array.from(
+  { length: 7 },
+  (_, i) => `https://animadate-public.s3.fr-par.scw.cloud/dogs/pet-profile/${i}.webp`
+)
