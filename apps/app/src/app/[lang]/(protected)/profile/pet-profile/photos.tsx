@@ -1,24 +1,22 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import Image from "next/image"
+import { useState } from "react"
 import { ImageUp } from "lucide-react"
 import { toast } from "react-toastify"
 
-import { maxPetPhotos, minPetPhotos } from "@/api/pet/schemas"
 import FileUpload from "@/components/ui/file-upload"
 import { ModalHeader, ModalTitle } from "@/components/ui/modal"
 import { maxUploadSize } from "@/constants"
-import { petProfileImagesPlaceholder } from "@/constants/medias"
 import { env } from "@/lib/env"
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
-import { bytesToUnit, cn } from "@/lib/utils"
+import { bytesToUnit } from "@/lib/utils"
 import { getImageUrl } from "@/lib/utils/client-utils"
 import { logger } from "@animadate/lib"
 import { Button, Modal, ModalBody, ModalContent, Spinner } from "@nextui-org/react"
 
 import { PetProfilePhotosDr } from "./photos.dr"
+import PhotosDisplay from "./photos-display"
 
 export default function PetProfilePhotos({
   carousel,
@@ -37,25 +35,6 @@ export default function PetProfilePhotos({
   setPhotos: (keys: { key: string; url: string }[]) => void
   dictionary: TDictionary<typeof PetProfilePhotosDr>
 }) {
-  //* Carousel
-  const [active, setActive] = useState(defaultPhoto)
-
-  const willActive = (i: number) => {
-    // Next image
-    if (i === active + 1 || (active === petProfileImagesPlaceholder.length - 1 && i === 0)) return true
-    // Previous image
-    if (i === active - 1 || (active === 0 && i === petProfileImagesPlaceholder.length - 1)) return true
-  }
-
-  useEffect(() => {
-    if (!carousel) return
-    const interval = setInterval(() => {
-      setActive((prev) => (prev + 1) % petProfileImagesPlaceholder.length)
-    }, 10000)
-
-    return () => clearInterval(interval)
-  }, [carousel])
-
   //* Upload
   const [currentFile, setCurrentFile] = useState<File | null>(null)
   const [uploading, setUploading] = useState(false)
@@ -129,68 +108,15 @@ export default function PetProfilePhotos({
   return (
     <div className="absolute inset-0">
       <div className="relative size-full">
-        {photos.length > 0 ? (
-          photos.map(({ url, key }) => (
-            <Image
-              key={key}
-              src={url}
-              className="absolute inset-0 h-[calc(100%-9rem)] w-full object-cover"
-              alt="Pet profile picture"
-              width={720}
-              height={1480}
-            />
-          ))
-        ) : (
-          <>
-            <div className="absolute inset-0 z-10 bg-black/70" />
-            {carousel ? (
-              petProfileImagesPlaceholder.map((src, i) => (
-                <Image
-                  key={`pet-profile-placeholder-${i}`}
-                  src={src}
-                  className={cn(
-                    "absolute inset-0 h-[calc(100%-9rem)] w-full object-cover opacity-0 transition-all duration-300",
-                    {
-                      hidden: i !== active && !willActive(i),
-                      "opacity-100": i === active,
-                    }
-                  )}
-                  alt="Pet profile picture"
-                  width={720}
-                  height={1480}
-                />
-              ))
-            ) : (
-              <Image
-                src={petProfileImagesPlaceholder[active]}
-                className="absolute inset-0 h-[calc(100%-9rem)] w-full object-cover"
-                alt="Pet profile picture"
-                width={720}
-                height={1480}
-              />
-            )}
-          </>
-        )}
-        <div
-          className={cn(
-            "absolute inset-0 z-20 flex flex-col items-center justify-center space-y-2 text-slate-50 opacity-80",
-            "border-none focus:text-primary focus:outline-0 focus:ring-0",
-            {
-              hidden: photoIndex === photos.length - 1 && photoIndex !== maxPetPhotos - 1,
-            }
-          )}
-          role="button"
-          tabIndex={0}
-          onClick={() => setShowUploadModal(true)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" || e.key === " ") setShowUploadModal(true)
-          }}
-        >
-          <ImageUp className={cn("mx-auto size-16")} />
-          <p className="max-w-48 text-center text-sm">
-            {dictionary.petProfilePhotosRequirements.replace("{min}", minPetPhotos.toString())}
-          </p>
-        </div>
+        <PhotosDisplay
+          photos={photos}
+          photoIndex={photoIndex}
+          setPhotoIndex={setPhotoIndex}
+          dictionary={dictionary}
+          setShowUploadModal={setShowUploadModal}
+          defaultPhoto={defaultPhoto}
+          carousel={carousel}
+        />
       </div>
       <Modal
         isOpen={showUploadModal}
@@ -218,6 +144,7 @@ export default function PetProfilePhotos({
               }}
               disabled={uploading}
               singleDisplay
+              singleDisplayClassName="w-[140px] h-[250px]"
               imageCropProps={{
                 classNames: {
                   wrapper: "z-[71]",

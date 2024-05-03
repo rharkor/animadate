@@ -177,7 +177,7 @@ export default function FileUpload({
             <Image
               src={firstFileUrl}
               alt="Uploaded file"
-              className={cn("!size-32 bg-content3 object-cover shadow sm:shadow-medium", singleDisplayClassName)}
+              className={cn("size-32 bg-content3 object-cover shadow sm:shadow-medium", singleDisplayClassName)}
               width={128}
               height={128}
             />

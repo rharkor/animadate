@@ -77,7 +77,7 @@ export default function PetProfile({
 
   return (
     <section
-      className={cn("fixed inset-0 bg-default-600", {
+      className={cn("fixed inset-0 bg-black", {
         "z-[60]": !hasPetProfile,
       })}
     >

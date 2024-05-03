@@ -1,9 +1,10 @@
 import { FileUploadDr } from "@/components/ui/file-upload.dr"
 import { dictionaryRequirements } from "@/lib/utils/dictionary"
 
+import { PhotosDisplayDr } from "./photos-display.dr"
+
 export const PetProfilePhotosDr = dictionaryRequirements(
   {
-    petProfilePhotosRequirements: true,
     uploadPhoto: true,
     errors: {
       fileTooLarge: true,
@@ -11,5 +12,6 @@ export const PetProfilePhotosDr = dictionaryRequirements(
     unknownError: true,
     upload: true,
   },
-  FileUploadDr
+  FileUploadDr,
+  PhotosDisplayDr
 )
