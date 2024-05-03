@@ -5,7 +5,7 @@ import Image from "next/image"
 import { ImageUp } from "lucide-react"
 import { toast } from "react-toastify"
 
-import { minPetPhotos } from "@/api/pet/schemas"
+import { maxPetPhotos, minPetPhotos } from "@/api/pet/schemas"
 import FileUpload from "@/components/ui/file-upload"
 import { ModalHeader, ModalTitle } from "@/components/ui/modal"
 import { maxUploadSize } from "@/constants"
@@ -176,7 +176,7 @@ export default function PetProfilePhotos({
             "absolute inset-0 z-20 flex flex-col items-center justify-center space-y-2 text-slate-50 opacity-80",
             "border-none focus:text-primary focus:outline-0 focus:ring-0",
             {
-              hidden: photoIndex >= photos.length,
+              hidden: photoIndex === photos.length - 1 && photoIndex !== maxPetPhotos - 1,
             }
           )}
           role="button"
