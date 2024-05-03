@@ -6,7 +6,7 @@ import { toast } from "react-toastify"
 
 import { TDictionary } from "@/lib/langs"
 import { logger } from "@animadate/lib"
-import { Button, Link, Modal, ModalContent } from "@nextui-org/react"
+import { Button, Link, Modal, ModalContent, Select, SelectItem } from "@nextui-org/react"
 
 import { CameraProviderDr } from "./camera-provider.dr"
 import { CameraContext } from "./context"
@@ -29,9 +29,26 @@ export default function CameraProvider({
 
   const [handleClick, setHandleClick] = useState<(() => Promise<void>) | null>(null)
 
-  const getCameraStream = useCallback(
+  const [videoSources, setVideoSources] = useState<MediaDeviceInfo[]>([])
+  const [forcedCamera, setForcedCamera] = useState<string | null>(null)
+
+  const hasCameraFlipping =
+    videoSources.length === 2 &&
+    videoSources.some((source) => source.label.includes("front")) &&
+    videoSources.some((source) => source.label.includes("back"))
+
+  const loadCameraStream = useCallback(
     async (_facingMode?: "user" | "environment") => {
       try {
+        //* Get the list of video sources
+        const devices = await navigator.mediaDevices.enumerateDevices()
+        const videoSources = devices.filter((device) => device.kind === "videoinput")
+        setVideoSources(videoSources)
+        const _forcedCamera = forcedCamera ?? videoSources[0].deviceId
+        if (!forcedCamera) {
+          setForcedCamera(videoSources[0].deviceId)
+        }
+        //* Get the user media
         if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
           // Check if the environment is secure
           if (location.protocol === "https:") {
@@ -40,13 +57,15 @@ export default function CameraProvider({
             toast.error("getUserMedia is not supported in a secure environment")
           }
         }
-        return await navigator.mediaDevices.getUserMedia({ video: { facingMode: _facingMode ?? facingMode } })
+        return await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: _facingMode ?? facingMode, deviceId: _forcedCamera ?? undefined },
+        })
       } catch (error) {
         logger.error("Error accessing the camera:", error)
         return null
       }
     },
-    [facingMode]
+    [facingMode, forcedCamera]
   )
 
   const stopCameraStream = useCallback((stream: MediaStream) => {
@@ -64,10 +83,10 @@ export default function CameraProvider({
     async (facingMode?: "user" | "environment") => {
       if (!stream) return
       stopCameraStream(stream)
-      const newStream = await getCameraStream(facingMode)
+      const newStream = await loadCameraStream(facingMode)
       setStream(newStream)
     },
-    [getCameraStream, stopCameraStream, stream]
+    [loadCameraStream, stopCameraStream, stream]
   )
 
   const onClose = useCallback(() => {
@@ -125,7 +144,7 @@ export default function CameraProvider({
       sp.set("camera", "true")
       history.pushState(null, "", `${location.pathname}?${sp.toString()}`)
 
-      const stream = await getCameraStream()
+      const stream = await loadCameraStream()
       setStream(stream)
       setOpenGalery(() => {
         return opts?.openGalery ?? null
@@ -142,17 +161,17 @@ export default function CameraProvider({
         })
       })
     },
-    [getCameraStream, captureCameraSnapshot, onClose]
+    [loadCameraStream, captureCameraSnapshot, onClose]
   )
 
   useEffect(() => {
     if (videoRef.current) {
       videoRef.current.srcObject = stream
-      videoRef.current.play().catch((error) => console.error("Error playing the video stream:", error))
+      videoRef.current.play().catch((error) => logger.error("Error playing the video stream:", error))
     }
     if (videoBgRef.current) {
       videoBgRef.current.srcObject = stream
-      videoBgRef.current.play().catch((error) => console.error("Error playing the video stream:", error))
+      videoBgRef.current.play().catch((error) => logger.error("Error playing the video stream:", error))
     }
   }, [stream])
 
@@ -177,7 +196,7 @@ export default function CameraProvider({
         isDismissable={false}
       >
         <ModalContent className="flex flex-col">
-          <div className="flex flex-row border-b border-default-800 bg-default-900 p-1 py-2">
+          <div className="flex flex-row justify-between gap-2 border-b border-default-800 bg-default-900 p-1 py-2">
             <Link
               onClick={onClose}
               onKeyDown={(e) => {
@@ -187,6 +206,40 @@ export default function CameraProvider({
               <ChevronLeft className="size-4" />
               {dictionary.close}
             </Link>
+            {!hasCameraFlipping && videoSources.length > 1 ? (
+              <Select
+                selectedKeys={forcedCamera ? [forcedCamera] : undefined}
+                onSelectionChange={(keys) => {
+                  if (keys === "all") {
+                    setForcedCamera(videoSources[0].deviceId)
+                  } else {
+                    const firstKey = Array.from(keys)[0]
+                    if (!firstKey) return
+                    setForcedCamera(firstKey.toString())
+                  }
+                  reloadCameraStream()
+                }}
+                aria-label={"Camera"}
+                classNames={{
+                  trigger: "p-0 w-max min-h-0 h-max bg-transparent border-none",
+                  selectorIcon: "hidden",
+                  innerWrapper: "w-full",
+                  mainWrapper: "w-max",
+                  base: "w-max",
+                  value: "text-medium !text-muted/70",
+                }}
+                className=""
+                selectionMode="single"
+              >
+                {videoSources.map((source) => (
+                  <SelectItem key={source.deviceId} value={source.deviceId}>
+                    {source.label}
+                  </SelectItem>
+                ))}
+              </Select>
+            ) : (
+              <div />
+            )}
           </div>
           <div className="relative flex-1 overflow-hidden">
             <video ref={videoRef} className="relative z-10 h-full object-contain" />
@@ -217,16 +270,20 @@ export default function CameraProvider({
               }}
               className="!size-20 min-w-0 rounded-full border-none bg-white"
             />
-            <Button
-              variant="flat"
-              className="my-auto !size-12 min-w-0 rounded-full border-none p-3"
-              onClick={switchCamera}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") switchCamera()
-              }}
-            >
-              <RefreshCcw className="size-6" />
-            </Button>
+            {hasCameraFlipping ? (
+              <Button
+                variant="flat"
+                className="my-auto !size-12 min-w-0 rounded-full border-none p-3"
+                onClick={switchCamera}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") switchCamera()
+                }}
+              >
+                <RefreshCcw className="size-6" />
+              </Button>
+            ) : (
+              <div className="size-12" />
+            )}
           </div>
         </ModalContent>
       </Modal>
