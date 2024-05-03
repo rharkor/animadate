@@ -31,7 +31,7 @@ export default function VerifyEmailButton({
     verifyEmail.mutate({ token })
   }
 
-  const isLoading = verifyEmail.isLoading
+  const isLoading = verifyEmail.isPending
 
   return (
     <div className={"!mt-5 grid w-[350px] space-y-2"}>

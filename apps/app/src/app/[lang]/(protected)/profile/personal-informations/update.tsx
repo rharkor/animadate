@@ -96,13 +96,13 @@ export default function UpdatePersonalInformations({
           name="name"
           label={dictionary.auth.name}
           type="text"
-          isDisabled={updateUserMutation.isLoading}
+          isDisabled={updateUserMutation.isPending}
           size="sm"
         />
         <NeedSavePopup
           show={isDirty}
           onReset={resetForm}
-          isSubmitting={updateUserMutation.isLoading}
+          isSubmitting={updateUserMutation.isPending}
           text={dictionary.needSavePopup}
           dictionary={dictionary}
         />

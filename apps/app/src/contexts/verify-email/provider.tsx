@@ -82,7 +82,7 @@ export default function VerifyEmailProvider({
                 <p className="text-xs text-muted-foreground">{dictionary.verifyEmailModal.notReceived}</p>
                 <Button
                   onClick={handleResendVerificationEmail}
-                  isLoading={resendVerificationEmailMutation.isLoading}
+                  isLoading={resendVerificationEmailMutation.isPending}
                   variant="flat"
                   color="primary"
                 >

@@ -143,7 +143,7 @@ export default function UpdateAvatar({
             })}
             onPress={() => handleDelete()}
           >
-            {updateUserMutation.isLoading ? (
+            {updateUserMutation.isPending ? (
               <Spinner
                 classNames={{
                   wrapper: "!size-3 sm:!size-4",

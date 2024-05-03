@@ -106,7 +106,7 @@ export default function ChangeEmail({
     validateChangeEmailMutation.reset()
   }
 
-  const isLoading = formStep === 0 ? changeEmailMutation.isLoading : validateChangeEmailMutation.isLoading
+  const isLoading = formStep === 0 ? changeEmailMutation.isPending : validateChangeEmailMutation.isPending
   const isSuccess = validateChangeEmailMutation.isSuccess
 
   return (

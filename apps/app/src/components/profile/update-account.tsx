@@ -91,12 +91,12 @@ export default function UpdateAccount({
               name="name"
               label={dictionary.auth.name}
               type="text"
-              isDisabled={updateUserMutation.isLoading || account.isLoading || !hasVerifiedEmail}
+              isDisabled={updateUserMutation.isPending || account.isLoading || !hasVerifiedEmail}
             />
             <NeedSavePopup
               show={isNotSensibleInformationsUpdated}
               onReset={resetForm}
-              isSubmitting={updateUserMutation.isLoading}
+              isSubmitting={updateUserMutation.isPending}
               text={dictionary.needSavePopup}
               dictionary={dictionary}
             />

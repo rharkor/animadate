@@ -63,6 +63,7 @@ export default function PetProfile({
   }
 
   const onSubmit = async (data: z.infer<ReturnType<typeof formSchema>>) => {
+    // eslint-disable-next-line no-console
     console.log(data)
   }
 
