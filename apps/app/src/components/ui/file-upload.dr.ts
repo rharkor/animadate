@@ -1,3 +1,4 @@
+import { useCameraDr } from "@/hooks/use-camera/use-camera.dr"
 import { dictionaryRequirements } from "@/lib/utils/dictionary"
 
 import { ImageCropDr } from "./image-crop.dr"
@@ -11,5 +12,6 @@ export const FileUploadDr = dictionaryRequirements(
     or: true,
     selectPhoto: true,
   },
-  FileDr
+  FileDr,
+  useCameraDr
 )

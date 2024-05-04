@@ -5,7 +5,7 @@ import Image from "next/image"
 import { Camera, Crop, Images, Trash, Upload } from "lucide-react"
 import { Accept, useDropzone } from "react-dropzone"
 
-import { useCamera } from "@/contexts/camera/utils"
+import useCamera from "@/hooks/use-camera/use-camera"
 import { TDictionary } from "@/lib/langs"
 import { bytesToUnit, cn } from "@/lib/utils"
 import { Button, Divider, useDisclosure } from "@nextui-org/react"
@@ -107,7 +107,14 @@ export default function FileUpload({
     maxFiles,
     multiple: maxFiles !== 1,
   })
-  const { takePhoto, onClose: takePhotoOnClose, showModal: takePhotoShowModal } = useCamera()
+  const {
+    takePhoto,
+    onClose: takePhotoOnClose,
+    showModal: takePhotoShowModal,
+    content: cameraContent,
+  } = useCamera({
+    dictionary,
+  })
 
   const [files, setFiles] = useState<File[]>([])
   const [croppedFiles, setCroppedFiles] = useState<File[]>([])
@@ -237,6 +244,7 @@ export default function FileUpload({
         dictionary={dictionary}
         {...imageCropProps}
       />
+      {cameraContent}
     </>
   )
 }

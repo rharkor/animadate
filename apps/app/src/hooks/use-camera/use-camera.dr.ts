@@ -1,5 +1,5 @@
 import { dictionaryRequirements } from "@/lib/utils/dictionary"
 
-export const CameraProviderDr = dictionaryRequirements({
+export const useCameraDr = dictionaryRequirements({
   close: true,
 })
