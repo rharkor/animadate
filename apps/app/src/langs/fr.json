@@ -15,8 +15,8 @@
     "petCharacteristicInvalid": "Caractéristique invalide.",
     "petCharacteristicMin": "Spécifiez au moins {size} traits.",
     "petCharacteristicMax": "Spécifiez au maximum {size} traits.",
-    "petPhotoMin": "Téléchargez au moins {size} photos.",
-    "petPhotoMax": "Téléchargez au maximum {size} photos.",
+    "petPhotoMin": "Uploadez au moins {size} photos.",
+    "petPhotoMax": "Uploadez au maximum {size} photos.",
     "password": {
       "regex": "Le mot de passe doit contenir au moins une lettre majuscule, une lettre minuscule, un chiffre, et un caractère spécial.",
       "required": "Mot de passe requis",
@@ -332,10 +332,10 @@
   "searchPetCharacteristics": "Rechercher des traits",
   "shuffle": "Mélanger",
   "selectTraitsDescription": "Sélectionnez entre {min} et {max} traits de caractère pour votre animal.",
-  "petProfilePhotosRequirements": "Téléchargez au moins {min} photos de votre animal.",
-  "uploadPhoto": "Télécharger une photo",
+  "petProfilePhotosRequirements": "Uploadez au moins {min} photos de votre animal.",
+  "uploadPhoto": "Uploader une photo",
   "takePhoto": "Prendre une photo",
   "or": "ou",
   "selectPhoto": "Sélectionner une photo",
-  "upload": "Télécharger"
+  "upload": "Uploader"
 }

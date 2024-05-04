@@ -43,7 +43,7 @@ export default function PhotosDisplay({
   const realPhotosLength = canAddPhoto ? photos.length + 1 : photos.length
 
   // Minimum distance (in pixels) to trigger swipe
-  const minSwipeDistance = 300
+  const minSwipeDistance = 70
 
   const onDragEnd = (_: MouseEvent | TouchEvent, info: { offset: { x: number } }) => {
     const distance = Math.abs(info.offset.x)
