@@ -88,7 +88,7 @@ export default function PhotosDisplay({
         animate={{
           translateX: `-${(photoIndex * 100) / realPhotosLength}%`,
         }}
-        transition={{ type: "spring", bounce: 0.3, duration: 0.5 }}
+        transition={{ type: "spring", bounce: 0.15, duration: 0.5 }}
         drag="x"
         dragConstraints={{ left: 0, right: 0 }}
         dragTransition={{ bounceDamping: 60, bounceStiffness: 600 }}

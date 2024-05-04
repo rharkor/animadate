@@ -5,7 +5,7 @@ import { motion } from "framer-motion"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
-import { upsertPetSchema } from "@/api/pet/schemas"
+import { maxPetPhotos, upsertPetSchema } from "@/api/pet/schemas"
 import { TDictionary } from "@/lib/langs"
 import { cn } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -92,7 +92,7 @@ export default function PetProfile({
         />
         <div className="z-30 flex justify-between p-2">
           <Chip color="default" variant="flat" className="bg-default-400">
-            {photoIndex + 1}/{photos.length + 1}
+            {photoIndex + 1}/{Math.min(photos.length + 1, maxPetPhotos)}
           </Chip>
           <Button color="primary" type="submit">
             {dictionary.confirm}
