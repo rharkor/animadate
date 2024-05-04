@@ -204,6 +204,7 @@ export default function useCamera({ dictionary }: { dictionary: TDictionary<type
                 onKeyDown={(e) => {
                   if (e.key === "Enter" || e.key === " ") onClose()
                 }}
+                className="cursor-pointer"
               >
                 <ChevronLeft className="size-4" />
                 {dictionary.close}
