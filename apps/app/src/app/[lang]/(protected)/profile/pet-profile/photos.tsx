@@ -121,7 +121,10 @@ export default function PetProfilePhotos({
       </div>
       <Modal
         isOpen={showUploadModal}
-        onOpenChange={(open) => setShowUploadModal(open)}
+        onOpenChange={(open) => {
+          setShowUploadModal(open)
+          if (!open) setCurrentFile(null)
+        }}
         classNames={{
           wrapper: "z-[71]",
           backdrop: "z-[70]",

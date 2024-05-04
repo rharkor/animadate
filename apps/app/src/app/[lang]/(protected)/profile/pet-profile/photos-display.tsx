@@ -115,7 +115,7 @@ export default function PhotosDisplay({
               src={photo.url}
               className="h-full object-cover"
               classNames={{
-                wrapper: "z-0 h-full !max-w-[unset] rounded-non",
+                wrapper: "z-0 h-full !max-w-[unset] rounded-none",
               }}
               alt="Pet profile picture"
               width={720}

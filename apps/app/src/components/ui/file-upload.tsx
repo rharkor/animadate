@@ -118,6 +118,7 @@ export default function FileUpload({
 
   const [files, setFiles] = useState<File[]>([])
   const [croppedFiles, setCroppedFiles] = useState<File[]>([])
+
   useEffect(() => {
     if (!acceptedFiles.length) return
     onFilesChange?.(acceptedFiles)
