@@ -110,6 +110,7 @@ export default function PetProfilePhotos({
       <div className="relative size-full">
         <PhotosDisplay
           photos={photos}
+          setPhotos={setPhotos}
           photoIndex={photoIndex}
           setPhotoIndex={setPhotoIndex}
           dictionary={dictionary}

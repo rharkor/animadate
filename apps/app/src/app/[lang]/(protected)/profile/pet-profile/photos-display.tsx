@@ -1,14 +1,14 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import Image from "next/image"
 import { motion, useMotionValue } from "framer-motion"
-import { ImageUp } from "lucide-react"
+import { ChevronLeft, ChevronRight, ImageUp, Trash } from "lucide-react"
 
 import { maxPetPhotos, minPetPhotos } from "@/api/pet/schemas"
 import { petProfileImagesPlaceholder } from "@/constants/medias"
 import { TDictionary } from "@/lib/langs"
 import { cn } from "@/lib/utils"
+import { Button, Image } from "@nextui-org/react"
 
 import { PhotosDisplayDr } from "./photos-display.dr"
 
@@ -25,10 +25,12 @@ interface PhotosDisplayProps {
   setShowUploadModal: (show: boolean) => void
   carousel?: boolean
   defaultPhoto: number
+  setPhotos: (keys: { key: string; url: string }[]) => void
 }
 
 export default function PhotosDisplay({
   photos,
+  setPhotos,
   photoIndex,
   setPhotoIndex,
   dictionary,
@@ -96,15 +98,25 @@ export default function PhotosDisplay({
       >
         {photos.map((photo, index) => (
           <div
-            className={cn("flex-1", {
+            className={cn("relative flex-1", {
               invisible: index !== photoIndex && !willActive(index),
             })}
             key={photo.key}
           >
+            <PhotoControlPanel
+              index={index}
+              realPhotosLength={realPhotosLength}
+              photos={photos}
+              setPhotos={setPhotos}
+              setPhotoIndex={setPhotoIndex}
+            />
             <Image
               key={photo.key}
               src={photo.url}
               className="h-full object-cover"
+              classNames={{
+                wrapper: "z-0 h-full !max-w-[unset] rounded-non",
+              }}
               alt="Pet profile picture"
               width={720}
               height={1480}
@@ -120,28 +132,36 @@ export default function PhotosDisplay({
             )}
             role="button"
             tabIndex={0}
-            onClick={() => setShowUploadModal(true)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === " ") setShowUploadModal(true)
-            }}
           >
-            <ImageUp className={cn("z-10 mx-auto size-16")} />
-            <p className="z-10 max-w-48 text-center text-sm">
-              {dictionary.petProfilePhotosRequirements.replace("{min}", minPetPhotos.toString())}
-            </p>
+            <Button
+              className="z-10"
+              startContent={<ImageUp className="size-4" />}
+              color="primary"
+              onPress={() => setShowUploadModal(true)}
+            >
+              {dictionary.uploadPhoto}
+            </Button>
+            {photos.length < 2 && (
+              <p className="z-10 max-w-48 text-center text-xs">
+                {dictionary.petProfilePhotosRequirements.replace("{min}", minPetPhotos.toString())}
+              </p>
+            )}
             <div className="absolute inset-0 bg-black/70" />
             {carousel ? (
               petProfileImagesPlaceholder.map((src, i) => (
                 <Image
                   key={`pet-profile-placeholder-${i}`}
                   src={src}
-                  className={cn(
-                    "absolute inset-0 z-[-1] size-full bg-default-700 object-cover opacity-0 transition-all duration-300",
-                    {
-                      hidden: i !== active && !willActive(i),
-                      "opacity-100": i === active,
-                    }
-                  )}
+                  classNames={{
+                    wrapper: cn(
+                      "absolute rounded-none !max-w-[unset] inset-0 z-[-1] size-full bg-default-700 opacity-0 transition-all duration-300",
+                      {
+                        hidden: i !== active && !willActive(i),
+                        "opacity-100": i === active,
+                      }
+                    ),
+                  }}
+                  className="size-full object-cover"
                   alt="Pet profile picture"
                   width={720}
                   height={1480}
@@ -150,15 +170,128 @@ export default function PhotosDisplay({
             ) : (
               <Image
                 src={petProfileImagesPlaceholder[active]}
-                className="absolute inset-0 z-[-1] size-full bg-default-700 object-cover"
+                classNames={{ wrapper: "absolute rounded-none inset-0 z-[-1] size-full bg-default-700 !max-w-[unset]" }}
+                className="size-full object-cover"
                 alt="Pet profile picture"
                 width={720}
                 height={1480}
               />
             )}
+            <PhotoControlPanel
+              index={photos.length}
+              realPhotosLength={realPhotosLength}
+              photos={photos}
+              setPhotos={setPhotos}
+              setPhotoIndex={setPhotoIndex}
+              noButtons
+            />
           </div>
         )}
       </motion.div>
     </div>
+  )
+}
+
+const smallButtonStyle = cn("min-w-0 h-max rounded-full p-1.5")
+function PhotoControlPanel({
+  index,
+  photos,
+  setPhotos,
+  setPhotoIndex,
+  realPhotosLength,
+  noButtons,
+}: {
+  photos: { key: string; url: string }[]
+  setPhotos: (keys: { key: string; url: string }[]) => void
+  index: number
+  setPhotoIndex: (index: number) => void
+  realPhotosLength: number
+  noButtons?: boolean
+}) {
+  const handleMove = (direction: "left" | "right") => {
+    const currentPhoto = photos[index]
+    if (direction === "left") {
+      // Move the photo in the array
+      //? Swap the current photo with the previous one
+      photos[index] = photos[index - 1]
+      photos[index - 1] = currentPhoto
+      setPhotos(photos)
+      // Move the focused photo
+      setPhotoIndex(index - 1)
+    } else {
+      // Move the photo in the array
+      //? Swap the current photo with the next one
+      photos[index] = photos[index + 1]
+      photos[index + 1] = currentPhoto
+      setPhotos(photos)
+      // Move the focused photo
+      setPhotoIndex(index + 1)
+    }
+  }
+
+  const handleDelete = () => {
+    const newPhotos = photos.filter((_, i) => i !== index)
+    setPhotos(newPhotos)
+    setPhotoIndex(index === newPhotos.length ? index - 1 : index)
+  }
+
+  const handleSlide = (direction: "left" | "right") => {
+    if (direction === "left") {
+      setPhotoIndex(index === 0 ? 0 : index - 1)
+    } else {
+      setPhotoIndex(index === realPhotosLength - 1 ? realPhotosLength - 1 : index + 1)
+    }
+  }
+
+  return (
+    <>
+      {!noButtons && (
+        <div className="absolute left-1/2 top-16 z-20 flex -translate-x-1/2 flex-row gap-1 rounded-full bg-content1 p-1 shadow-medium">
+          {index !== 0 && (
+            <Button color="primary" onPress={() => handleMove("left")} className={smallButtonStyle}>
+              <ChevronLeft className="size-4" />
+            </Button>
+          )}
+          {/* Do not use onPress because the event will propagate */}
+          <Button
+            color="danger"
+            className={smallButtonStyle}
+            onClick={handleDelete}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") handleDelete()
+            }}
+          >
+            <Trash className="size-4" />
+          </Button>
+          {index !== photos.length - 1 && (
+            <Button color="primary" onPress={() => handleMove("right")} className={smallButtonStyle}>
+              <ChevronRight className="size-4" />
+            </Button>
+          )}
+        </div>
+      )}
+      {/* Left invisible section */}
+      <div
+        className="absolute left-0 top-0 z-10 h-full w-1/3"
+        aria-label="Slide left"
+        role="button"
+        tabIndex={0}
+        onClick={() => handleSlide("left")}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") handleMove("left")
+        }}
+      />
+      {/* Right invisible section */}
+      <div
+        className="absolute right-0 top-0 z-10 h-full w-1/3"
+        aria-label="Slide right"
+        role="button"
+        tabIndex={0}
+        onClick={() => handleSlide("right")}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") handleMove("right")
+        }}
+      />
+    </>
   )
 }
