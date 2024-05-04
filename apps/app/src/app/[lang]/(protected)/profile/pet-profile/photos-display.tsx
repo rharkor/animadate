@@ -113,7 +113,7 @@ export default function PhotosDisplay({
             <Image
               key={photo.key}
               src={photo.url}
-              className="h-full object-cover"
+              className="h-full rounded-none object-cover"
               classNames={{
                 wrapper: "z-0 h-full !max-w-[unset] rounded-none",
               }}
@@ -161,7 +161,7 @@ export default function PhotosDisplay({
                       }
                     ),
                   }}
-                  className="size-full object-cover"
+                  className="size-full rounded-none object-cover"
                   alt="Pet profile picture"
                   width={720}
                   height={1480}
@@ -170,8 +170,10 @@ export default function PhotosDisplay({
             ) : (
               <Image
                 src={petProfileImagesPlaceholder[active]}
-                classNames={{ wrapper: "absolute rounded-none inset-0 z-[-1] size-full bg-default-700 !max-w-[unset]" }}
-                className="size-full object-cover"
+                classNames={{
+                  wrapper: "absolute rounded-none inset-0 z-[-1] size-full bg-default-700 !max-w-[unset]",
+                }}
+                className="size-full rounded-none object-cover"
                 alt="Pet profile picture"
                 width={720}
                 height={1480}
