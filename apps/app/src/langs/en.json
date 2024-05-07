@@ -5,13 +5,14 @@
     "description": "Create a profile for your dog, swipe, match, and organize walks with other dogs and their owners!"
   },
   "errors": {
+    "petBirthdateRequired": "Please specify the age.",
     "petDescriptionMin": "Description must be at least {size} characters long.",
     "petDescriptionMax": "Description must be at most {size} characters long.",
     "petKindInvalid": "Kind is invalid.",
     "petMinName": "Name must be at least {size} characters long.",
     "petMaxName": "Name must be at most {size} characters long.",
-    "petMinBreed": "Breed must be at least {size} characters long.",
-    "petMaxBreed": "Breed must be at most {size} characters long.",
+    "petMinBreed": "Min {size} characters.",
+    "petMaxBreed": "Max {size} characters.",
     "petCharacteristicInvalid": "Characteristic is invalid.",
     "petCharacteristicMin": "Specify at least {size} characteristics.",
     "petCharacteristicMax": "Specify at most {size} characteristics.",
@@ -337,5 +338,7 @@
   "takePhoto": "Take photo",
   "or": "or",
   "selectPhoto": "Select photo",
-  "upload": "Upload"
+  "upload": "Upload",
+  "graspBreed": "Grasp breed",
+  "noCharacteristics": "No characteristics"
 }

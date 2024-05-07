@@ -16,10 +16,12 @@ export default function CharacteristicsSelect({
   dictionary,
   characteristics,
   setCharacteristics,
+  error,
 }: {
   dictionary: TDictionary<typeof CharacteristicsSelectDr>
   characteristics: string[]
   setCharacteristics: (value: string[]) => void
+  error: string | null
 }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
@@ -78,11 +80,12 @@ export default function CharacteristicsSelect({
   )
 
   return (
-    <>
+    <div>
+      {error && <p className="px-1 text-xs text-danger">{error}</p>}
       <div
         className={cn(
-          "flex w-full items-center gap-1",
-          "overflow-auto rounded-medium p-1 text-foreground",
+          "flex items-center gap-1",
+          "p-1 text-foreground",
           "border-1 border-dashed border-transparent focus:border-primary focus:outline-none focus:ring-0"
         )}
         tabIndex={0}
@@ -106,6 +109,7 @@ export default function CharacteristicsSelect({
         <Chip
           size="sm"
           color="primary"
+          variant="bordered"
           classNames={{
             content: "flex items-center",
           }}
@@ -141,29 +145,36 @@ export default function CharacteristicsSelect({
                 </ModalDescription>
               </ModalHeader>
               <ModalBody className="mb-4">
-                <p>{dictionary.currentPetCharacteristics}</p>
-                <div className="flex flex-wrap gap-1">
-                  {characteristics.map((c) => (
-                    <Chip
-                      size="sm"
-                      color="primary"
-                      variant="flat"
-                      key={c}
-                      onClick={() => removeCharacteristics(c)}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter" || e.key === " ") removeCharacteristics(c)
-                      }}
-                      role="button"
-                      tabIndex={0}
-                      className={cn(
-                        "border-2 border-transparent",
-                        "focus:border-primary focus:outline-none focus:ring-0"
-                      )}
-                      startContent={<X className="mr-1 size-3" />}
-                    >
-                      {getCharacteristic(c)?.label}
-                    </Chip>
-                  ))}
+                <div className="">
+                  <p>{dictionary.currentPetCharacteristics}</p>
+                  {error && <p className="text-xs text-danger">{error}</p>}
+                  {characteristics.length === 0 ? (
+                    <p className="text-sm text-muted-foreground">{dictionary.noCharacteristics}</p>
+                  ) : (
+                    <div className="flex flex-wrap gap-1">
+                      {characteristics.map((c) => (
+                        <Chip
+                          size="sm"
+                          color="primary"
+                          variant="flat"
+                          key={c}
+                          onClick={() => removeCharacteristics(c)}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter" || e.key === " ") removeCharacteristics(c)
+                          }}
+                          role="button"
+                          tabIndex={0}
+                          className={cn(
+                            "border-2 border-transparent",
+                            "focus:border-primary focus:outline-none focus:ring-0"
+                          )}
+                          startContent={<X className="mr-1 size-3" />}
+                        >
+                          {getCharacteristic(c)?.label}
+                        </Chip>
+                      ))}
+                    </div>
+                  )}
                 </div>
                 <Input
                   label={dictionary.searchPetCharacteristics}
@@ -222,6 +233,6 @@ export default function CharacteristicsSelect({
           )}
         </ModalContent>
       </Modal>
-    </>
+    </div>
   )
 }

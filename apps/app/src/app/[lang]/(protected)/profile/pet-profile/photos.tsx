@@ -26,6 +26,7 @@ export default function PetProfilePhotos({
   photos,
   setPhotos,
   dictionary,
+  error,
 }: {
   carousel?: boolean
   defaultPhoto: number
@@ -34,6 +35,7 @@ export default function PetProfilePhotos({
   photos: { key: string; url: string }[]
   setPhotos: (keys: { key: string; url: string }[]) => void
   dictionary: TDictionary<typeof PetProfilePhotosDr>
+  error: string | null
 }) {
   //* Upload
   const [currentFile, setCurrentFile] = useState<File | null>(null)
@@ -117,6 +119,7 @@ export default function PetProfilePhotos({
           setShowUploadModal={setShowUploadModal}
           defaultPhoto={defaultPhoto}
           carousel={carousel}
+          error={error}
         />
       </div>
       <Modal
@@ -155,7 +158,6 @@ export default function PetProfilePhotos({
                   backdrop: "z-[70]",
                 },
               }}
-              canTakePhoto
             />
             {currentFile && (
               <Button

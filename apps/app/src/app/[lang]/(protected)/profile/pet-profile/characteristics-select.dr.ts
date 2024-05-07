@@ -9,4 +9,5 @@ export const CharacteristicsSelectDr = dictionaryRequirements({
   close: true,
   shuffle: true,
   selectTraitsDescription: true,
+  noCharacteristics: true,
 })

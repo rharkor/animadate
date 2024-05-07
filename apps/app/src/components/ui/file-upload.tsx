@@ -86,7 +86,7 @@ export type TFileUploadProps = Omit<
     Parameters<typeof ImageCrop>[0],
     "originalFile" | "setFile" | "onOpenChange" | "isOpen" | "dictionary"
   >
-  canTakePhoto?: boolean
+  customCamera?: boolean
 }
 
 export default function FileUpload({
@@ -99,7 +99,7 @@ export default function FileUpload({
   singleDisplay,
   singleDisplayClassName,
   imageCropProps,
-  canTakePhoto,
+  customCamera,
   ...props
 }: TFileUploadProps) {
   const { acceptedFiles, getRootProps, getInputProps, isDragAccept, isDragReject, open } = useDropzone({
@@ -107,6 +107,7 @@ export default function FileUpload({
     maxFiles,
     multiple: maxFiles !== 1,
   })
+
   const {
     takePhoto,
     onClose: takePhotoOnClose,
@@ -177,6 +178,8 @@ export default function FileUpload({
     setCroppedFiles([file])
   }, [onFilesChange, takePhoto, open])
 
+  const inputProps = getInputProps()
+
   return (
     <>
       <div className="flex flex-col gap-2">
@@ -192,7 +195,7 @@ export default function FileUpload({
           </div>
         ) : (
           <>
-            {canTakePhoto && (
+            {customCamera && (
               <>
                 <Button
                   color="primary"
@@ -225,7 +228,13 @@ export default function FileUpload({
                 className
               )}
             >
-              <input type="file" {...getInputProps()} disabled={disabled} {...props} />
+              <input
+                type="file"
+                {...inputProps}
+                accept={inputProps.accept + ";capture=camera"}
+                disabled={disabled}
+                {...props}
+              />
               <Upload className="size-12" />
               <p className="text-center text-sm text-foreground/80">{dictionary.uploadDescription}</p>
             </div>

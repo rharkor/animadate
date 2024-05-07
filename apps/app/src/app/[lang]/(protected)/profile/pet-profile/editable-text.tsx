@@ -57,14 +57,14 @@ export default function EditableText({
   return (
     <div
       className={cn(
-        "relative rounded-medium border-2 border-transparent p-1 text-foreground focus-within:border-primary",
+        "relative rounded-medium border-2 border-transparent text-foreground focus-within:border-primary",
         className,
         classNames?.container
       )}
     >
       <textarea
         className={cn(
-          "absolute inset-0 z-10 size-full cursor-text resize-none overflow-auto p-1",
+          "absolute inset-0 z-10 size-full cursor-text resize-none overflow-auto",
           "border-none bg-transparent focus:outline-none focus:ring-0",
           "placeholder-default-400",
           classNames?.input

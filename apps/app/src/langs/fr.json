@@ -5,13 +5,14 @@
     "description": "Créez un profil pour votre chien, swipez, matchez et organisez des balades avec d'autres chiens et leurs propriétaires !"
   },
   "errors": {
-    "petDescriptionMin": "La description doit être au moins {size} caractères long.",
-    "petDescriptionMax": "La description doit être au maximum {size} caractères long.",
+    "petBirthdateRequired": "Veuillez spécifier l'age.",
+    "petDescriptionMin": "Min {size} caractères.",
+    "petDescriptionMax": "Max {size} caractères.",
     "petKindInvalid": "Type d'animal invalide.",
-    "petMinName": "Le nom doit être au moins {size} caractères long.",
-    "petMaxName": "Le nom doit être au maximum {size} caractères long.",
-    "petMinBreed": "La race doit être au moins {size} caractères long.",
-    "petMaxBreed": "La race doit être au maximum {size} caractères long.",
+    "petMinName": "Min {size} caractères.",
+    "petMaxName": "Max {size} caractères.",
+    "petMinBreed": "Min {size} caractères.",
+    "petMaxBreed": "Max {size} caractères.",
     "petCharacteristicInvalid": "Caractéristique invalide.",
     "petCharacteristicMin": "Spécifiez au moins {size} traits.",
     "petCharacteristicMax": "Spécifiez au maximum {size} traits.",
@@ -20,14 +21,14 @@
     "password": {
       "regex": "Le mot de passe doit contenir au moins une lettre majuscule, une lettre minuscule, un chiffre, et un caractère spécial.",
       "required": "Mot de passe requis",
-      "min8": "Le mot de passe doit être au moins 8 caractères long.",
-      "max25": "Le mot de passe doit être au maximum 25 caractères long.",
+      "min8": "Le mot de passe doit être d'au moins 8 caractères.",
+      "max25": "Le mot de passe doit être d'au maximum 25 caractères.",
       "dontMatch": "Les mots de passe ne correspondent pas"
     },
     "name": {
       "required": "Nom requis",
-      "min3": "Le nom doit être au moins 3 caractères long.",
-      "max30": "Le nom doit être au maximum 30 caractères long."
+      "min3": "Le nom doit être d'au moins 3 caractères.",
+      "max30": "Le nom doit être d'au maximum 30 caractères."
     },
     "email": {
       "required": "Email requis",
@@ -51,7 +52,7 @@
     "emailNotVerified": "Veuillez vérifier votre email.",
     "fileTooLarge": "Le fichier est trop volumineux (max {max}).",
     "passwordsDoNotMatch": "Les mots de passe ne correspondent pas.",
-    "messageMinLength": "Le message doit être au moins {size} caractères long."
+    "messageMinLength": "Le message doit être d'au moins {size} caractères."
   },
   "home": "Accueil",
   "homePage": {
@@ -337,5 +338,7 @@
   "takePhoto": "Prendre une photo",
   "or": "ou",
   "selectPhoto": "Sélectionner une photo",
-  "upload": "Uploader"
+  "upload": "Uploader",
+  "graspBreed": "Saisir la race",
+  "noCharacteristics": "Aucun trait sélectionné"
 }

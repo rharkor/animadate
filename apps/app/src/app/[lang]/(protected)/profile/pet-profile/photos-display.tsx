@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import { motion, useMotionValue } from "framer-motion"
 import { ChevronLeft, ChevronRight, ImageUp, Trash } from "lucide-react"
 
-import { maxPetPhotos, minPetPhotos } from "@/api/pet/schemas"
+import { maxPetPhotos } from "@/api/pet/schemas"
 import { petProfileImagesPlaceholder } from "@/constants/medias"
 import { TDictionary } from "@/lib/langs"
 import { cn } from "@/lib/utils"
@@ -26,6 +26,7 @@ interface PhotosDisplayProps {
   carousel?: boolean
   defaultPhoto: number
   setPhotos: (keys: { key: string; url: string }[]) => void
+  error: string | null
 }
 
 export default function PhotosDisplay({
@@ -37,6 +38,7 @@ export default function PhotosDisplay({
   setShowUploadModal,
   carousel,
   defaultPhoto,
+  error,
 }: PhotosDisplayProps) {
   //* Swipe
   const x = useMotionValue(0)
@@ -127,7 +129,7 @@ export default function PhotosDisplay({
         {canAddPhoto && (
           <div
             className={cn(
-              "relative flex flex-1 flex-col items-center justify-center gap-2 bg-black/70 text-slate-50 opacity-80",
+              "relative flex flex-1 flex-col items-center justify-center gap-2 bg-black/50 text-slate-50",
               "border-none focus:text-primary focus:outline-0 focus:ring-0"
             )}
             role="button"
@@ -141,11 +143,7 @@ export default function PhotosDisplay({
             >
               {dictionary.uploadPhoto}
             </Button>
-            {photos.length < 2 && (
-              <p className="z-10 max-w-48 text-center text-xs">
-                {dictionary.petProfilePhotosRequirements.replace("{min}", minPetPhotos.toString())}
-              </p>
-            )}
+            {error && <p className="z-10 max-w-48 text-center text-xs text-danger">{error}</p>}
             <div className="absolute inset-0 bg-black/70" />
             {carousel ? (
               petProfileImagesPlaceholder.map((src, i) => (

@@ -19,6 +19,7 @@ export const upsertPetSchemaDr = dictionaryRequirements({
     petKindInvalid: true,
     petDescriptionMin: true,
     petDescriptionMax: true,
+    petBirthdateRequired: true,
   },
 })
 export const minPetCharacteristics = 2
@@ -32,15 +33,27 @@ export const upsertPetSchema = (dictionary?: TDictionary<typeof upsertPetSchemaD
       .string()
       .min(2, dictionary?.errors.petMinName.replace("{size}", "2"))
       .max(50, dictionary?.errors.petMaxName.replace("{size}", "50")),
-    description: z.string().min(2).max(500),
+    description: z
+      .string()
+      .min(2, {
+        message: dictionary?.errors.petDescriptionMin.replace("{size}", "2"),
+      })
+      .max(500, {
+        message: dictionary?.errors.petDescriptionMax.replace("{size}", "500"),
+      }),
     kind: z
-      .literal("dog")
+      .literal("DOG")
       .refine((value) => Object.values(PET_KIND).includes(value), dictionary?.errors.petKindInvalid),
     breed: z
       .string()
       .min(2, dictionary?.errors.petMinBreed.replace("{size}", "2"))
       .max(50, dictionary?.errors.petMaxBreed.replace("{size}", "50")),
-    birthdate: z.coerce.date(),
+    birthdate: z
+      .string({
+        required_error: dictionary?.errors.petBirthdateRequired,
+      })
+      .min(1, dictionary?.errors.petBirthdateRequired)
+      .pipe(z.coerce.date()),
     characteristics: z
       .array(
         z

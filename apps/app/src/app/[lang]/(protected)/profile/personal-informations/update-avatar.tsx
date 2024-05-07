@@ -177,7 +177,6 @@ export default function UpdateAvatar({
                 disabled={uploading}
                 singleDisplay
                 singleDisplayClassName="rounded-full"
-                canTakePhoto
               />
               <Button color="primary" type="submit" isDisabled={uploading || !file} isLoading={uploading}>
                 {dictionary.updateAvatar}
