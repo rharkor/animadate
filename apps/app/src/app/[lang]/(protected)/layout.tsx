@@ -38,7 +38,7 @@ export default async function ProtectedLayout({
   const headersStore = headers()
   if (!account.user.hasPetProfile) {
     const pathname = headersStore.get("x-url")
-    const petProfilePath = "/profile/pet-profile"
+    const petProfilePath = "/profile/pet-profile?onSuccess=/"
     if (!pathname?.includes(petProfilePath)) redirect(petProfilePath)
   }
 

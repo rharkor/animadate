@@ -5,6 +5,7 @@
     "description": "Créez un profil pour votre chien, swipez, matchez et organisez des balades avec d'autres chiens et leurs propriétaires !"
   },
   "errors": {
+    "petDescriptionMaxLines": "Max {size} lignes.",
     "petBirthdateRequired": "Veuillez spécifier l'age.",
     "petDescriptionMin": "Min {size} caractères.",
     "petDescriptionMax": "Max {size} caractères.",
@@ -274,7 +275,8 @@
   "language": "Langue",
   "petName": "Nom de l'animal",
   "age": "Age",
-  "yo": "ans",
+  "yo": "an",
+  "yos": "ans",
   "description": "Description",
   "petCharacteristicsLiteral": "Traits de caractère",
   "petAddCharacteristic": "Ajouter un trait",

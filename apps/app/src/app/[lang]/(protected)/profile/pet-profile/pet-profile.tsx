@@ -1,13 +1,16 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
+import { useRouter, useSearchParams } from "next/navigation"
 import { motion } from "framer-motion"
-import { useForm } from "react-hook-form"
+import { SubmitErrorHandler, useForm } from "react-hook-form"
 import { z } from "zod"
 
-import { maxPetPhotos, upsertPetSchema } from "@/api/pet/schemas"
+import { getPetProfileResponseSchema, maxDescriptionLines, maxPetPhotos, upsertPetSchema } from "@/api/pet/schemas"
 import { TDictionary } from "@/lib/langs"
+import { trpc } from "@/lib/trpc/client"
 import { cn } from "@/lib/utils"
+import { getImageUrl } from "@/lib/utils/client-utils"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, Chip } from "@nextui-org/react"
 
@@ -23,30 +26,57 @@ export default function PetProfile({
   dictionary,
   hasPetProfile,
   defaultPhoto,
+  backButton,
+  ssrPetProfile,
 }: {
   dictionary: TDictionary<typeof PetProfileDr>
   hasPetProfile: boolean
   defaultPhoto: number
+  backButton: React.ReactNode
+  ssrPetProfile?: z.infer<ReturnType<typeof getPetProfileResponseSchema>>
 }) {
+  const utils = trpc.useUtils()
+  const sp = useSearchParams()
+  const router = useRouter()
+
+  const petProfile = hasPetProfile ? trpc.pet.getPetProfile.useQuery({}).data ?? ssrPetProfile ?? null : null
+
   const form = useForm<z.infer<ReturnType<typeof formSchema>>>({
     resolver: zodResolver(formSchema(dictionary)),
-    defaultValues: {
-      name: "",
-      description: "",
-      kind: "DOG",
-      breed: "",
-      characteristics: [],
-      photos: [],
+    values: {
+      id: petProfile?.id ?? undefined,
+      name: petProfile?.name ?? "",
+      description: petProfile?.description ?? "",
+      kind: (petProfile?.kind as "DOG" | undefined) ?? "DOG",
+      breed: petProfile?.breed ?? "",
+      characteristics: petProfile?.characteristics.map((c) => c.value) ?? [],
+      photos:
+        petProfile?.photos.map((p) => ({
+          key: p.key,
+          order: p.order,
+          url: getImageUrl(p) ?? "",
+        })) ?? [],
+      birthdate: petProfile?.birthdate.toISOString() ?? "",
     },
   })
 
-  const [age, _setAge] = useState("")
   const setAge = (value: string) => {
-    _setAge(value)
-    const today = new Date()
-    const birthDate = new Date(today.getFullYear() - parseInt(value), today.getMonth(), today.getDate())
-    form.setValue("birthdate", birthDate.toISOString() as unknown as Date)
+    const age = parseInt(value)
+    if (isNaN(age)) {
+      form.setValue("birthdate", "")
+    } else {
+      const today = new Date()
+      const birthDate = new Date(today.getFullYear() - age, 0, 1)
+      form.setValue("birthdate", birthDate.toISOString())
+    }
     return value
+  }
+
+  const getAge = (birthdate: string) => {
+    const today = new Date()
+    const birthDate = new Date(birthdate)
+    if (isNaN(birthDate.getTime())) return 0
+    return today.getFullYear() - birthDate.getFullYear()
   }
 
   const handleNameChange = (value: string) => {
@@ -69,9 +99,26 @@ export default function PetProfile({
     return value
   }
 
+  const handleSetPhotos = (photos: z.infer<ReturnType<typeof formSchema>>["photos"]) => {
+    form.setValue(
+      "photos",
+      photos.map((p, i) => ({ key: p.key, url: p.url, order: i }))
+    )
+    return photos
+  }
+
+  const upsertPetMutation = trpc.pet.upsertPet.useMutation()
   const onSubmit = async (data: z.infer<ReturnType<typeof formSchema>>) => {
-    // eslint-disable-next-line no-console
-    console.log(data)
+    await upsertPetMutation.mutateAsync(data)
+    utils.me.getAccount.invalidate()
+    utils.pet.invalidate()
+
+    const onSuccessSp = sp.get("onSuccess")
+    if (onSuccessSp) {
+      router.push(onSuccessSp)
+    } else {
+      router.push("/profile")
+    }
   }
 
   const name = form.watch("name")
@@ -79,9 +126,14 @@ export default function PetProfile({
   const characteristics = form.watch("characteristics")
   const photos = form.watch("photos")
   const breed = form.watch("breed")
+  const birthdate = form.watch("birthdate")
 
   const [isDescriptionFocused, setIsDescriptionFocused] = useState(false)
-  const [photoIndex, setPhotoIndex] = useState(0)
+  const [photoIndex, _setPhotoIndex] = useState(0)
+  const setPhotoIndex = (index: number) => {
+    if (index < 0) return
+    _setPhotoIndex(index)
+  }
 
   const photosError = form.formState.errors.photos?.message ?? null
   const nameError = form.formState.errors.name?.message ?? null
@@ -99,32 +151,54 @@ export default function PetProfile({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form.watch, form.trigger, form.formState.isSubmitted])
 
+  const chipsContainer = useRef<HTMLDivElement>(null)
+  const onInvalid: SubmitErrorHandler<z.infer<ReturnType<typeof formSchema>>> = (errors) => {
+    if (errors.breed || errors.characteristics) {
+      // Scroll to the end of the container
+      chipsContainer.current?.scrollTo({
+        left: chipsContainer.current.scrollWidth,
+        behavior: "smooth",
+      })
+    }
+
+    if (errors.photos) {
+      // Scroll to the end of the container
+      setPhotoIndex(photos.length)
+    }
+  }
+
+  const age = getAge(birthdate)
+  const ageFormatted = age > 0 ? age.toString() : ""
+
   return (
-    <section
-      className={cn("fixed inset-0 bg-black", {
-        "z-[60]": !hasPetProfile,
-      })}
-    >
-      <form className="relative flex h-full flex-col justify-between" onSubmit={form.handleSubmit(onSubmit)}>
+    <section className={cn("fixed inset-0 z-[60] bg-black")}>
+      <form className="relative flex h-full flex-col justify-between" onSubmit={form.handleSubmit(onSubmit, onInvalid)}>
         <PetProfilePhotos
           defaultPhoto={defaultPhoto}
           photoIndex={photoIndex}
           setPhotoIndex={setPhotoIndex}
           photos={photos}
-          setPhotos={(photos) => form.setValue("photos", photos)}
+          setPhotos={handleSetPhotos}
           dictionary={dictionary}
           error={photosError}
         />
         <div className="z-30 flex justify-between p-2">
+          {backButton}
           <Chip color="default" variant="flat" className="bg-default-400">
             {photoIndex + 1}/{Math.min(photos.length + 1, maxPetPhotos)}
           </Chip>
-          <Button color="primary" type="submit">
+          <Button
+            color="primary"
+            type="submit"
+            isLoading={upsertPetMutation.isPending}
+            size={hasPetProfile ? "sm" : "md"}
+          >
             {dictionary.confirm}
           </Button>
         </div>
-        <div className="z-30">
-          <div className="flex w-full flex-row items-end overflow-auto">
+        <div className="relative z-30">
+          <div className="absolute inset-0 z-[-1] translate-y-[-30px] bg-gradient-to-b from-black/0 to-black/70 to-20%" />
+          <div className="flex w-full flex-row items-end overflow-auto" ref={chipsContainer}>
             <CharacterisitcsSelect
               dictionary={dictionary}
               characteristics={characteristics}
@@ -134,7 +208,7 @@ export default function PetProfile({
             <BreedSelect dictionary={dictionary} breed={breed} setBreed={handleBreedChange} error={breedError} />
           </div>
           <motion.div
-            className={cn("relative flex h-40 flex-col rounded-t-large bg-content1 p-3 pb-5 shadow-medium")}
+            className={cn("relative flex h-40 flex-col rounded-t-large bg-content1 p-3 shadow-medium")}
             animate={{
               height: isDescriptionFocused ? "18rem" : "10rem",
             }}
@@ -143,11 +217,14 @@ export default function PetProfile({
             <div className="flex w-full flex-row gap-2">
               <div className="flex flex-col">
                 <EditableText
-                  className={"min-w-4 text-2xl font-bold"}
+                  className={"min-w-4 shrink-0 text-2xl font-bold"}
                   value={name}
                   onChange={handleNameChange}
                   placeholder={dictionary.petName}
                   firstLetterUppercase
+                  classNames={{
+                    paragraph: "truncate",
+                  }}
                 />
                 {nameError && <p className="text-xs text-danger">{nameError}</p>}
               </div>
@@ -157,10 +234,13 @@ export default function PetProfile({
               <div className="flex flex-col">
                 <div className="flex flex-row items-end gap-0.5">
                   <EditableText
-                    className="min-w-4 text-2xl font-bold text-muted-foreground"
-                    value={age}
+                    className="min-w-4 shrink-0 text-2xl font-bold text-muted-foreground"
+                    value={ageFormatted}
                     onChange={setAge}
                     placeholder={dictionary.age}
+                    classNames={{
+                      paragraph: "truncate",
+                    }}
                     type="number"
                     min={0}
                     step={1}
@@ -168,19 +248,19 @@ export default function PetProfile({
                     onlyNumbers
                     maxDigits={2}
                   />
-                  <div className="-translate-y-1">{dictionary.yo}</div>
+                  <div className="-translate-y-1 py-1">{age > 1 ? dictionary.yos : dictionary.yo}</div>
                 </div>
                 {ageError && <p className="text-xs text-danger">{ageError}</p>}
               </div>
             </div>
-            <div className="flex flex-1 flex-col">
+            <div className="flex min-h-0 flex-1 flex-col">
               <EditableText
-                className="flex-1 text-lg"
+                className="min-h-0 flex-1"
                 value={description}
                 onChange={handleDescriptionChange}
                 placeholder={dictionary.description}
                 multiline
-                maxLines={7}
+                maxLines={maxDescriptionLines}
                 onFocus={() => setIsDescriptionFocused(true)}
                 onBlur={() => setIsDescriptionFocused(false)}
               />

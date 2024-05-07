@@ -1,4 +1,6 @@
 {
+  "petNotFound": "Animal introuvable.",
+  "notPetOwner": "Vous n'êtes pas le propriétaire de cet animal.",
   "invalidPassword": "Mot de passe invalide.",
   "tokenInvalid": "Code de vérification invalide.",
   "alreadyYourEmail": "C'est déjà votre email.",

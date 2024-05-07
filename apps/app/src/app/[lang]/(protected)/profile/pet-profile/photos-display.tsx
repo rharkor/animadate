@@ -15,6 +15,7 @@ import { PhotosDisplayDr } from "./photos-display.dr"
 interface Photo {
   key: string
   url: string
+  order: number | null
 }
 
 interface PhotosDisplayProps {
@@ -25,7 +26,7 @@ interface PhotosDisplayProps {
   setShowUploadModal: (show: boolean) => void
   carousel?: boolean
   defaultPhoto: number
-  setPhotos: (keys: { key: string; url: string }[]) => void
+  setPhotos: (keys: { key: string; url: string; order: number | null }[]) => void
   error: string | null
 }
 
@@ -201,8 +202,8 @@ function PhotoControlPanel({
   realPhotosLength,
   noButtons,
 }: {
-  photos: { key: string; url: string }[]
-  setPhotos: (keys: { key: string; url: string }[]) => void
+  photos: { key: string; url: string; order: number | null }[]
+  setPhotos: (keys: { key: string; url: string; order: number | null }[]) => void
   index: number
   setPhotoIndex: (index: number) => void
   realPhotosLength: number

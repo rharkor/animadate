@@ -5,6 +5,7 @@
     "description": "Create a profile for your dog, swipe, match, and organize walks with other dogs and their owners!"
   },
   "errors": {
+    "petDescriptionMaxLines": "Max {max} lines.",
     "petBirthdateRequired": "Please specify the age.",
     "petDescriptionMin": "Description must be at least {size} characters long.",
     "petDescriptionMax": "Description must be at most {size} characters long.",
@@ -275,6 +276,7 @@
   "petName": "Pet name",
   "age": "Age",
   "yo": "yo",
+  "yos": "yo",
   "description": "Description",
   "petCharacteristicsLiteral": "Characteristics",
   "petAddCharacteristic": "Add a characteristic",

@@ -10,6 +10,7 @@ export const PetProfileDr = dictionaryRequirements(
     petName: true,
     age: true,
     yo: true,
+    yos: true,
     description: true,
     confirm: true,
   },

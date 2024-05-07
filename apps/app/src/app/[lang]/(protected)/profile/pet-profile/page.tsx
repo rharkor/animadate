@@ -41,23 +41,32 @@ export default async function PetProfilePage({
 
   const defaultPhoto = Math.floor(Math.random() * petProfileImagesPlaceholder.length)
 
+  const petProfile = account.user.hasPetProfile ? await serverTrpc.pet.getPetProfile({}) : undefined
+
   return (
     <main className={cn("container m-auto flex-1 overflow-auto p-3")}>
       <section className={containerClassName}>
-        <Button
-          as={Link}
-          href={"/profile"}
-          variant="flat"
-          className={cn("z-[70] w-max", {
-            hidden: !account.user.hasPetProfile,
-          })}
-          size="sm"
-          startContent={<ChevronLeft className="size-4" />}
-        >
-          {dictionary.back}
-        </Button>
         <h1 className={cn("text-xl md:text-3xl", fontSans.className)}>{dictionary.petProfile}</h1>
-        <PetProfile dictionary={dictionary} hasPetProfile={account.user.hasPetProfile} defaultPhoto={defaultPhoto} />
+        <PetProfile
+          dictionary={dictionary}
+          hasPetProfile={account.user.hasPetProfile}
+          defaultPhoto={defaultPhoto}
+          backButton={
+            <Button
+              as={Link}
+              href={"/profile"}
+              variant="flat"
+              className={cn("z-[70] w-max", {
+                hidden: !account.user.hasPetProfile,
+              })}
+              size="sm"
+              startContent={<ChevronLeft className="size-4" />}
+            >
+              {dictionary.back}
+            </Button>
+          }
+          ssrPetProfile={petProfile}
+        />
       </section>
     </main>
   )

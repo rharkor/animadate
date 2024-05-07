@@ -32,8 +32,8 @@ export default function PetProfilePhotos({
   defaultPhoto: number
   photoIndex: number
   setPhotoIndex: (index: number) => void
-  photos: { key: string; url: string }[]
-  setPhotos: (keys: { key: string; url: string }[]) => void
+  photos: { key: string; url: string; order: number | null }[]
+  setPhotos: (keys: { key: string; url: string; order: number | null }[]) => void
   dictionary: TDictionary<typeof PetProfilePhotosDr>
   error: string | null
 }) {
@@ -81,7 +81,7 @@ export default function PetProfilePhotos({
           }) ?? ""
 
         if (uploadResponse.ok) {
-          setPhotos([...photos, { key: fields.key, url: imageUrl }])
+          setPhotos([...photos, { key: fields.key, url: imageUrl, order: photos.length }])
           setCurrentFile(null)
           setShowUploadModal(false)
         } else {

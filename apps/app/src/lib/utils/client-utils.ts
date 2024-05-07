@@ -54,7 +54,10 @@ export const handleMutationError = <T extends TRPCClientErrorLike<AppRouter>>(
 }
 
 export const getImageUrl = (
-  imageFile: Omit<z.infer<ReturnType<typeof fileSchemaMinimal>>, "id" | "createdAt" | "updatedAt"> | undefined | null
+  imageFile:
+    | Omit<z.infer<ReturnType<typeof fileSchemaMinimal>>, "id" | "createdAt" | "updatedAt" | "order">
+    | undefined
+    | null
 ) => {
   if (!imageFile) {
     return imageFile

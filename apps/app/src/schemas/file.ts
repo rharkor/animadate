@@ -9,4 +9,5 @@ export const fileSchemaMinimal = () =>
     filetype: z.string(),
     createdAt: z.coerce.date(),
     updatedAt: z.coerce.date(),
+    order: z.number().nullable(),
   })
