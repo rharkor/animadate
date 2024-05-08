@@ -97,8 +97,8 @@ export const upsertPet = async ({ input, ctx: { session } }: apiInputFromSchema<
       // If updating also update the photos
       if (currentPet) {
         await Promise.all(
-          photos.map((p) => {
-            const file = prisma.file.findUnique({
+          photos.map(async (p) => {
+            const file = await prisma.file.findUnique({
               where: {
                 key: p.key,
               },
@@ -113,6 +113,7 @@ export const upsertPet = async ({ input, ctx: { session } }: apiInputFromSchema<
                 filetype: uploadingFile.filetype,
                 fileUploadingId: uploadingFile.id,
                 order: p.order,
+                petPhotosId: pet.id,
               }
               return prisma.file.create({
                 data,
