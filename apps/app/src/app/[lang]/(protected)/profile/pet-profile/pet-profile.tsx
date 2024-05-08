@@ -66,7 +66,7 @@ export default function PetProfile({
       form.setValue("birthdate", "")
     } else {
       const today = new Date()
-      const birthDate = new Date(today.getFullYear() - age, 0, 1)
+      const birthDate = new Date(Date.UTC(today.getFullYear() - age, 0, 1))
       form.setValue("birthdate", birthDate.toISOString())
     }
     return value
