@@ -27,6 +27,7 @@ export default function PetProfilePhotos({
   setPhotos,
   dictionary,
   error,
+  isDescriptionFocused,
 }: {
   carousel?: boolean
   defaultPhoto: number
@@ -36,6 +37,7 @@ export default function PetProfilePhotos({
   setPhotos: (keys: { key: string; url: string; order: number | null }[]) => void
   dictionary: TDictionary<typeof PetProfilePhotosDr>
   error: string | null
+  isDescriptionFocused: boolean
 }) {
   //* Upload
   const [currentFile, setCurrentFile] = useState<File | null>(null)
@@ -120,6 +122,7 @@ export default function PetProfilePhotos({
           defaultPhoto={defaultPhoto}
           carousel={carousel}
           error={error}
+          isDescriptionFocused={isDescriptionFocused}
         />
       </div>
       <Modal

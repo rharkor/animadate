@@ -28,6 +28,7 @@ interface PhotosDisplayProps {
   defaultPhoto: number
   setPhotos: (keys: { key: string; url: string; order: number | null }[]) => void
   error: string | null
+  isDescriptionFocused: boolean
 }
 
 export default function PhotosDisplay({
@@ -40,6 +41,7 @@ export default function PhotosDisplay({
   carousel,
   defaultPhoto,
   error,
+  isDescriptionFocused: _isDescriptionFocused,
 }: PhotosDisplayProps) {
   //* Swipe
   const x = useMotionValue(0)
@@ -82,6 +84,20 @@ export default function PhotosDisplay({
     return () => clearInterval(interval)
   }, [carousel])
 
+  //* Description not focused
+  const [isDescriptionFocused, setIsDescriptionFocused] = useState(false)
+  useEffect(() => {
+    let timeout: NodeJS.Timeout
+    if (!_isDescriptionFocused) {
+      timeout = setTimeout(() => {
+        setIsDescriptionFocused(false)
+      }, 200)
+    } else {
+      setIsDescriptionFocused(true)
+    }
+    return () => clearTimeout(timeout)
+  }, [_isDescriptionFocused])
+
   return (
     <div className="absolute inset-0 h-[calc(100%-9rem)] w-full">
       <motion.div
@@ -112,6 +128,7 @@ export default function PhotosDisplay({
               photos={photos}
               setPhotos={setPhotos}
               setPhotoIndex={setPhotoIndex}
+              isDescriptionFocused={isDescriptionFocused}
             />
             <Image
               key={photo.key}
@@ -184,6 +201,7 @@ export default function PhotosDisplay({
               photos={photos}
               setPhotos={setPhotos}
               setPhotoIndex={setPhotoIndex}
+              isDescriptionFocused={isDescriptionFocused}
               noButtons
             />
           </div>
@@ -201,6 +219,7 @@ function PhotoControlPanel({
   setPhotoIndex,
   realPhotosLength,
   noButtons,
+  isDescriptionFocused,
 }: {
   photos: { key: string; url: string; order: number | null }[]
   setPhotos: (keys: { key: string; url: string; order: number | null }[]) => void
@@ -208,6 +227,7 @@ function PhotoControlPanel({
   setPhotoIndex: (index: number) => void
   realPhotosLength: number
   noButtons?: boolean
+  isDescriptionFocused: boolean
 }) {
   const handleMove = (direction: "left" | "right") => {
     const currentPhoto = photos[index]
@@ -277,9 +297,9 @@ function PhotoControlPanel({
         aria-label="Slide left"
         role="button"
         tabIndex={0}
-        onClick={() => handleSlide("left")}
+        onClick={() => !isDescriptionFocused && handleSlide("left")}
         onKeyDown={(e) => {
-          if (e.key === "Enter" || e.key === " ") handleMove("left")
+          if (!isDescriptionFocused && (e.key === "Enter" || e.key === " ")) handleMove("left")
         }}
       />
       {/* Right invisible section */}
@@ -288,9 +308,9 @@ function PhotoControlPanel({
         aria-label="Slide right"
         role="button"
         tabIndex={0}
-        onClick={() => handleSlide("right")}
+        onClick={() => !isDescriptionFocused && handleSlide("right")}
         onKeyDown={(e) => {
-          if (e.key === "Enter" || e.key === " ") handleMove("right")
+          if (!isDescriptionFocused && (e.key === "Enter" || e.key === " ")) handleMove("right")
         }}
       />
     </>

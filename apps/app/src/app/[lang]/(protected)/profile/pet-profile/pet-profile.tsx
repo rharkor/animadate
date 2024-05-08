@@ -181,6 +181,7 @@ export default function PetProfile({
           setPhotos={handleSetPhotos}
           dictionary={dictionary}
           error={photosError}
+          isDescriptionFocused={isDescriptionFocused}
         />
         <div className="z-30 flex justify-between p-2">
           {backButton}
@@ -208,9 +209,9 @@ export default function PetProfile({
             <BreedSelect dictionary={dictionary} breed={breed} setBreed={handleBreedChange} error={breedError} />
           </div>
           <motion.div
-            className={cn("relative flex h-40 flex-col rounded-t-large bg-content1 p-3 shadow-medium")}
+            className={cn("relative flex h-52 flex-col rounded-t-large bg-content1 p-3 shadow-medium")}
             animate={{
-              height: isDescriptionFocused ? "18rem" : "10rem",
+              height: isDescriptionFocused ? "18rem" : "13rem",
             }}
             transition={{ type: "spring", bounce: 0.3, duration: 0.7 }}
           >
