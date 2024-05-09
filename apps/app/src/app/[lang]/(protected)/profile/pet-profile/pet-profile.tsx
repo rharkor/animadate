@@ -203,7 +203,7 @@ export default function PetProfile({
         <section className={cn("max-lg:w-full lg:p-3")}>
           <h2
             className={cn("text-xl font-medium uppercase text-muted-foreground max-lg:hidden", {
-              "mt-8": hasPetProfile,
+              "mt-11": hasPetProfile,
             })}
           >
             {dictionary.preview}
