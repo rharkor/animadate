@@ -43,7 +43,7 @@ export default function ChipsContainer({
   }, [isChipsDragged])
 
   return (
-    <div ref={chipsContainer} className="w-full">
+    <div ref={chipsContainer} className="w-max max-w-full">
       <motion.div
         drag="x"
         dragConstraints={chipsContainer}

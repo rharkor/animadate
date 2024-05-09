@@ -154,7 +154,7 @@ export default function PhotosDisplay({
             tabIndex={0}
           >
             <Button
-              className="z-10"
+              className="z-20"
               startContent={<ImageUp className="size-4" />}
               color="primary"
               onPress={() => setShowUploadModal(true)}

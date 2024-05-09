@@ -344,5 +344,6 @@
   "graspBreed": "Saisir la race",
   "noCharacteristics": "Aucun trait sélectionné",
   "invalidFileType": "Type de fichier invalide",
-  "preview": "Prévisualisation"
+  "preview": "Prévisualisation",
+  "breed": "Race"
 }

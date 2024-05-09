@@ -22,6 +22,7 @@ import DesktopForm from "./desktop-form"
 import EditableText from "./editable-text"
 import { PetProfileDr } from "./pet-profile.dr"
 import PetProfilePhotos from "./photos"
+import { preprocessValue } from "./utils"
 
 const formSchema = upsertPetSchema
 
@@ -63,7 +64,15 @@ export default function PetProfile({
     },
   })
 
+  const name = form.watch("name")
+  const description = form.watch("description")
+  const characteristics = form.watch("characteristics")
+  const photos = form.watch("photos")
+  const breed = form.watch("breed")
+  const birthdate = form.watch("birthdate")
+
   const setAge = (value: string) => {
+    value = preprocessValue(value, ageFormatted, { onlyNumbers: true, maxDigits: 2 })
     const age = parseInt(value)
     if (isNaN(age)) {
       form.setValue("birthdate", "")
@@ -83,11 +92,13 @@ export default function PetProfile({
   }
 
   const handleNameChange = (value: string) => {
+    value = preprocessValue(value, name, { firstLetterUppercase: true })
     form.setValue("name", value)
     return value
   }
 
   const handleDescriptionChange = (value: string) => {
+    value = preprocessValue(value, description, { multiline: true, maxLines: maxDescriptionLines })
     form.setValue("description", value)
     return value
   }
@@ -123,13 +134,6 @@ export default function PetProfile({
       router.push("/profile")
     }
   }
-
-  const name = form.watch("name")
-  const description = form.watch("description")
-  const characteristics = form.watch("characteristics")
-  const photos = form.watch("photos")
-  const breed = form.watch("breed")
-  const birthdate = form.watch("birthdate")
 
   const [isDescriptionFocused, setIsDescriptionFocused] = useState(false)
   const [photoIndex, _setPhotoIndex] = useState(0)
@@ -176,9 +180,32 @@ export default function PetProfile({
   return (
     <section className={cn(containerClassName, "fixed inset-0 z-[60] bg-black sm:max-w-screen-lg", "lg:bg-background")}>
       <form className={cn("flex h-full gap-2")} onSubmit={form.handleSubmit(onSubmit, onInvalid)}>
-        <DesktopForm dictionary={dictionary} hasPetProfile={hasPetProfile} />
+        <DesktopForm
+          dictionary={dictionary}
+          hasPetProfile={hasPetProfile}
+          petName={name}
+          onPetNameChange={handleNameChange}
+          petAge={ageFormatted}
+          onPetAgeChange={setAge}
+          description={description}
+          onDescriptionChange={handleDescriptionChange}
+          breed={breed}
+          onBreedChange={handleBreedChange}
+          characteristics={characteristics}
+          onCharacteristicsChange={handleCharacteristicsChange}
+          breedError={breedError}
+          isLoading={upsertPetMutation.isPending}
+          ageError={ageError}
+          characteristicsError={characteristicsError}
+          descriptionError={descriptionError}
+          nameError={nameError}
+        />
         <section className={cn("max-lg:w-full lg:p-3")}>
-          <h2 className="mt-8 text-xl font-medium uppercase text-muted-foreground max-lg:hidden">
+          <h2
+            className={cn("text-xl font-medium uppercase text-muted-foreground max-lg:hidden", {
+              "mt-8": hasPetProfile,
+            })}
+          >
             {dictionary.preview}
           </h2>
           <div className="max-lg:h-full lg:mt-5">
@@ -215,13 +242,13 @@ export default function PetProfile({
                     </Chip>
                   </div>
                   <Button
-                    color="primary"
+                    color="success"
                     type="submit"
                     isLoading={upsertPetMutation.isPending}
                     size={hasPetProfile ? "sm" : "md"}
                     className="lg:hidden"
                   >
-                    {dictionary.confirm}
+                    {dictionary.save}
                   </Button>
                 </div>
                 <div className="relative z-30">
@@ -250,12 +277,11 @@ export default function PetProfile({
                           value={name}
                           onChange={handleNameChange}
                           placeholder={dictionary.petName}
-                          firstLetterUppercase
                           classNames={{
                             paragraph: "truncate",
                           }}
                         />
-                        {nameError && <p className="text-xs text-danger">{nameError}</p>}
+                        {nameError && <p className="text-xs text-danger lg:hidden">{nameError}</p>}
                       </div>
                       <div className="flex h-[44px] items-center">
                         <span className="text-2xl text-muted-foreground">-</span>
@@ -274,12 +300,10 @@ export default function PetProfile({
                             min={0}
                             step={1}
                             max={99}
-                            onlyNumbers
-                            maxDigits={2}
                           />
                           <div className="-translate-y-1 py-1">{age > 1 ? dictionary.yos : dictionary.yo}</div>
                         </div>
-                        {ageError && <p className="text-xs text-danger">{ageError}</p>}
+                        {ageError && <p className="text-xs text-danger lg:hidden">{ageError}</p>}
                       </div>
                     </div>
                     <div className="flex min-h-0 flex-1 flex-col">
@@ -288,12 +312,13 @@ export default function PetProfile({
                         value={description}
                         onChange={handleDescriptionChange}
                         placeholder={dictionary.description}
-                        multiline
-                        maxLines={maxDescriptionLines}
                         onFocus={() => setIsDescriptionFocused(true)}
                         onBlur={() => setIsDescriptionFocused(false)}
+                        classNames={{
+                          input: "overflow-auto",
+                        }}
                       />
-                      {descriptionError && <p className="text-xs text-danger">{descriptionError}</p>}
+                      {descriptionError && <p className="text-xs text-danger lg:hidden">{descriptionError}</p>}
                     </div>
                   </motion.div>
                 </div>

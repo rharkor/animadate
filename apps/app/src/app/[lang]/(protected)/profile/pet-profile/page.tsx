@@ -46,7 +46,7 @@ export default async function PetProfilePage({
   return (
     <main className={cn("container m-auto flex-1 overflow-auto p-3")}>
       <section className={containerClassName}>
-        <h1 className={cn("text-xl md:text-3xl", fontSans.className)}>{dictionary.petProfile}</h1>
+        <h1 className={cn("sr-only", fontSans.className)}>{dictionary.petProfile}</h1>
         <PetProfile
           dictionary={dictionary}
           hasPetProfile={account.user.hasPetProfile}

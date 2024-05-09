@@ -86,7 +86,7 @@ export default function CharacteristicsSelect({
 
   return (
     <div>
-      {error && <p className="px-1 text-xs text-danger">{error}</p>}
+      {error && <p className="px-1 text-xs text-danger lg:hidden">{error}</p>}
       <div
         className={cn(
           "flex items-center gap-1",
@@ -152,7 +152,7 @@ export default function CharacteristicsSelect({
                 </ModalDescription>
               </ModalHeader>
               <ModalBody className="mb-4">
-                <div className="">
+                <div className="flex flex-col gap-2">
                   <p>{dictionary.currentPetCharacteristics}</p>
                   {error && <p className="text-xs text-danger">{error}</p>}
                   {characteristics.length === 0 ? (

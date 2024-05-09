@@ -344,5 +344,6 @@
   "graspBreed": "Grasp breed",
   "noCharacteristics": "No characteristics",
   "invalidFileType": "Invalid file type.",
-  "preview": "Preview"
+  "preview": "Preview",
+  "breed": "Breed"
 }
