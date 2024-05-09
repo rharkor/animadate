@@ -23,7 +23,7 @@ export default function BreedSelect({
     <div>
       {error && <p className="px-1 text-xs text-danger">{error}</p>}
       <Chip size="sm" color="primary" className="m-[5px] ml-0">
-        <label className="flex items-center">
+        <label className="flex items-center lg:pointer-events-none">
           {!breed && <Pen className="mr-1 size-3" />}
           <EditableText
             type="text"
@@ -31,7 +31,8 @@ export default function BreedSelect({
             onChange={(value) => setBreed(value)}
             placeholder={dictionary.graspBreed}
             classNames={{
-              input: "text-primary-foreground placeholder:text-primary-foreground focus:placeholder:opacity-0",
+              input:
+                "text-primary-foreground placeholder:text-primary-foreground focus:placeholder:opacity-0 overflow-hidden lg:pointer-events-none",
             }}
             className="border-none"
           />

@@ -17,13 +17,18 @@ export default function CharacteristicsSelect({
   characteristics,
   setCharacteristics,
   error,
+  clickDisabled,
 }: {
   dictionary: TDictionary<typeof CharacteristicsSelectDr>
   characteristics: string[]
   setCharacteristics: (value: string[]) => void
   error: string | null
+  clickDisabled: boolean
 }) {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure()
+  const { isOpen, onOpen: _onOpen, onOpenChange } = useDisclosure()
+  const onOpen = () => {
+    if (!clickDisabled) _onOpen()
+  }
 
   const _characteristicsChoices = useMemo(
     () =>
@@ -86,7 +91,8 @@ export default function CharacteristicsSelect({
         className={cn(
           "flex items-center gap-1",
           "p-1 text-foreground",
-          "border-1 border-dashed border-transparent focus:border-primary focus:outline-none focus:ring-0"
+          "border-1 border-dashed border-transparent focus:border-primary focus:outline-none focus:ring-0",
+          "lg:pointer-events-none lg:cursor-default lg:touch-none lg:border-none"
         )}
         tabIndex={0}
         role="button"
@@ -110,6 +116,7 @@ export default function CharacteristicsSelect({
           size="sm"
           color="primary"
           variant="bordered"
+          className="lg:hidden"
           classNames={{
             content: "flex items-center",
           }}

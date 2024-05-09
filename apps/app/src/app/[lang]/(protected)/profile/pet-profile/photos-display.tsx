@@ -293,7 +293,7 @@ function PhotoControlPanel({
       )}
       {/* Left invisible section */}
       <div
-        className="absolute left-0 top-0 z-10 h-full w-1/3"
+        className="absolute left-0 top-0 z-10 h-full w-1/2"
         aria-label="Slide left"
         role="button"
         tabIndex={0}
@@ -304,7 +304,7 @@ function PhotoControlPanel({
       />
       {/* Right invisible section */}
       <div
-        className="absolute right-0 top-0 z-10 h-full w-1/3"
+        className="absolute right-0 top-0 z-10 h-full w-1/2"
         aria-label="Slide right"
         role="button"
         tabIndex={0}

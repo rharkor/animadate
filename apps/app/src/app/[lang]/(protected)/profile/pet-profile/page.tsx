@@ -56,7 +56,7 @@ export default async function PetProfilePage({
               as={Link}
               href={"/profile"}
               variant="flat"
-              className={cn("z-[70] w-max", {
+              className={cn("z-[70] w-max lg:hidden", {
                 hidden: !account.user.hasPetProfile,
               })}
               size="sm"

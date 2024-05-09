@@ -7,6 +7,7 @@ import { SubmitErrorHandler, useForm } from "react-hook-form"
 import { z } from "zod"
 
 import { getPetProfileResponseSchema, maxDescriptionLines, maxPetPhotos, upsertPetSchema } from "@/api/pet/schemas"
+import SmartPhoneDeviceLook from "@/components/ui/device-look/smart-phone"
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
 import { cn } from "@/lib/utils"
@@ -14,8 +15,10 @@ import { getImageUrl } from "@/lib/utils/client-utils"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, Chip } from "@nextui-org/react"
 
-import BreedSelect from "./breed-select"
-import CharacterisitcsSelect from "./characteristics-select"
+import { containerClassName } from "../utils"
+
+import ChipsContainer from "./chips-container"
+import DesktopForm from "./desktop-form"
 import EditableText from "./editable-text"
 import { PetProfileDr } from "./pet-profile.dr"
 import PetProfilePhotos from "./photos"
@@ -171,104 +174,133 @@ export default function PetProfile({
   const ageFormatted = age > 0 ? age.toString() : ""
 
   return (
-    <section className={cn("fixed inset-0 z-[60] bg-black")}>
-      <form className="relative flex h-full flex-col justify-between" onSubmit={form.handleSubmit(onSubmit, onInvalid)}>
-        <PetProfilePhotos
-          defaultPhoto={defaultPhoto}
-          photoIndex={photoIndex}
-          setPhotoIndex={setPhotoIndex}
-          photos={photos}
-          setPhotos={handleSetPhotos}
-          dictionary={dictionary}
-          error={photosError}
-          isDescriptionFocused={isDescriptionFocused}
-        />
-        <div className="z-30 flex justify-between p-2">
-          {backButton}
-          <Chip color="default" variant="flat" className="bg-default-400">
-            {photoIndex + 1}/{Math.min(photos.length + 1, maxPetPhotos)}
-          </Chip>
-          <Button
-            color="primary"
-            type="submit"
-            isLoading={upsertPetMutation.isPending}
-            size={hasPetProfile ? "sm" : "md"}
-          >
-            {dictionary.confirm}
-          </Button>
-        </div>
-        <div className="relative z-30">
-          <div className="absolute inset-0 z-[-1] translate-y-[-30px] bg-gradient-to-b from-black/0 to-black/70 to-20%" />
-          <div className="flex w-full flex-row items-end overflow-auto" ref={chipsContainer}>
-            <CharacterisitcsSelect
-              dictionary={dictionary}
-              characteristics={characteristics}
-              setCharacteristics={handleCharacteristicsChange}
-              error={characteristicsError}
-            />
-            <BreedSelect dictionary={dictionary} breed={breed} setBreed={handleBreedChange} error={breedError} />
-          </div>
-          <motion.div
-            className={cn("relative flex h-52 flex-col rounded-t-large bg-content1 p-3 shadow-medium")}
-            animate={{
-              height: isDescriptionFocused ? "18rem" : "13rem",
-            }}
-            transition={{ type: "spring", bounce: 0.3, duration: 0.7 }}
-          >
-            <div className="flex w-full flex-row gap-2">
-              <div className="flex flex-col">
-                <EditableText
-                  className={"min-w-4 shrink-0 text-2xl font-bold"}
-                  value={name}
-                  onChange={handleNameChange}
-                  placeholder={dictionary.petName}
-                  firstLetterUppercase
-                  classNames={{
-                    paragraph: "truncate",
-                  }}
+    <section className={cn(containerClassName, "fixed inset-0 z-[60] bg-black sm:max-w-screen-lg", "lg:bg-background")}>
+      <form className={cn("flex h-full gap-2")} onSubmit={form.handleSubmit(onSubmit, onInvalid)}>
+        <DesktopForm dictionary={dictionary} hasPetProfile={hasPetProfile} />
+        <section className={cn("max-lg:w-full lg:p-3")}>
+          <h2 className="mt-8 text-xl font-medium uppercase text-muted-foreground max-lg:hidden">
+            {dictionary.preview}
+          </h2>
+          <div className="max-lg:h-full lg:mt-5">
+            <SmartPhoneDeviceLook
+              classNames={{
+                wrapper: "max-lg:rounded-[unset] max-lg:p-0 max-lg:bg-[unset] h-full",
+                container: "max-lg:overflow-[unset] max-lg:rounded-[unset] h-full",
+                plusButton: "max-lg:hidden",
+                minusButton: "max-lg:hidden",
+                powerButton: "max-lg:hidden",
+              }}
+            >
+              <div
+                className={cn(
+                  "relative flex size-full flex-col justify-between overflow-hidden",
+                  "lg:h-[740px] lg:w-[360px]"
+                )}
+              >
+                <PetProfilePhotos
+                  defaultPhoto={defaultPhoto}
+                  photoIndex={photoIndex}
+                  setPhotoIndex={setPhotoIndex}
+                  photos={photos}
+                  setPhotos={handleSetPhotos}
+                  dictionary={dictionary}
+                  error={photosError}
+                  isDescriptionFocused={isDescriptionFocused}
                 />
-                {nameError && <p className="text-xs text-danger">{nameError}</p>}
-              </div>
-              <div className="flex h-[44px] items-center">
-                <span className="text-2xl text-muted-foreground">-</span>
-              </div>
-              <div className="flex flex-col">
-                <div className="flex flex-row items-end gap-0.5">
-                  <EditableText
-                    className="min-w-4 shrink-0 text-2xl font-bold text-muted-foreground"
-                    value={ageFormatted}
-                    onChange={setAge}
-                    placeholder={dictionary.age}
-                    classNames={{
-                      paragraph: "truncate",
-                    }}
-                    type="number"
-                    min={0}
-                    step={1}
-                    max={99}
-                    onlyNumbers
-                    maxDigits={2}
-                  />
-                  <div className="-translate-y-1 py-1">{age > 1 ? dictionary.yos : dictionary.yo}</div>
+                <div className="z-30 flex justify-between p-2">
+                  <div className="flex flex-col gap-2">
+                    {backButton}
+                    <Chip color="default" variant="faded" className="bg-default-400">
+                      {photoIndex + 1}/{Math.min(photos.length + 1, maxPetPhotos)}
+                    </Chip>
+                  </div>
+                  <Button
+                    color="primary"
+                    type="submit"
+                    isLoading={upsertPetMutation.isPending}
+                    size={hasPetProfile ? "sm" : "md"}
+                    className="lg:hidden"
+                  >
+                    {dictionary.confirm}
+                  </Button>
                 </div>
-                {ageError && <p className="text-xs text-danger">{ageError}</p>}
+                <div className="relative z-30">
+                  <div className="absolute inset-0 z-[-1] translate-y-[-30px] bg-gradient-to-b from-black/0 to-black/70 to-20%" />
+                  <ChipsContainer
+                    dictionary={dictionary}
+                    breedError={breedError}
+                    characteristicsError={characteristicsError}
+                    handleBreedChange={handleBreedChange}
+                    handleCharacteristicsChange={handleCharacteristicsChange}
+                    breed={breed}
+                    characteristics={characteristics}
+                    chipsContainer={chipsContainer}
+                  />
+                  <motion.div
+                    className={cn("relative flex h-52 flex-col rounded-t-large bg-content1 p-3 shadow-medium")}
+                    animate={{
+                      height: isDescriptionFocused ? "18rem" : "13rem",
+                    }}
+                    transition={{ type: "spring", bounce: 0.3, duration: 0.7 }}
+                  >
+                    <div className="flex w-full flex-row gap-2">
+                      <div className="flex flex-col">
+                        <EditableText
+                          className={"min-w-4 shrink-0 text-2xl font-bold"}
+                          value={name}
+                          onChange={handleNameChange}
+                          placeholder={dictionary.petName}
+                          firstLetterUppercase
+                          classNames={{
+                            paragraph: "truncate",
+                          }}
+                        />
+                        {nameError && <p className="text-xs text-danger">{nameError}</p>}
+                      </div>
+                      <div className="flex h-[44px] items-center">
+                        <span className="text-2xl text-muted-foreground">-</span>
+                      </div>
+                      <div className="flex flex-col">
+                        <div className="flex flex-row items-end gap-0.5">
+                          <EditableText
+                            className="min-w-4 shrink-0 text-2xl font-bold text-muted-foreground"
+                            value={ageFormatted}
+                            onChange={setAge}
+                            placeholder={dictionary.age}
+                            classNames={{
+                              paragraph: "truncate",
+                            }}
+                            type="number"
+                            min={0}
+                            step={1}
+                            max={99}
+                            onlyNumbers
+                            maxDigits={2}
+                          />
+                          <div className="-translate-y-1 py-1">{age > 1 ? dictionary.yos : dictionary.yo}</div>
+                        </div>
+                        {ageError && <p className="text-xs text-danger">{ageError}</p>}
+                      </div>
+                    </div>
+                    <div className="flex min-h-0 flex-1 flex-col">
+                      <EditableText
+                        className="min-h-0 flex-1"
+                        value={description}
+                        onChange={handleDescriptionChange}
+                        placeholder={dictionary.description}
+                        multiline
+                        maxLines={maxDescriptionLines}
+                        onFocus={() => setIsDescriptionFocused(true)}
+                        onBlur={() => setIsDescriptionFocused(false)}
+                      />
+                      {descriptionError && <p className="text-xs text-danger">{descriptionError}</p>}
+                    </div>
+                  </motion.div>
+                </div>
               </div>
-            </div>
-            <div className="flex min-h-0 flex-1 flex-col">
-              <EditableText
-                className="min-h-0 flex-1"
-                value={description}
-                onChange={handleDescriptionChange}
-                placeholder={dictionary.description}
-                multiline
-                maxLines={maxDescriptionLines}
-                onFocus={() => setIsDescriptionFocused(true)}
-                onBlur={() => setIsDescriptionFocused(false)}
-              />
-              {descriptionError && <p className="text-xs text-danger">{descriptionError}</p>}
-            </div>
-          </motion.div>
-        </div>
+            </SmartPhoneDeviceLook>
+          </div>
+        </section>
       </form>
     </section>
   )

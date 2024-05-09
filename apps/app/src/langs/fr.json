@@ -343,5 +343,6 @@
   "upload": "Uploader",
   "graspBreed": "Saisir la race",
   "noCharacteristics": "Aucun trait sélectionné",
-  "invalidFileType": "Type de fichier invalide"
+  "invalidFileType": "Type de fichier invalide",
+  "preview": "Prévisualisation"
 }
