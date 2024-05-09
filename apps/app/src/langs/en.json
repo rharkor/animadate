@@ -342,5 +342,6 @@
   "selectPhoto": "Select photo",
   "upload": "Upload",
   "graspBreed": "Grasp breed",
-  "noCharacteristics": "No characteristics"
+  "noCharacteristics": "No characteristics",
+  "invalidFileType": "Invalid file type."
 }

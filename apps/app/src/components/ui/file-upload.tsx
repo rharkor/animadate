@@ -4,6 +4,7 @@ import { InputHTMLAttributes, useCallback, useEffect, useMemo, useState } from "
 import Image from "next/image"
 import { Camera, Crop, Images, Trash, Upload } from "lucide-react"
 import { Accept, useDropzone } from "react-dropzone"
+import { toast } from "react-toastify"
 
 import useCamera from "@/hooks/use-camera/use-camera"
 import { TDictionary } from "@/lib/langs"
@@ -106,6 +107,12 @@ export default function FileUpload({
     accept,
     maxFiles,
     multiple: maxFiles !== 1,
+    onDropRejected(fileRejections) {
+      const fileRejection = fileRejections[0]
+      if (fileRejection.errors[0].code === "file-invalid-type") {
+        toast.error(dictionary.invalidFileType)
+      }
+    },
   })
 
   const {

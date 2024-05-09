@@ -11,6 +11,7 @@ export const FileUploadDr = dictionaryRequirements(
     takePhoto: true,
     or: true,
     selectPhoto: true,
+    invalidFileType: true,
   },
   FileDr,
   useCameraDr

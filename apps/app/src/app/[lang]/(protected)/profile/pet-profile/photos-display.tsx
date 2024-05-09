@@ -133,7 +133,7 @@ export default function PhotosDisplay({
             <Image
               key={photo.key}
               src={photo.url}
-              className="h-full rounded-none object-cover"
+              className="size-full rounded-none object-cover"
               classNames={{
                 wrapper: "z-0 h-full !max-w-[unset] rounded-none",
               }}

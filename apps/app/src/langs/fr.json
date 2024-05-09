@@ -342,5 +342,6 @@
   "selectPhoto": "Sélectionner une photo",
   "upload": "Uploader",
   "graspBreed": "Saisir la race",
-  "noCharacteristics": "Aucun trait sélectionné"
+  "noCharacteristics": "Aucun trait sélectionné",
+  "invalidFileType": "Type de fichier invalide"
 }
