@@ -95,6 +95,7 @@ jobs:
     needs: checks
     if: ${{ needs.checks.outputs.changed-app == 'true' }}
     steps:
+      - uses: dtinth/setup-github-actions-caching-for-turbo@v1
       - name: Deploy app
         run: |
           echo "### Deploying app 🚀" >> $GITHUB_STEP_SUMMARY
@@ -106,6 +107,7 @@ jobs:
     needs: checks
     if: ${{ needs.checks.outputs.changed-docs == 'true' }}
     steps:
+      - uses: dtinth/setup-github-actions-caching-for-turbo@v1
       - name: Deploy docs
         run: |
           echo "### Deploying docs 🚀" >> $GITHUB_STEP_SUMMARY
@@ -117,6 +119,7 @@ jobs:
     needs: checks
     if: ${{ needs.checks.outputs.changed-cron == 'true' }}
     steps:
+      - uses: dtinth/setup-github-actions-caching-for-turbo@v1
       - name: Deploy cron
         run: |
           echo "### Deploying cron 🚀" >> $GITHUB_STEP_SUMMARY
@@ -128,6 +131,7 @@ jobs:
     needs: checks
     if: ${{ needs.checks.outputs.changed-landing == 'true' }}
     steps:
+      - uses: dtinth/setup-github-actions-caching-for-turbo@v1
       - name: Deploy landing
         run: |
           echo "### Deploying landing 🚀" >> $GITHUB_STEP_SUMMARY
