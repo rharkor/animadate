@@ -3,7 +3,7 @@ import SuperJSON from "superjson"
 import { type AppRouter } from "@/api/_app"
 import { createTRPCReact, httpBatchLink, loggerLink } from "@trpc/react-query"
 
-import { getUrl } from "./utils"
+import { getBaseUrl } from "./utils"
 
 export const trpc = createTRPCReact<AppRouter>({})
 
@@ -28,7 +28,7 @@ export const trpcClient = trpc.createClient({
     //   }),
     // }),
     httpBatchLink({
-      url: getUrl(),
+      url: `${getBaseUrl()}/api/trpc`,
       transformer: SuperJSON,
     }),
   ],
