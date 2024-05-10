@@ -67,7 +67,7 @@ export default async function Profile({
             <UserRound className="size-5" />
             {dictionary.personalInformations}
           </Row>
-          <Row placement="center">
+          <Row placement="center" href="/profile/pet-profile">
             <Dog className="size-5" />
             {dictionary.petProfile}
           </Row>

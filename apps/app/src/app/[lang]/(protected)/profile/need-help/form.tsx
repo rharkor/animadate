@@ -51,7 +51,7 @@ export default function NeedHelpForm({
     router.push("/profile")
   }
 
-  const isLoading = needHelpMutation.isLoading
+  const isLoading = needHelpMutation.isPending
   const isSuccess = needHelpMutation.isSuccess
 
   return (

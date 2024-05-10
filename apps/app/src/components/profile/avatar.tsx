@@ -8,7 +8,7 @@ import { maxUploadSize } from "@/constants"
 import { useAccount } from "@/hooks/account"
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
-import { cn } from "@/lib/utils"
+import { bytesToUnit, cn } from "@/lib/utils"
 import { getImageUrl } from "@/lib/utils/client-utils"
 import { logger } from "@animadate/lib"
 import { Avatar, Button, Modal, ModalBody, ModalContent, Skeleton, Spinner } from "@nextui-org/react"
@@ -40,7 +40,9 @@ export default function UpdateAvatar({
       return
     }
     if (file.size > maxUploadSize) {
-      toast.error(dictionary.errors.fileTooLarge)
+      toast.error(
+        dictionary.errors.fileTooLarge.replace("{max}", bytesToUnit(maxUploadSize, "megabytes").toString() + "Mo")
+      )
       return
     }
     setUploading(true)
@@ -76,7 +78,9 @@ export default function UpdateAvatar({
           const xmlDoc = parser.parseFromString(xml, "text/xml")
           const error = xmlDoc.getElementsByTagName("Message")[0]
           if (error.textContent === "Your proposed upload exceeds the maximum allowed size") {
-            toast.error(dictionary.errors.fileTooLarge)
+            toast.error(
+              dictionary.errors.fileTooLarge.replace("{max}", bytesToUnit(maxUploadSize, "megabytes").toString() + "Mo")
+            )
           } else {
             toast.error(dictionary.unknownError)
           }
@@ -143,7 +147,7 @@ export default function UpdateAvatar({
           )}
           onPress={() => handleDelete()}
         >
-          {updateUserMutation.isLoading ? (
+          {updateUserMutation.isPending ? (
             <Spinner
               classNames={{
                 wrapper: "size-4",

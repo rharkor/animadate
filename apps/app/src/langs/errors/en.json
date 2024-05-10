@@ -1,4 +1,6 @@
 {
+  "petNotFound": "Pet not found.",
+  "notPetOwner": "You are not a pet owner.",
   "invalidPassword": "Invalid password.",
   "tokenInvalid": "Token invalid.",
   "alreadyYourEmail": "This is already your email.",

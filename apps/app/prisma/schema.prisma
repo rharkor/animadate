@@ -77,12 +77,8 @@ enum CHARACTERISTIC {
   FRIENDLY
   PLAYFUL
   CALM
-  ACTIVE
-  INDEPENDENT
-  LOYAL
   INTELLIGENT
   PROTECTIVE
-  AGGRESSIVE
   AFFECTIONATE
   CURIOUS
   ENERGETIC
@@ -92,63 +88,40 @@ enum CHARACTERISTIC {
   QUIET
   SHY
   SOCIAL
-  TALKATIVE
-  TIMID
-  BOLD
   BRAVE
   CLEVER
-  CONFIDENT
   COOL
   CRAZY
   CUTE
-  DARING
-  DEVOTED
   DOCILE
   DYNAMIC
   EASYGOING
   ENTHUSIASTIC
-  FAITHFUL
   FEARLESS
-  FIERCE
   FUNNY
   GENTLE
-  GOOD
-  HARDWORKING
-  HELPFUL
-  HONEST
-  HUMBLE
   JOYFUL
   KIND
   MATURE
   OBEDIENT
   PATIENT
   PEACEFUL
-  POLITE
-  RELIABLE
-  RESPONSIBLE
   SENSITIVE
   SERIOUS
-  SINCERE
   SMART
   STRONG
   TENDER
   TOUGH
   TRUSTWORTHY
   WISE
-  WITTY
   ZEALOUS
   ADAPTABLE
   AMUSING
-  BRIGHT
   CHARMING
   CHEERFUL
   COURAGEOUS
-  CREATIVE
-  DECISIVE
   DETERMINED
-  FAIR
   FLEXIBLE
-  GENEROUS
 }
 
 model Characteristic {
@@ -159,14 +132,21 @@ model Characteristic {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@unique([value, petId])
+}
+
+enum PET_KIND {
+  DOG
 }
 
 model Pet {
   id                        String           @id @default(cuid())
   name                      String
-  kind                      String // ex: "Dog"
+  description               String
+  kind                      PET_KIND
   breed                     String // ex: "Golden Retriever"
-  bornAt                    DateTime
+  birthdate                 DateTime
   characteristics           Characteristic[]
   ownerId                   String           @unique
   owner                     User             @relation(fields: [ownerId], references: [id], onDelete: Cascade)
@@ -175,6 +155,8 @@ model Pet {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@unique([ownerId, name])
 }
 
 //? For one time login links
@@ -214,10 +196,11 @@ model File {
   endpoint  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  order     Int?
 
   userProfilePictureId String? @unique
   userProfilePicture   User?   @relation(fields: [userProfilePictureId], references: [id], onDelete: SetNull)
-  petPhotosId          String? @unique
+  petPhotosId          String?
   petPhotos            Pet?    @relation(fields: [petPhotosId], references: [id], onDelete: SetNull)
 
   fileUploadingId String?        @unique

@@ -95,7 +95,7 @@ export function RegisterUserAuthForm({ searchParams, locale, dictionary, ...prop
       logger.debug("Sign up successful")
       handleSignIn({
         data: { email: vars.email, password: vars.password },
-        callbackUrl: authRoutes.redirectAfterSignIn,
+        callbackUrl: authRoutes.redirectAfterSignUp,
         dictionary,
         getOtpCode,
       }).catch((error) => {
@@ -335,7 +335,7 @@ export function RegisterUserAuthForm({ searchParams, locale, dictionary, ...prop
           )}
         </div>
       </form>
-      <h3 className={cn("!mt-0 text-start text-sm text-slate-100", "md:px-8 md:py-6 md:pt-0 md:text-foreground")}>
+      <h3 className={cn("!mt-0 text-start text-sm text-slate-50", "md:px-8 md:py-6 md:pt-0 md:text-foreground")}>
         {dictionary.auth.alreadyHaveAnAccount}{" "}
         <Link className="text-sm" href={authRoutes.signIn[0]}>
           {dictionary.auth.login}

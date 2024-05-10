@@ -94,7 +94,7 @@ export default function ChangePassword({
     changePasswordMutation.reset()
   }
 
-  const isLoading = changePasswordMutation.isLoading
+  const isLoading = changePasswordMutation.isPending
   const isSuccess = changePasswordMutation.isSuccess
 
   return (

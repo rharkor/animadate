@@ -17,24 +17,28 @@ export default function VerifyEmailProvider({
   children,
   dictionary,
   emailNotVerifiedSSR,
+  hasPetProfileSSR,
 }: {
   children: React.ReactNode
   dictionary: TDictionary<typeof VerifyEmailDr>
   emailNotVerifiedSSR: boolean
+  hasPetProfileSSR: boolean
 }) {
   const account = useAccount()
   const utils = trpc.useUtils()
+
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   const emailNotVerified = account.data ? account.data.user.emailVerified === null : emailNotVerifiedSSR
+  const hasPetProfile = account.data ? account.data.user.hasPetProfile : hasPetProfileSSR
 
   useEffect(() => {
-    if (emailNotVerified) {
+    if (emailNotVerified && hasPetProfile) {
       setIsModalOpen(true)
     } else {
       setIsModalOpen(false)
     }
-  }, [account.data, emailNotVerified])
+  }, [account.data, emailNotVerified, hasPetProfile])
 
   // Poll for email verification status if not verified and modal is open
   useEffect(() => {
@@ -80,7 +84,7 @@ export default function VerifyEmailProvider({
                 <p className="text-xs text-muted-foreground">{dictionary.verifyEmailModal.notReceived}</p>
                 <Button
                   onClick={handleResendVerificationEmail}
-                  isLoading={resendVerificationEmailMutation.isLoading}
+                  isLoading={resendVerificationEmailMutation.isPending}
                   variant="flat"
                   color="primary"
                 >

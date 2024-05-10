@@ -89,7 +89,9 @@ export const deleteSessionResponseSchema = () =>
 export const getAccountResponseSchemaDr = dictionaryRequirements(nameSchemaDr)
 export const getAccountResponseSchema = (dictionary?: TDictionary<typeof getAccountResponseSchemaDr>) =>
   z.object({
-    user: userSchema(dictionary),
+    user: userSchema(dictionary).extend({
+      hasPetProfile: z.boolean(),
+    }),
   })
 
 export const deleteAccountResponseSchema = () =>
