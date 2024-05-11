@@ -21,7 +21,8 @@
   "workspaces": [
     "apps/*",
     "packages/*",
-    "packages/configs/*"
+    "packages/configs/*",
+    "packages/events/*"
   ],
   "devDependencies": {
     "@semantic-release/changelog": "^6.0.3",

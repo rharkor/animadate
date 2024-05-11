@@ -1,11 +1,11 @@
 import { exit } from "process"
 
+import { Prisma } from "@/generated/client"
 import { env } from "@/lib/env"
 import { prisma } from "@/lib/prisma"
 import { s3Client as _s3Client } from "@/lib/s3"
 import { chunk, logger } from "@animadate/lib"
 import { DeleteObjectCommand } from "@aws-sdk/client-s3"
-import { Prisma } from "@prisma/client"
 
 const clearUnusedUploads = async () => {
   const now = new Date()

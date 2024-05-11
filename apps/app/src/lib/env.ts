@@ -59,6 +59,7 @@ export const env = createEnv({
       .enum(["true", "false"])
       .optional()
       .transform((value) => value === "true"),
+    EVENTS_API_URL: z.string().min(1),
   },
   client: {
     NEXT_PUBLIC_BASE_URL: z.string().url().optional(),
@@ -113,6 +114,7 @@ export const env = createEnv({
     NEXT_PUBLIC_S3_ENDPOINT: process.env.NEXT_PUBLIC_S3_ENDPOINT,
     ENABLE_S3_SERVICE: process.env.ENABLE_S3_SERVICE,
     DISABLE_REGISTRATION: process.env.DISABLE_REGISTRATION,
+    EVENTS_API_URL: process.env.EVENTS_API_URL,
   },
   onValidationError: (error) => {
     logger.error(error)

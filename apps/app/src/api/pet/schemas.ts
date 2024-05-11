@@ -1,8 +1,8 @@
 import { z } from "zod"
 
+import { CHARACTERISTIC, PET_KIND } from "@/generated/client"
 import { dictionaryRequirements } from "@/lib/utils/dictionary"
 import { fileSchemaMinimal } from "@/schemas/file"
-import { CHARACTERISTIC, PET_KIND } from "@prisma/client"
 
 import { TDictionary } from "../../lib/langs"
 

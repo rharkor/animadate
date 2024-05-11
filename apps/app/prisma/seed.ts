@@ -4,10 +4,10 @@ import chalk from "chalk"
 import { Spinner } from "cli-spinner"
 
 import { rolesAsObject } from "@/constants"
+import { PrismaClient } from "@/generated/client"
 import { hash } from "@/lib/bcrypt"
 import { env } from "@/lib/env"
 import { logger } from "@animadate/lib"
-import { PrismaClient } from "@prisma/client"
 
 let spinner: Spinner | null = null
 

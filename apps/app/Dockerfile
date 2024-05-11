@@ -17,7 +17,9 @@ COPY turbo.json ./
 COPY apps/app/package.json ./apps/app/package.json
 COPY apps/app/prisma/schema.prisma apps/app/prisma/schema.prisma
 
+COPY packages/lib/package.json ./packages/lib/package.json
 COPY packages/emails/package.json ./packages/emails/package.json
+COPY packages/events/sdk/package.json ./packages/events/sdk/package.json
 
 RUN npm ci --omit=dev
 
@@ -42,6 +44,7 @@ COPY apps/app ./apps/app
 COPY packages/configs ./packages/configs
 COPY packages/lib ./packages/lib
 COPY packages/emails ./packages/emails
+COPY packages/events/sdk ./packages/events/sdk
 
 
 RUN turbo run build --filter=@animadate/app
