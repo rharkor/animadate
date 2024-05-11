@@ -11,10 +11,9 @@
     "prettier": "prettier --check \"**/*.{js,jsx,ts,tsx}\"",
     "prettier:fix": "prettier --write \"**/*.{js,jsx,ts,tsx}\"",
     "test": "cross-env FORCE_COLOR=1 jest --passWithNoTests",
-    "seed": "cross-env NODE_ENV=development tsx prisma/seed.ts",
     "is-initialized": "cd ../../packages/scripts && npm run is-initialized",
     "analyze": "ANALYZE=true npm run build && cd .next/analyze && npx -y serve",
-    "postinstall": "prisma generate"
+    "seed": "cross-env NODE_ENV=development prisma db seed"
   },
   "dependencies": {
     "@animadate/emails": "*",
@@ -22,6 +21,7 @@
     "@animadate/scripts": "*",
     "@animadate/tsconfig": "*",
     "@animadate/events-sdk": "*",
+    "@animadate/app-db": "*",
     "@auth/prisma-adapter": "^2.0.0",
     "@aws-sdk/client-s3": "^3.454.0",
     "@aws-sdk/s3-presigned-post": "^3.454.0",
@@ -29,7 +29,6 @@
     "@hookform/resolvers": "^3.2.0",
     "@next/bundle-analyzer": "^14.1.2",
     "@nextui-org/react": "^2.3.1",
-    "@prisma/client": "^5.12.1",
     "@serwist/next": "^9.0.0-preview.21",
     "@t3-oss/env-nextjs": "^0.9.2",
     "@tanstack/react-query": "^5.32.1",
@@ -67,7 +66,6 @@
     "next-themes": "^0.3.0",
     "nodemailer": "^6.9.5",
     "otpauth": "^9.2.2",
-    "prisma": "^5.12.1",
     "qrcode.react": "^3.1.0",
     "react": "^18.2.0",
     "react-device-detect": "^2.2.3",
@@ -109,7 +107,7 @@
     "node": ">=18.15.0"
   },
   "prisma": {
-    "schema": "prisma/schema.prisma",
-    "seed": "npx -y tsx prisma/seed.ts"
+    "schema": "../../packages/app/db/prisma/schema.prisma",
+    "seed": "npx -y tsx database/seed.ts"
   }
 }

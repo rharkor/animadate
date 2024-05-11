@@ -22,7 +22,8 @@
     "apps/*",
     "packages/*",
     "packages/configs/*",
-    "packages/events/*"
+    "packages/events/*",
+    "packages/app/*"
   ],
   "devDependencies": {
     "@semantic-release/changelog": "^6.0.3",

@@ -5,9 +5,9 @@ import Link from "next/link"
 import { ChevronLeft, Plus, Shuffle, X } from "lucide-react"
 
 import { maxPetCharacteristics } from "@/api/pet/schemas"
-import { CHARACTERISTIC } from "@/generated/client"
 import { TDictionary } from "@/lib/langs"
 import { cn } from "@/lib/utils"
+import { CHARACTERISTIC } from "@animadate/app-db/generated/client"
 import { Button, Chip, Input, Textarea } from "@nextui-org/react"
 
 import { DesktopFormDr } from "./desktop-form.dr"

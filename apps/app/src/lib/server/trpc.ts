@@ -3,8 +3,8 @@ import superjson from "superjson"
 import { ZodError } from "zod"
 
 import { getAuthApi } from "@/components/auth/require-auth"
-import { User } from "@/generated/client"
 import { env } from "@/lib/env"
+import { User } from "@animadate/app-db/generated/client"
 import { initTRPC } from "@trpc/server"
 
 import { apiRateLimiter } from "../rate-limit"

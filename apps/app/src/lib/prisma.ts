@@ -1,4 +1,4 @@
-import { PrismaClient } from "@/generated/client"
+import { PrismaClient } from "@animadate/app-db/generated/client"
 
 const globalForPrisma = global as unknown as { prisma: PrismaClient }
 

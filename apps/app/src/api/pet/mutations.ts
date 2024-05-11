@@ -1,9 +1,9 @@
 import { z } from "zod"
 
-import { CHARACTERISTIC, PET_KIND } from "@/generated/client"
 import { prisma } from "@/lib/prisma"
 import { ApiError, ensureLoggedIn, handleApiError } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
+import { CHARACTERISTIC, PET_KIND } from "@animadate/app-db/generated/client"
 
 import { upsertPetResponseSchema, upsertPetSchema } from "./schemas"
 

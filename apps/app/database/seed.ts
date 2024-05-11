@@ -4,9 +4,9 @@ import chalk from "chalk"
 import { Spinner } from "cli-spinner"
 
 import { rolesAsObject } from "@/constants"
-import { PrismaClient } from "@/generated/client"
 import { hash } from "@/lib/bcrypt"
 import { env } from "@/lib/env"
+import { PrismaClient } from "@animadate/app-db/generated/client"
 import { logger } from "@animadate/lib"
 
 let spinner: Spinner | null = null

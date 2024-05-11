@@ -5,9 +5,9 @@ import { Plus, Shuffle, X } from "lucide-react"
 
 import { maxPetCharacteristics, minPetCharacteristics } from "@/api/pet/schemas"
 import { ModalDescription, ModalHeader, ModalTitle } from "@/components/ui/modal"
-import { CHARACTERISTIC } from "@/generated/client"
 import { TDictionary } from "@/lib/langs"
 import { cn } from "@/lib/utils"
+import { CHARACTERISTIC } from "@animadate/app-db/generated/client"
 import { Button, Chip, Input, Modal, ModalBody, ModalContent, ModalFooter, useDisclosure } from "@nextui-org/react"
 
 import { CharacteristicsSelectDr } from "./characteristics-select.dr"
