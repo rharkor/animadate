@@ -1,5 +1,6 @@
 /* eslint-disable no-process-env */
 import bunldeAnalyzer from "@next/bundle-analyzer"
+import withSerwistInit from "@serwist/next"
 
 /**
  * @type {import('next').NextConfig}
@@ -46,8 +47,28 @@ let config = {
       },
     ]
   },
+  images: {
+    dangerouslyAllowSVG: true,
+    remotePatterns: [
+      {
+        hostname: "api.dicebear.com",
+      },
+      {
+        hostname: "animadate-data.s3.fr-par.scw.cloud",
+      },
+      { hostname: "animadate-public.s3.fr-par.scw.cloud" },
+    ],
+  },
 }
 
 config = process.env.ANALYZE === "true" ? bunldeAnalyzer()(config) : config
+
+config =
+  process.env.ENV !== "development"
+    ? withSerwistInit({
+        swSrc: "src/sw.ts",
+        swDest: "public/sw.js",
+      })(config)
+    : config
 
 export default config

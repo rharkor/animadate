@@ -13,31 +13,31 @@ import { TDictionary } from "../../lib/langs"
 import {
   emailSchema,
   emailSchemaDr,
+  nameSchema,
+  nameSchemaDr,
   passwordSchemaWithRegex,
   passwordSchemaWithRegexDr,
-  usernameSchema,
-  usernameSchemaDr,
 } from "../auth/schemas"
 
-export const userSchemaDr = dictionaryRequirements(usernameSchemaDr)
+export const userSchemaDr = dictionaryRequirements(nameSchemaDr)
 export const userSchema = (dictionary?: TDictionary<typeof userSchemaDr>) =>
   z.object({
     id: z.string(),
-    name: z.string().nullable(),
-    email: z.string().nullable(),
+    socialId: z.string(),
+    email: z.string(),
     emailVerified: z.date().nullable(),
     profilePicture: fileSchemaMinimal().nullable(),
-    username: usernameSchema(dictionary).nullable(),
+    name: nameSchema(dictionary),
     role: z.string(),
     hasPassword: z.boolean(),
     otpVerified: z.boolean(),
     lastLocale: z.string().nullable(),
   })
 
-export const updateUserSchemaDr = dictionaryRequirements(usernameSchemaDr)
+export const updateUserSchemaDr = dictionaryRequirements(nameSchemaDr)
 export const updateUserSchema = (dictionary?: TDictionary<typeof updateUserSchemaDr>) =>
   z.object({
-    username: usernameSchema(dictionary).or(z.literal("")).optional(),
+    name: nameSchema(dictionary).or(z.literal("")).optional(),
     profilePictureKey: z.string().optional().nullable(),
   })
 
@@ -86,10 +86,12 @@ export const deleteSessionResponseSchema = () =>
     id: z.string(),
   })
 
-export const getAccountResponseSchemaDr = dictionaryRequirements(usernameSchemaDr)
+export const getAccountResponseSchemaDr = dictionaryRequirements(nameSchemaDr)
 export const getAccountResponseSchema = (dictionary?: TDictionary<typeof getAccountResponseSchemaDr>) =>
   z.object({
-    user: userSchema(dictionary),
+    user: userSchema(dictionary).extend({
+      hasPetProfile: z.boolean(),
+    }),
   })
 
 export const deleteAccountResponseSchema = () =>
@@ -144,6 +146,7 @@ export const sendVerificationEmailSchema = (dictionary?: TDictionary<typeof send
         emailVerified: true,
         lastLocale: true,
         email: true,
+        name: true,
       }),
       silent: z.boolean().optional(),
       email: z.never().optional(),
@@ -175,4 +178,64 @@ export const signUpResponseSchemaDr = dictionaryRequirements(userSchemaDr)
 export const signUpResponseSchema = (dictionary?: TDictionary<typeof signUpResponseSchemaDr>) =>
   z.object({
     user: userSchema(dictionary),
+  })
+
+export const needHelpSchemaDr = dictionaryRequirements(
+  {
+    errors: {
+      messageMinLength: true,
+    },
+  },
+  emailSchemaDr,
+  nameSchemaDr
+)
+export const needHelpSchema = (dictionary?: TDictionary<typeof needHelpSchemaDr>) =>
+  z.object({
+    locale: z.string(),
+    name: nameSchema(dictionary),
+    email: emailSchema(dictionary),
+    message: z.string().min(10, dictionary?.errors.messageMinLength.replace("{size}", "10")),
+  })
+
+export const needHelpResponseSchema = () =>
+  z.object({
+    success: z.boolean(),
+  })
+
+export const changeEmailSchemaDr = dictionaryRequirements(emailSchemaDr)
+export const changeEmailSchema = (dictionary?: TDictionary<typeof changeEmailSchemaDr>) =>
+  z.object({
+    email: emailSchema(dictionary),
+    password: z.string(),
+  })
+
+export const changeEmailResponseSchema = () =>
+  z.object({
+    success: z.boolean(),
+  })
+
+export const validateChangeEmailSchemaDr = dictionaryRequirements({
+  tokenInvalid: true,
+})
+export const validateChangeEmailSchema = (dictionary?: TDictionary<typeof validateChangeEmailSchemaDr>) =>
+  z.object({
+    token: z.string().min(1, dictionary?.tokenInvalid),
+  })
+
+export const validateChangeEmailResponseSchema = () =>
+  z.object({
+    success: z.boolean(),
+  })
+
+export const changePasswordSchemaDr = dictionaryRequirements(passwordSchemaWithRegexDr)
+
+export const changePasswordSchema = (dictionary?: TDictionary<typeof changePasswordSchemaDr>) =>
+  z.object({
+    currentPassword: z.string(),
+    newPassword: passwordSchemaWithRegex(dictionary),
+  })
+
+export const changePasswordResponseSchema = () =>
+  z.object({
+    success: z.boolean(),
   })

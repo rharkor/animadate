@@ -1,4 +1,8 @@
 import {
+  changeEmailResponseSchema,
+  changeEmailSchema,
+  changePasswordResponseSchema,
+  changePasswordSchema,
   deleteAccountResponseSchema,
   deleteSessionResponseSchema,
   deleteSessionSchema,
@@ -7,12 +11,16 @@ import {
   getAccountResponseSchema,
   getActiveSessionsResponseSchema,
   getActiveSessionsSchema,
+  needHelpResponseSchema,
+  needHelpSchema,
   resetPasswordResponseSchema,
   resetPasswordSchema,
   sendVerificationEmailResponseSchema,
   sendVerificationEmailSchema,
   updateUserResponseSchema,
   updateUserSchema,
+  validateChangeEmailResponseSchema,
+  validateChangeEmailSchema,
   verifyEmailResponseSchema,
   verifyEmailSchema,
 } from "@/api/me/schemas"
@@ -23,11 +31,11 @@ import {
   router,
 } from "@/lib/server/trpc"
 
-import { sendVerificationEmail, verifyEmail } from "./email/mutations"
-import { forgotPassword, resetPassword } from "./password/mutations"
+import { changeEmail, sendVerificationEmail, validateChangeEmail, verifyEmail } from "./email/mutations"
+import { changePassword, forgotPassword, resetPassword } from "./password/mutations"
 import { deleteSession } from "./sessions/mutations"
 import { getActiveSessions } from "./sessions/queries"
-import { deleteAccount, updateUser } from "./mutations"
+import { deleteAccount, needHelp, updateUser } from "./mutations"
 import { getAccount } from "./queries"
 
 export const meRouter = router({
@@ -57,4 +65,17 @@ export const meRouter = router({
     .output(sendVerificationEmailResponseSchema())
     .mutation(sendVerificationEmail),
   verifyEmail: publicProcedure.input(verifyEmailSchema()).output(verifyEmailResponseSchema()).mutation(verifyEmail),
+  needHelp: authenticatedProcedure.input(needHelpSchema()).output(needHelpResponseSchema()).mutation(needHelp),
+  changeEmail: authenticatedProcedure
+    .input(changeEmailSchema())
+    .output(changeEmailResponseSchema())
+    .mutation(changeEmail),
+  validateChangeEmail: authenticatedProcedure
+    .input(validateChangeEmailSchema())
+    .output(validateChangeEmailResponseSchema())
+    .mutation(validateChangeEmail),
+  changePassword: authenticatedProcedure
+    .input(changePasswordSchema())
+    .output(changePasswordResponseSchema())
+    .mutation(changePassword),
 })

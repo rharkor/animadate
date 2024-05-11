@@ -11,21 +11,25 @@ import {
   verifyTotpSchema,
 } from "@/api/auth/schemas"
 import { emailVerificationExpiration, lastLocaleExpirationInSeconds, otpWindow, rolesAsObject } from "@/constants"
+import { logoUrl } from "@/constants/medias"
 import { hash } from "@/lib/bcrypt"
 import { env } from "@/lib/env"
+import { Locale } from "@/lib/i18n-config"
+import { _getDictionary } from "@/lib/langs"
 import { sendMail } from "@/lib/mailer"
 import { prisma } from "@/lib/prisma"
 import { redis } from "@/lib/redis"
-import { html, plainText, subject } from "@/lib/templates/mail/verify-email"
 import { ApiError, ensureLoggedIn, generateRandomSecret, handleApiError } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
+import { Prisma } from "@animadate/app-db/generated/client"
+import VerifyEmail from "@animadate/emails/emails/verify-email"
 import { logger } from "@animadate/lib"
-import { Prisma } from "@/generated/client"
+import { render } from "@react-email/render"
 
 import { signUpResponseSchema } from "../me/schemas"
 
 export const register = async ({ input }: apiInputFromSchema<typeof signUpSchema>) => {
-  const { email, password, username } = input
+  const { email, password, name } = input
   try {
     if (env.DISABLE_REGISTRATION === true) {
       return ApiError("registrationDisabled")
@@ -35,7 +39,7 @@ export const register = async ({ input }: apiInputFromSchema<typeof signUpSchema
     const user = await prisma.user.create({
       data: {
         email: email.toLowerCase(),
-        username,
+        name,
         password: hashedPassword,
         lastLocale: input.locale,
       },
@@ -55,13 +59,39 @@ export const register = async ({ input }: apiInputFromSchema<typeof signUpSchema
           expires: new Date(Date.now() + emailVerificationExpiration),
         },
       })
-      const url = `${env.VERCEL_URL ?? env.NEXT_PUBLIC_BASE_URL}/verify-email/${token}`
+      const verificationLink = `${env.VERCEL_URL ?? env.NEXT_PUBLIC_BASE_URL}/verify-email/${token}`
+      const locale = input.locale as Locale
+      const dictionary = await _getDictionary("transactionals", locale, {
+        hey: true,
+        verifyEmail: true,
+        footer: true,
+        thanksForSigninUpCompleteRegistration: true,
+        verifyYourEmailAddress: true,
+        verifyYourEmailAddressToCompleteYourRegistration: true,
+      })
+      const element = VerifyEmail({
+        verificationLink,
+        actionText: dictionary.verifyEmail,
+        contentTitle: dictionary.thanksForSigninUpCompleteRegistration,
+        footerText: dictionary.footer,
+        heyText: dictionary.hey,
+        logoUrl,
+        name: user.name,
+        previewText: dictionary.verifyYourEmailAddressToCompleteYourRegistration,
+        supportEmail: env.SUPPORT_EMAIL,
+        titleText: dictionary.verifyYourEmailAddress,
+      })
+      const text = render(element, {
+        plainText: true,
+      })
+      const html = render(element)
+
       await sendMail({
         from: `"${env.SMTP_FROM_NAME}" <${env.SMTP_FROM_EMAIL}>`,
         to: email.toLowerCase(),
-        subject: subject,
-        text: plainText(url, input.locale),
-        html: html(url, input.locale),
+        subject: dictionary.verifyYourEmailAddress,
+        text,
+        html,
       })
     } else {
       logger.debug("Email verification disabled, skipping email sending on registration")
@@ -75,9 +105,7 @@ export const register = async ({ input }: apiInputFromSchema<typeof signUpSchema
         const meta = error.meta
         if (!meta) return ApiError("accountAlreadyExists")
         if ((meta.target as Array<string>).includes("email")) {
-          return ApiError("email.exist")
-        } else if ((meta.target as Array<string>).includes("username")) {
-          return ApiError("username.exist")
+          return ApiError("emailAlreadyInUse")
         }
       }
     }

@@ -215,6 +215,7 @@ Port for each package:
 - **App**: `3000`
 - **Docs**: `3001`
 - **Landing**: `3002`
+- **Admin**: `3003`
 
 ## 📃 Scripts Overview
 

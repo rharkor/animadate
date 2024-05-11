@@ -1,16 +1,21 @@
-import type { DefaultUser } from "next-auth"
+import type { DefaultSession } from "next-auth"
 
 declare module "next-auth" {
   interface Session {
-    user: DefaultUser & {
-      id: string
-      role: string
-      uuid: string
-      username?: string
-      role: string
-      hasPassword: boolean
-      emailVerified: Date | null
-    }
+    user:
+      | (DefaultSession & {
+          id: string
+          role: string
+          uuid: string
+          email: string
+          name: string
+          role: string
+          hasPassword: boolean
+          emailVerified: Date | null
+          image: never
+          lastLocale: string | null
+        })
+      | undefined
   }
 }
 

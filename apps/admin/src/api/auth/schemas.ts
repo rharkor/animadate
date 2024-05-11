@@ -37,22 +37,22 @@ export const passwordSchemaWithRegex = (dictionary?: TDictionary<typeof password
     dictionary && dictionary.errors.password.regex
   )
 
-export const usernameSchemaDr = dictionaryRequirements({
+export const nameSchemaDr = dictionaryRequirements({
   errors: {
-    username: {
+    name: {
       required: true,
       min3: true,
       max30: true,
     },
   },
 })
-export const usernameSchema = (dictionary?: TDictionary<typeof usernameSchemaDr>) =>
+export const nameSchema = (dictionary?: TDictionary<typeof nameSchemaDr>) =>
   z
     .string({
-      required_error: dictionary && dictionary.errors.username.required,
+      required_error: dictionary && dictionary.errors.name.required,
     })
-    .min(3, dictionary && dictionary.errors.username.min3)
-    .max(30, dictionary && dictionary.errors.username.max30)
+    .min(3, dictionary && dictionary.errors.name.min3)
+    .max(30, dictionary && dictionary.errors.name.max30)
 
 export const emailSchemaDr = dictionaryRequirements({
   errors: {
@@ -86,10 +86,10 @@ export const signInSchema = (dictionary?: TDictionary<typeof signInSchemaDr>) =>
     otp: z.string().optional(),
   })
 
-export const signUpSchemaDr = dictionaryRequirements(signInSchemaDr, usernameSchemaDr, passwordSchemaWithRegexDr)
+export const signUpSchemaDr = dictionaryRequirements(signInSchemaDr, nameSchemaDr, passwordSchemaWithRegexDr)
 export const signUpSchema = (dictionary?: TDictionary<typeof signUpSchemaDr>) =>
   signInSchema(dictionary).extend({
-    username: usernameSchema(dictionary),
+    name: nameSchema(dictionary),
     password: passwordSchemaWithRegex(dictionary),
     locale: z.string(),
   })

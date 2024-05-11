@@ -1,19 +1,18 @@
 "use client"
 
 import { useState } from "react"
-import { Camera } from "lucide-react"
+import { Camera, Trash } from "lucide-react"
 import { toast } from "react-toastify"
 
 import { maxUploadSize } from "@/constants"
-import { useAccount } from "@/contexts/account"
+import { useAccount } from "@/hooks/account"
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
-import { cn } from "@/lib/utils"
+import { bytesToUnit, cn } from "@/lib/utils"
 import { getImageUrl } from "@/lib/utils/client-utils"
 import { logger } from "@animadate/lib"
 import { Avatar, Button, Modal, ModalBody, ModalContent, Skeleton, Spinner } from "@nextui-org/react"
 
-import { Icons } from "../icons"
 import FileUpload from "../ui/file-upload"
 import { ModalHeader, ModalTitle } from "../ui/modal"
 
@@ -41,7 +40,9 @@ export default function UpdateAvatar({
       return
     }
     if (file.size > maxUploadSize) {
-      toast.error(dictionary.errors.fileTooLarge)
+      toast.error(
+        dictionary.errors.fileTooLarge.replace("{max}", bytesToUnit(maxUploadSize, "megabytes").toString() + "Mo")
+      )
       return
     }
     setUploading(true)
@@ -77,7 +78,9 @@ export default function UpdateAvatar({
           const xmlDoc = parser.parseFromString(xml, "text/xml")
           const error = xmlDoc.getElementsByTagName("Message")[0]
           if (error.textContent === "Your proposed upload exceeds the maximum allowed size") {
-            toast.error(dictionary.errors.fileTooLarge)
+            toast.error(
+              dictionary.errors.fileTooLarge.replace("{max}", bytesToUnit(maxUploadSize, "megabytes").toString() + "Mo")
+            )
           } else {
             toast.error(dictionary.unknownError)
           }
@@ -118,7 +121,7 @@ export default function UpdateAvatar({
           <Avatar
             className="!size-20 text-large"
             src={getImageUrl(account.data?.user.profilePicture) || undefined}
-            name={account.data?.user.username || undefined}
+            name={account.data?.user.name || undefined}
             onClick={() => setShowModal(true)}
           />
         </Skeleton>
@@ -144,7 +147,7 @@ export default function UpdateAvatar({
           )}
           onPress={() => handleDelete()}
         >
-          {updateUserMutation.isLoading ? (
+          {updateUserMutation.isPending ? (
             <Spinner
               classNames={{
                 wrapper: "size-4",
@@ -153,7 +156,7 @@ export default function UpdateAvatar({
               size="sm"
             />
           ) : (
-            <Icons.trash className="size-4" />
+            <Trash className="size-4" />
           )}
         </Button>
       </div>

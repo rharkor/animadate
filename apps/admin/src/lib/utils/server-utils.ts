@@ -3,8 +3,8 @@ import { Session } from "next-auth"
 import base32Encode from "base32-encode"
 
 import { Path } from "@/types"
+import { Prisma } from "@animadate/app-db/generated/client"
 import { logger } from "@animadate/lib"
-import { Prisma } from "@/generated/client"
 import { TRPCError } from "@trpc/server"
 import { TRPC_ERROR_CODE_KEY } from "@trpc/server/rpc"
 
@@ -26,8 +26,10 @@ export const handleApiError = (error: unknown) => {
   }
 }
 
-export function ensureLoggedIn(session: Session | null | undefined): asserts session is Session {
-  if (!session) {
+export function ensureLoggedIn(
+  session: Session | null | undefined
+): asserts session is Session & { user: NonNullable<Session["user"]> } {
+  if (!session || !session.user) {
     const data: TErrorMessage = { message: "You must be logged in to access this resource", code: "UNAUTHORIZED" }
     throw new TRPCError({
       code: "UNAUTHORIZED",

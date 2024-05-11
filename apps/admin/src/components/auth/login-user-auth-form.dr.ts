@@ -11,7 +11,11 @@ export const LoginUserAuthFormDr = dictionaryRequirements(
       invalidCredentials: true,
       otpInvalid: true,
     },
-    auth: true,
+    auth: {
+      doNotHaveAccount: true,
+      signUp: true,
+      demoMode: true,
+    },
     email: true,
     password: true,
     forgotPassword: true,

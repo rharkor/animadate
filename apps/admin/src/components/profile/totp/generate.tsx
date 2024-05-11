@@ -1,13 +1,13 @@
 "use client"
 
 import React, { useCallback, useEffect, useState } from "react"
+import { Trash } from "lucide-react"
 import { QRCodeSVG } from "qrcode.react"
 import { toast } from "react-toastify"
 
-import { Icons } from "@/components/icons"
 import { ModalHeader, ModalTitle } from "@/components/ui/modal"
 import OtpInput from "@/components/ui/otp-input"
-import { useAccount } from "@/contexts/account"
+import { useAccount } from "@/hooks/account"
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
 import { cn } from "@/lib/utils"
@@ -101,8 +101,8 @@ export default function GenerateTotp({
           if (hasOtpVerified) setDesactivate2FAModalOpen(true)
           else setIsModalOpen(true)
         }}
-        isLoading={desactivate2FAMutation.isLoading || generateTotpSecretMutation.isLoading}
-        isDisabled={account.isLoading || desactivate2FAMutation.isLoading || generateTotpSecretMutation.isLoading}
+        isLoading={desactivate2FAMutation.isPending || generateTotpSecretMutation.isPending}
+        isDisabled={account.isLoading || desactivate2FAMutation.isPending || generateTotpSecretMutation.isPending}
         className="w-max"
       >
         {hasOtpVerified ? dictionary.totp.desactivate : dictionary.totp.generate}
@@ -204,7 +204,7 @@ export default function GenerateTotp({
                                 setMnemonicVerif(newMnemonicVerif.join(" "))
                               }}
                             >
-                              <Icons.trash className="size-4" />
+                              <Trash className="size-4" />
                             </Button>
                           </p>
                         ))}
@@ -269,7 +269,7 @@ export default function GenerateTotp({
                     (modalIndex === 2 && mnemonicVerif !== totpSecretData?.mnemonic) ||
                     (modalIndex === 3 && otp.length !== 6)
                   }
-                  isLoading={verifyTotpMutation.isLoading}
+                  isLoading={verifyTotpMutation.isPending}
                 >
                   {modalIndex !== 3 ? dictionary.continue : dictionary.confirm}
                 </Button>
@@ -288,7 +288,7 @@ export default function GenerateTotp({
         closeText={dictionary.cancel}
         onlyPrompt
         isDanger
-        isLoading={desactivate2FAMutation.isLoading}
+        isLoading={desactivate2FAMutation.isPending}
       />
     </div>
   )

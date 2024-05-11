@@ -16,8 +16,8 @@ export const env = createEnv({
       .optional()
       .transform((value) => value === "true"),
     PASSWORD_HASHER_SECRET: z.string(),
-    DATABASE_PRISMA_URL: z.string().min(1),
-    DATABASE_URL_NON_POOLING: z.string().optional(),
+    APP_DATABASE_PRISMA_URL: z.string().min(1),
+    APP_DATABASE_URL_NON_POOLING: z.string().optional(),
     AUTH_SECRET: z.string(),
     AUTH_URL: z.string().optional(),
     AUTH_TRUST_HOST: z.string().optional(),
@@ -59,7 +59,6 @@ export const env = createEnv({
       .enum(["true", "false"])
       .optional()
       .transform((value) => value === "true"),
-    EVENTS_API_URL: z.string().min(1),
   },
   client: {
     NEXT_PUBLIC_BASE_URL: z.string().url().optional(),
@@ -79,8 +78,8 @@ export const env = createEnv({
   runtimeEnv: {
     ANALYZE: process.env.ANALYZE,
     PASSWORD_HASHER_SECRET: process.env.PASSWORD_HASHER_SECRET,
-    DATABASE_PRISMA_URL: process.env.DATABASE_PRISMA_URL,
-    DATABASE_URL_NON_POOLING: process.env.DATABASE_URL_NON_POOLING,
+    APP_DATABASE_PRISMA_URL: process.env.APP_DATABASE_PRISMA_URL,
+    APP_DATABASE_URL_NON_POOLING: process.env.APP_DATABASE_URL_NON_POOLING,
     AUTH_SECRET: process.env.AUTH_SECRET,
     AUTH_URL: process.env.AUTH_URL,
     AUTH_TRUST_HOST: process.env.AUTH_TRUST_HOST,
@@ -114,7 +113,6 @@ export const env = createEnv({
     NEXT_PUBLIC_S3_ENDPOINT: process.env.NEXT_PUBLIC_S3_ENDPOINT,
     ENABLE_S3_SERVICE: process.env.ENABLE_S3_SERVICE,
     DISABLE_REGISTRATION: process.env.DISABLE_REGISTRATION,
-    EVENTS_API_URL: process.env.EVENTS_API_URL,
   },
   onValidationError: (error) => {
     logger.error(error)

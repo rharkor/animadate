@@ -2,7 +2,7 @@
   "name": "@animadate/app",
   "license": "MIT",
   "scripts": {
-    "dev": "npm run is-initialized && prisma migrate dev && cross-env FORCE_COLOR=1 next dev --turbo",
+    "dev": "npm run -s is-initialized && prisma migrate dev && cross-env FORCE_COLOR=1 next dev --turbo",
     "build": "next build",
     "start": "npm run deploy-db:prod && next start --port ${PORT:-3000}",
     "deploy-db:prod": "prisma migrate deploy && npm run seed",

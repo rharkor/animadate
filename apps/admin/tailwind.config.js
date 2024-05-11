@@ -14,7 +14,22 @@ module.exports = {
     extend: {
       colors: {
         muted: "hsl(var(--nextui-default-100))",
-        "muted-foreground": "hsl(var(--nextui-default-500))",
+        "muted-foreground": "hsl(var(--nextui-default-600))",
+      },
+      keyframes: {
+        ripple: {
+          "0%": {
+            transform: "scale(0)",
+            opacity: 0.75,
+          },
+          "100%": {
+            transform: "scale(3)",
+            opacity: 0,
+          },
+        },
+      },
+      animation: {
+        ripple: "ripple 0.5s",
       },
     },
   },
@@ -23,7 +38,14 @@ module.exports = {
     nextui({
       themes: {
         light: {
-          colors: {},
+          colors: {
+            primary: {
+              DEFAULT: "#6AD2E7",
+              900: "#D8E3E6",
+            },
+            focus: "#6AD2E7",
+            background: "#E2EFF1",
+          },
         },
         dark: {
           colors: {},

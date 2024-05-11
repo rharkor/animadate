@@ -19,6 +19,7 @@ export default function DeleteAccountButton({
 }: {
   children: React.ReactNode
   dictionary: TDictionary<typeof DeleteAccountButtonDr>
+  customButton?: boolean
 }) {
   const router = useRouter()
   const deleteAccountMutation = trpc.me.deleteAccount.useMutation({
@@ -28,15 +29,17 @@ export default function DeleteAccountButton({
     },
   })
 
-  const handleDeleteAccount = () => {
-    deleteAccountMutation.mutate()
+  const [isLoading, setIsLoading] = useState(false)
+  const handleDeleteAccount = async () => {
+    setIsLoading(true)
+    deleteAccountMutation.mutateAsync()
   }
 
   const [showModal, setShowModal] = useState(false)
 
   return (
     <>
-      <Button color="danger" isLoading={deleteAccountMutation.isLoading} onClick={() => setShowModal(true)}>
+      <Button color="danger" isLoading={isLoading} onPress={() => setShowModal(true)}>
         {children}
       </Button>
       <Modal isOpen={showModal} onOpenChange={(open) => setShowModal(open)}>
@@ -51,7 +54,7 @@ export default function DeleteAccountButton({
                 <Button onPress={onClose} variant="flat">
                   {dictionary.cancel}
                 </Button>
-                <Button color="danger" onPress={handleDeleteAccount} isLoading={deleteAccountMutation.isLoading}>
+                <Button color="danger" onPress={handleDeleteAccount} isLoading={isLoading}>
                   {dictionary.deleteAccountConfirm}
                 </Button>
               </ModalFooter>

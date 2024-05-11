@@ -1,9 +1,9 @@
 import { Dispatch, SetStateAction } from "react"
+import { Trash } from "lucide-react"
 import { UAParser } from "ua-parser-js"
 import { z } from "zod"
 
 import { sessionsSchema } from "@/api/me/schemas"
-import { Icons } from "@/components/icons"
 import { TDictionary } from "@/lib/langs"
 import { cn, getTimeBetween } from "@/lib/utils"
 import { Button, Skeleton as NSkeleton } from "@nextui-org/react"
@@ -125,7 +125,7 @@ export default function SessionRow({ session, setSelectedSession, skeleton, skel
             aria-label="delete"
             onClick={() => setSelectedSession(session.id)}
           >
-            <Icons.trash />
+            <Trash />
           </Button>
         )}
       </div>

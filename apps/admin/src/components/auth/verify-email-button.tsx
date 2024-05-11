@@ -4,7 +4,7 @@ import { Session } from "next-auth"
 import { BadgeCheck } from "lucide-react"
 import { toast } from "react-toastify"
 
-import { useAccount } from "@/contexts/account"
+import { useAccount } from "@/hooks/account"
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
 import { logger } from "@animadate/lib"
@@ -20,7 +20,7 @@ export default function VerifyEmailButton({
   dictionary: TDictionary<typeof VerifyEmailButtonDr>
 }) {
   const account = useAccount()
-  const hasVerifiedEmail = session.user.emailVerified || !!account.data?.user.emailVerified
+  const hasVerifiedEmail = session.user?.emailVerified || !!account.data?.user.emailVerified
 
   const resendVerificationEmailMutation = trpc.me.sendVerificationEmail.useMutation({
     onSuccess: () => {
@@ -29,12 +29,12 @@ export default function VerifyEmailButton({
   })
 
   const handleResendVerificationEmail = () => {
-    if (!session.user.email) {
+    if (!session.user?.email) {
       logger.error("No email found in session")
       return
     }
     resendVerificationEmailMutation.mutate({
-      email: session.user.email,
+      email: session.user?.email,
     })
   }
 
@@ -50,7 +50,7 @@ export default function VerifyEmailButton({
   return (
     <Button
       onClick={handleResendVerificationEmail}
-      isLoading={resendVerificationEmailMutation.isLoading}
+      isLoading={resendVerificationEmailMutation.isPending}
       className="flex-1 md:w-max"
       variant="flat"
       color="primary"

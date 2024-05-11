@@ -24,7 +24,7 @@ export const handleQueryError = <T extends TRPCClientErrorLike<AppRouter>>(
   }>,
   router: AppRouterInstance,
   opts: TOptions = { showNotification: true }
-): T => {
+): T & { code: string | undefined; message: string } => {
   const resp = handleApiError(error, dictionary, router)
   logger.error("Query error:", resp)
   if (opts.showNotification) {
@@ -42,7 +42,7 @@ export const handleMutationError = <T extends TRPCClientErrorLike<AppRouter>>(
   }>,
   router: AppRouterInstance,
   opts: TOptions = { showNotification: true }
-): T => {
+): T & { code: string | undefined; message: string } => {
   const resp = handleApiError(error, dictionary, router)
   logger.error("Mutation error:", resp)
   if (opts.showNotification) {
@@ -53,7 +53,12 @@ export const handleMutationError = <T extends TRPCClientErrorLike<AppRouter>>(
   return resp
 }
 
-export const getImageUrl = (imageFile: z.infer<ReturnType<typeof fileSchemaMinimal>> | undefined | null) => {
+export const getImageUrl = (
+  imageFile:
+    | Omit<z.infer<ReturnType<typeof fileSchemaMinimal>>, "id" | "createdAt" | "updatedAt" | "order">
+    | undefined
+    | null
+) => {
   if (!imageFile) {
     return imageFile
   }
@@ -61,4 +66,8 @@ export const getImageUrl = (imageFile: z.infer<ReturnType<typeof fileSchemaMinim
   const { bucket, endpoint, key } = imageFile
   if (key.startsWith("https://") || key.startsWith("http://")) return key
   return "https://" + bucket + "." + endpoint + "/" + key
+}
+
+export const getFallbackAvatar = (name: string, scale: number = 75) => {
+  return `https://api.dicebear.com/8.x/fun-emoji/svg?seed=${name}&scale=${scale}`
 }

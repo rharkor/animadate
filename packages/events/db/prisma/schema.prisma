@@ -1,0 +1,24 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/client"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("EVENTS_DATABASE_PRISMA_URL") // uses connection pooling
+  directUrl = env("EVENTS_DATABASE_URL_NON_POOLING") // uses a direct connection
+}
+
+model Event {
+  id      String @id @default(cuid())
+  name    String
+  kind    String
+  level   String
+  data    Json?
+  context Json?
+
+  createdAt DateTime @default(now())
+}

@@ -1,21 +1,28 @@
 import { z } from "zod"
 
-import { updateUserResponseSchema, updateUserSchema } from "@/api/me/schemas"
+import { needHelpResponseSchema, needHelpSchema, updateUserResponseSchema, updateUserSchema } from "@/api/me/schemas"
 import { rolesAsObject } from "@/constants"
+import { logoUrl } from "@/constants/medias"
 import { env } from "@/lib/env"
+import { i18n, Locale } from "@/lib/i18n-config"
+import { _getDictionary } from "@/lib/langs"
+import { sendMail } from "@/lib/mailer"
 import { prisma } from "@/lib/prisma"
+import rateLimiter from "@/lib/rate-limit"
 import { s3Client } from "@/lib/s3"
 import { ApiError } from "@/lib/utils/server-utils"
 import { ensureLoggedIn, handleApiError } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
-import { DeleteObjectCommand } from "@aws-sdk/client-s3"
+import NeedHelpConfirmationTemplate from "@animadate/emails/emails/need-help-confirmation"
+import NeedHelpSupportTemplate from "@animadate/emails/emails/need-help-support"
 import { logger } from "@animadate/lib"
-import { Prisma } from "@/generated/client"
+import { DeleteObjectCommand } from "@aws-sdk/client-s3"
+import { render } from "@react-email/render"
 
 export const updateUser = async ({ input, ctx: { session } }: apiInputFromSchema<typeof updateUserSchema>) => {
   ensureLoggedIn(session)
   try {
-    const { username, profilePictureKey } = input
+    const { name, profilePictureKey } = input
 
     const user = await prisma.user.findUnique({
       where: {
@@ -73,7 +80,7 @@ export const updateUser = async ({ input, ctx: { session } }: apiInputFromSchema
     const updatedUser = await prisma.user.update({
       where: { id: session.user.id },
       data: {
-        username,
+        name,
         profilePicture:
           profilePicture !== undefined && profilePicture !== null
             ? {
@@ -94,14 +101,6 @@ export const updateUser = async ({ input, ctx: { session } }: apiInputFromSchema
     }
     return data
   } catch (error: unknown) {
-    if (error instanceof Prisma.PrismaClientKnownRequestError) {
-      if (error.code === "P2002") {
-        const meta = error.meta
-        if ((meta?.target as Array<string>).includes("username")) {
-          return ApiError("username.exist")
-        }
-      }
-    }
     return handleApiError(error)
   }
 }
@@ -133,6 +132,88 @@ export const deleteAccount = async ({ ctx: { session } }: apiInputFromSchema<und
     })
 
     return { user }
+  } catch (error: unknown) {
+    return handleApiError(error)
+  }
+}
+
+export const needHelp = async ({ input, ctx: { session } }: apiInputFromSchema<typeof needHelpSchema>) => {
+  ensureLoggedIn(session)
+  try {
+    const { message, email, name, locale: localeWanted } = input
+    //* Rate limit (5 requests per day)
+    const { success } = await rateLimiter(`need-help:${session.user.id}`, 5, 60 * 60 * 24)
+    if (!success) {
+      return ApiError("tooManyRequests", "TOO_MANY_REQUESTS")
+    }
+
+    //* Mail to the support
+    const supportDictionary = await _getDictionary("transactionals", "en", {
+      footer: true,
+      needHelpRequest: true,
+      needSHelp: true,
+    })
+    const supportElement = NeedHelpSupportTemplate({
+      footerText: supportDictionary.footer,
+      logoUrl,
+      message,
+      previewText: supportDictionary.needHelpRequest,
+      supportEmail: env.SUPPORT_EMAIL,
+      titleText: supportDictionary.needSHelp,
+      user: {
+        email,
+        name,
+        id: session.user.id,
+      },
+    })
+    const supportText = render(supportElement, {
+      plainText: true,
+    })
+    const supportHtml = render(supportElement)
+    await sendMail({
+      from: `"${env.SMTP_FROM_NAME}" <${env.SMTP_FROM_EMAIL}>`,
+      to: env.SUPPORT_EMAIL,
+      subject: supportDictionary.needHelpRequest,
+      replyTo: email,
+      text: supportText,
+      html: supportHtml,
+    })
+
+    //* Mail to the user
+    const locale = i18n.locales.includes(localeWanted) ? (localeWanted as Locale) : i18n.defaultLocale
+    const confirmationDictionary = await _getDictionary("transactionals", locale, {
+      hey: true,
+      messageWillGetBack: true,
+      yourRequestHasBeenSent: true,
+      footer: true,
+    })
+    const confirmationElement = NeedHelpConfirmationTemplate({
+      contentTitle: confirmationDictionary.messageWillGetBack,
+      footerText: confirmationDictionary.footer,
+      heyText: confirmationDictionary.hey,
+      logoUrl,
+      name,
+      previewText: confirmationDictionary.yourRequestHasBeenSent,
+      supportEmail: env.SUPPORT_EMAIL,
+      titleText: confirmationDictionary.yourRequestHasBeenSent,
+    })
+    const confirmationText = render(confirmationElement, {
+      plainText: true,
+    })
+    const confirmationHtml = render(confirmationElement)
+
+    await sendMail({
+      from: `"${env.SMTP_FROM_NAME}" <${env.SMTP_FROM_EMAIL}>`,
+      to: email,
+      subject: confirmationDictionary.yourRequestHasBeenSent,
+      text: confirmationText,
+      html: confirmationHtml,
+    })
+
+    const data: z.infer<ReturnType<typeof needHelpResponseSchema>> = {
+      success: true,
+    }
+    return data
   } catch (error: unknown) {
     return handleApiError(error)
   }

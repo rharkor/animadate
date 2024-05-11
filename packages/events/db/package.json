@@ -1,0 +1,19 @@
+{
+  "name": "@animadate/events-db",
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
+    "prettier": "prettier --check \"**/*.{js,jsx,ts,tsx}\"",
+    "prettier:fix": "prettier --write \"**/*.{js,jsx,ts,tsx}\"",
+    "postinstall": "prisma generate"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "@animadate/lib": "*",
+    "custom-prettier-config": "*",
+    "eslint-config-custom": "*",
+    "prisma": "^5.12.1",
+    "@prisma/client": "^5.12.1"
+  },
+  "type": "module"
+}

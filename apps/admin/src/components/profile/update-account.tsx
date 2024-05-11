@@ -6,12 +6,12 @@ import { useForm } from "react-hook-form"
 import * as z from "zod"
 
 import { updateUserSchema } from "@/api/me/schemas"
-import { useAccount } from "@/contexts/account"
+import { useAccount } from "@/hooks/account"
 import { env } from "@/lib/env"
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
-import { zodResolver } from "@hookform/resolvers/zod"
 import { logger } from "@animadate/lib"
+import { zodResolver } from "@hookform/resolvers/zod"
 
 import FormField from "../ui/form"
 import NeedSavePopup from "../ui/need-save-popup"
@@ -49,7 +49,7 @@ export default function UpdateAccount({
       await update()
       utils.me.getAccount.invalidate()
       form.reset({
-        username: data.user.username ?? "",
+        name: data.user.name ?? "",
       })
     },
   })
@@ -59,13 +59,13 @@ export default function UpdateAccount({
   const form = useForm<INonSensibleForm>({
     resolver: zodResolver(nonSensibleSchema(dictionary)),
     values: {
-      username: account.data?.user.username || "",
+      name: account.data?.user.name || "",
     },
   })
 
   const resetForm = useCallback(() => {
     form.reset({
-      username: account.data?.user.username ?? "",
+      name: account.data?.user.name ?? "",
     })
   }, [account.data?.user, form])
 
@@ -88,16 +88,15 @@ export default function UpdateAccount({
           <form onSubmit={form.handleSubmit(onUpdateNonSensibleInforation)} className="grid gap-2">
             <FormField
               form={form}
-              name="username"
-              label={dictionary.profilePage.profileDetails.username.label}
+              name="name"
+              label={dictionary.auth.name}
               type="text"
-              autoComplete="off"
-              isDisabled={updateUserMutation.isLoading || account.isLoading || !hasVerifiedEmail}
+              isDisabled={updateUserMutation.isPending || account.isLoading || !hasVerifiedEmail}
             />
             <NeedSavePopup
               show={isNotSensibleInformationsUpdated}
               onReset={resetForm}
-              isSubmitting={updateUserMutation.isLoading}
+              isSubmitting={updateUserMutation.isPending}
               text={dictionary.needSavePopup}
               dictionary={dictionary}
             />
