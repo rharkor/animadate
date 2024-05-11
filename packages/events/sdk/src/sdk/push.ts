@@ -21,7 +21,7 @@ export const pushEvent = async (params: TPushEvent) => {
       throw new Error(`Failed to push event: ${text}`)
     }
   } catch (error) {
-    logger.error("Failed to push event", error)
+    logger.error("Failed to push event with params:", params)
     console.error(error)
   }
 }

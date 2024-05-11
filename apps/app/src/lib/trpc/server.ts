@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation"
 
 import { authRoutes } from "@/constants/auth"
+import { logger } from "@animadate/lib"
 import { TRPCError } from "@trpc/server"
 
 import { appRouter } from "../../api/_app"
@@ -47,7 +48,6 @@ export const handleServerError = async <T>(promise: Promise<T>): Promise<T> => {
   try {
     return await promise
   } catch (error) {
-    console.error(error)
     //? if error code is NEXT_REDIRECT
     if (error instanceof Error && error.message === "NEXT_REDIRECT") {
       throw error
@@ -64,6 +64,7 @@ export const handleServerError = async <T>(promise: Promise<T>): Promise<T> => {
       } catch (e) {}
       redirect(authRoutes.redirectOnUnhauthorized)
     }
+    logger.error(error)
     throw error
   }
 }
