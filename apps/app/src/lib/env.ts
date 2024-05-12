@@ -18,6 +18,8 @@ export const env = createEnv({
     PASSWORD_HASHER_SECRET: z.string(),
     APP_DATABASE_PRISMA_URL: z.string().min(1),
     APP_DATABASE_URL_NON_POOLING: z.string().optional(),
+    EVENTS_DATABASE_PRISMA_URL: z.string().min(1),
+    EVENTS_DATABASE_URL_NON_POOLING: z.string().optional(),
     AUTH_SECRET: z.string(),
     AUTH_URL: z.string().optional(),
     AUTH_TRUST_HOST: z.string().optional(),
@@ -59,6 +61,7 @@ export const env = createEnv({
       .enum(["true", "false"])
       .optional()
       .transform((value) => value === "true"),
+    EVENTS_API_URL: z.string().url(),
   },
   client: {
     NEXT_PUBLIC_BASE_URL: z.string().url().optional(),
@@ -80,6 +83,8 @@ export const env = createEnv({
     PASSWORD_HASHER_SECRET: process.env.PASSWORD_HASHER_SECRET,
     APP_DATABASE_PRISMA_URL: process.env.APP_DATABASE_PRISMA_URL,
     APP_DATABASE_URL_NON_POOLING: process.env.APP_DATABASE_URL_NON_POOLING,
+    EVENTS_DATABASE_PRISMA_URL: process.env.EVENTS_DATABASE_PRISMA_URL,
+    EVENTS_DATABASE_URL_NON_POOLING: process.env.EVENTS_DATABASE_URL_NON_POOLING,
     AUTH_SECRET: process.env.AUTH_SECRET,
     AUTH_URL: process.env.AUTH_URL,
     AUTH_TRUST_HOST: process.env.AUTH_TRUST_HOST,
@@ -113,6 +118,7 @@ export const env = createEnv({
     NEXT_PUBLIC_S3_ENDPOINT: process.env.NEXT_PUBLIC_S3_ENDPOINT,
     ENABLE_S3_SERVICE: process.env.ENABLE_S3_SERVICE,
     DISABLE_REGISTRATION: process.env.DISABLE_REGISTRATION,
+    EVENTS_API_URL: process.env.EVENTS_API_URL,
   },
   onValidationError: (error) => {
     logger.error(error)

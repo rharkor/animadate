@@ -1,9 +1,9 @@
 import { exit } from "process"
 
-import { Prisma } from "@/generated/client"
 import { env } from "@/lib/env"
 import { prisma } from "@/lib/prisma"
 import { s3Client as _s3Client } from "@/lib/s3"
+import { Prisma } from "@animadate/app-db/generated/client"
 import { chunk, logger } from "@animadate/lib"
 import { DeleteObjectCommand } from "@aws-sdk/client-s3"
 

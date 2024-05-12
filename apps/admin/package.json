@@ -2,7 +2,7 @@
   "name": "@animadate/admin",
   "license": "MIT",
   "scripts": {
-    "dev": "npm run -s is-initialized && npm run -s migration:dev && cross-env FORCE_COLOR=1 next dev --turbo",
+    "dev": "npm run -s is-initialized && npm run -s migration:dev && cross-env FORCE_COLOR=1 next dev --turbo --port ${PORT:-3003}",
     "build": "next build",
     "start": "npm run deploy-db:prod && next start --port ${PORT:-3000}",
     "migration:dev": "prisma migrate dev --schema=../../packages/app/db/prisma/schema.prisma && prisma migrate dev --schema=../../packages/events/db/prisma/schema.prisma",
@@ -21,7 +21,6 @@
     "@animadate/lib": "*",
     "@animadate/scripts": "*",
     "@animadate/tsconfig": "*",
-    "@animadate/events-sdk": "*",
     "@animadate/app-db": "*",
     "@animadate/events-db": "*",
     "@auth/prisma-adapter": "^2.0.0",

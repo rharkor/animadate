@@ -10,6 +10,7 @@ config()
 export const env = createEnv({
   server: {
     ENV: z.enum(["development", "staging", "preproduction", "production"]).optional(),
+    EVENTS_API_URL: z.string().url(),
   },
   runtimeEnv: process.env,
   emptyStringAsUndefined: true,
