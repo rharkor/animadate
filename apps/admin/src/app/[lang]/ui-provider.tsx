@@ -8,7 +8,7 @@ export default function UIProvider({ children }: { children: React.ReactNode }) 
   const router = useRouter()
 
   return (
-    <NextUIProvider navigate={router.push} className="flex h-full flex-col">
+    <NextUIProvider navigate={router.push} className="flex h-full flex-row">
       {children}
     </NextUIProvider>
   )

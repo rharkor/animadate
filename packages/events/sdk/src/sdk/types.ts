@@ -4,7 +4,7 @@ import { isLevelEnabled } from "@/lib/level"
 
 export const PushEventSchema = z.object({
   name: z.string(),
-  kind: z.enum(["AUTHENTICATION", "MAILING", "NOTIFICATION", "PROFILE", "SECURITY", "PET", "MATCH"]),
+  kind: z.enum(["AUTHENTICATION", "MAILING", "NOTIFICATION", "PROFILE", "SECURITY", "PET", "MATCH", "OTHER"]),
   level: z.enum(["DEBUG", "INFO", "WARNING", "ERROR"]).refine(
     (value) => {
       const enabled = isLevelEnabled(value)

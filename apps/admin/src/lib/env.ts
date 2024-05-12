@@ -23,8 +23,6 @@ export const env = createEnv({
     AUTH_SECRET: z.string(),
     AUTH_URL: z.string().optional(),
     AUTH_TRUST_HOST: z.string().optional(),
-    GITHUB_CLIENT_ID: z.string().min(1),
-    GITHUB_CLIENT_SECRET: z.string().min(1),
     AUTH_ADMIN_EMAIL: z.string().min(1),
     AUTH_ADMIN_PASSWORD: z.string().min(1),
     REDIS_HOST: z.string().optional(),
@@ -61,6 +59,7 @@ export const env = createEnv({
       .enum(["true", "false"])
       .optional()
       .transform((value) => value === "true"),
+    EVENTS_API_URL: z.string().url(),
   },
   client: {
     NEXT_PUBLIC_BASE_URL: z.string().url().optional(),
@@ -87,8 +86,6 @@ export const env = createEnv({
     AUTH_SECRET: process.env.AUTH_SECRET,
     AUTH_URL: process.env.AUTH_URL,
     AUTH_TRUST_HOST: process.env.AUTH_TRUST_HOST,
-    GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID,
-    GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET,
     AUTH_ADMIN_EMAIL: process.env.AUTH_ADMIN_EMAIL,
     AUTH_ADMIN_PASSWORD: process.env.AUTH_ADMIN_PASSWORD,
     REDIS_HOST: process.env.REDIS_HOST,
@@ -117,6 +114,7 @@ export const env = createEnv({
     NEXT_PUBLIC_S3_ENDPOINT: process.env.NEXT_PUBLIC_S3_ENDPOINT,
     ENABLE_S3_SERVICE: process.env.ENABLE_S3_SERVICE,
     DISABLE_REGISTRATION: process.env.DISABLE_REGISTRATION,
+    EVENTS_API_URL: process.env.EVENTS_API_URL,
   },
   onValidationError: (error) => {
     logger.error(error)

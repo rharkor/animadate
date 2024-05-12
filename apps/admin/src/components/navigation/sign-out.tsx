@@ -12,7 +12,7 @@ import { trpc } from "@/lib/trpc/client"
 import { logger } from "@animadate/lib"
 import { Spinner } from "@nextui-org/react"
 
-import Row from "./row"
+import SideBarItem from "./side-bar-item"
 import { SignOutDr } from "./sign-out.dr"
 
 export default function SignOut({ dictionary }: { dictionary: TDictionary<typeof SignOutDr> }) {
@@ -45,13 +45,17 @@ export default function SignOut({ dictionary }: { dictionary: TDictionary<typeof
   }
 
   return (
-    <Row placement="center" className="text-danger hover:!bg-danger-100" color="danger" onPress={handleSignOut}>
-      {signOutLoading ? (
-        <Spinner classNames={{ wrapper: "size-5" }} color="current" size="sm" />
-      ) : (
-        <LogOut className="size-5" />
-      )}
+    <SideBarItem
+      onPress={handleSignOut}
+      icon={
+        signOutLoading ? (
+          <Spinner classNames={{ wrapper: "size-6" }} color="current" size="sm" />
+        ) : (
+          <LogOut className="size-6" />
+        )
+      }
+    >
       {dictionary.signOut}
-    </Row>
+    </SideBarItem>
   )
 }

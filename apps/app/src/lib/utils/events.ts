@@ -2,6 +2,13 @@ import requestIp from "request-ip"
 
 import { Session } from "@/types/auth"
 
+export const getDefaultContext = () => {
+  return {
+    app: "app",
+    date: new Date().toISOString(),
+  }
+}
+
 export const getContext = ({ req, session }: { req: Request; session: Session | null }) => {
   const headers: Record<string, string> = {}
   req.headers.forEach((value, key) => {
@@ -16,8 +23,7 @@ export const getContext = ({ req, session }: { req: Request; session: Session | 
     session,
   }
   return {
-    app: "app",
-    date: new Date().toISOString(),
+    ...getDefaultContext(),
     extended,
   }
 }

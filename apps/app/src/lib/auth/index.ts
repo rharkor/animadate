@@ -1,6 +1,5 @@
 import NextAuth, { Session } from "next-auth"
 import Credentials from "next-auth/providers/credentials"
-import GithubProvider from "next-auth/providers/github"
 import { Provider } from "next-auth/providers/index"
 import { randomUUID } from "crypto"
 import * as OTPAuth from "otpauth"
@@ -175,14 +174,14 @@ export const providers: Provider[] = [
   }),
 ]
 
-if (env.DISABLE_REGISTRATION !== true) {
-  providers.push(
-    GithubProvider({
-      clientId: env.GITHUB_CLIENT_ID,
-      clientSecret: env.GITHUB_CLIENT_SECRET,
-    })
-  )
-}
+// if (env.DISABLE_REGISTRATION !== true) {
+//   providers.push(
+//     GithubProvider({
+//       clientId: env.GITHUB_CLIENT_ID,
+//       clientSecret: env.GITHUB_CLIENT_SECRET,
+//     })
+//   )
+// }
 
 export const providersByName: {
   [key: string]: Provider | undefined

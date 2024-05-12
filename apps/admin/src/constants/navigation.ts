@@ -1,4 +1,4 @@
-import { Bell, Flame, LucideIcon, Map } from "lucide-react"
+import { Home, LucideIcon, ScrollText } from "lucide-react"
 
 import { TDictionary } from "@/lib/langs"
 
@@ -6,7 +6,7 @@ export type TRoute = {
   id: string
   name: string
   route: string
-  icon?: LucideIcon
+  icon: LucideIcon
   isActive: boolean
 }
 
@@ -18,29 +18,16 @@ export const routes: (
 ) => TRoute[] = (dictionary, pathname) => [
   {
     id: "home",
-    name: dictionary.nav.match,
+    name: dictionary.nav.home,
     route: "/",
-    icon: Flame,
+    icon: Home,
     isActive: pathname.match(/^\/[a-z]+\/?$/) !== null,
   },
   {
-    id: "activities",
-    name: dictionary.nav.activities,
-    route: "/activities",
-    icon: Map,
-    isActive: pathname.match(/^\/[a-z]+\/activities\/?$/) !== null,
-  },
-  {
-    id: "notifications",
-    name: dictionary.nav.notifications,
-    route: "/notifications",
-    icon: Bell,
-    isActive: pathname.match(/^\/[a-z]+\/notifications\/?$/) !== null,
-  },
-  {
-    id: "profile",
-    name: dictionary.nav.profile,
-    route: "/profile",
-    isActive: pathname.match(/^\/[a-z]+\/profile\/?/) !== null,
+    id: "events",
+    name: dictionary.nav.events,
+    route: "/events",
+    icon: ScrollText,
+    isActive: pathname.match(/^\/[a-z]+\/events\/?$/) !== null,
   },
 ]

@@ -1,11 +1,13 @@
 import { redirect } from "next/navigation"
 
 import { authRoutes } from "@/constants/auth"
+import events from "@animadate/events-sdk"
 import { logger } from "@animadate/lib"
 import { TRPCError } from "@trpc/server"
 
 import { appRouter } from "../../api/_app"
 import { createCallerFactory } from "../server/trpc"
+import { getDefaultContext } from "../utils/events"
 import { TErrorMessage } from "../utils/server-utils"
 
 import { createContext } from "./context"
@@ -37,14 +39,23 @@ function createRecursiveProxy(path: string[] = []): RecursiveProxy {
     },
     apply(target, thisArg, args) {
       //* Call the server trpc function
-      return handleServerError(resolvePath(_serverTrpc, path)(...args))
+      return handleServerError(resolvePath(_serverTrpc, path)(...args), {
+        path,
+      })
     },
   }) as RecursiveProxy
 }
 
 export const serverTrpc = createRecursiveProxy() as unknown as typeof _serverTrpc
 
-export const handleServerError = async <T>(promise: Promise<T>): Promise<T> => {
+export const handleServerError = async <T>(
+  promise: Promise<T>,
+  {
+    path,
+  }: {
+    path: string[]
+  }
+): Promise<T> => {
   try {
     return await promise
   } catch (error) {
@@ -65,6 +76,17 @@ export const handleServerError = async <T>(promise: Promise<T>): Promise<T> => {
       redirect(authRoutes.redirectOnUnhauthorized)
     }
     logger.error(error)
+    const errorParsed = error instanceof Error ? error.message : error
+    events.push({
+      kind: "OTHER",
+      level: "ERROR",
+      name: "handleServerError",
+      data: {
+        path: path.join("."),
+        error: errorParsed,
+      },
+      context: getDefaultContext(),
+    })
     throw error
   }
 }
