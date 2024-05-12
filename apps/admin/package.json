@@ -23,6 +23,7 @@
     "@animadate/tsconfig": "*",
     "@animadate/app-db": "*",
     "@animadate/events-db": "*",
+    "@animadate/events-sdk": "*",
     "@auth/prisma-adapter": "^2.0.0",
     "@aws-sdk/client-s3": "^3.454.0",
     "@aws-sdk/s3-presigned-post": "^3.454.0",

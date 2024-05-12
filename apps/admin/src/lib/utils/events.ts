@@ -16,7 +16,7 @@ export const getContext = ({ req, session }: { req: Request; session: Session | 
     session,
   }
   return {
-    app: "app",
+    app: "admin",
     date: new Date().toISOString(),
     extended,
   }

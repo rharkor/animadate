@@ -13,6 +13,7 @@ import { authCookieName, authRoutes, SESSION_MAX_AGE } from "@/constants/auth"
 import { env } from "@/lib/env"
 import { i18n } from "@/lib/i18n-config"
 import { ITrpcContext } from "@/types"
+import events from "@animadate/events-sdk"
 import { logger } from "@animadate/lib"
 import { PrismaAdapter } from "@auth/prisma-adapter"
 import type { PrismaClient } from "@prisma/client"
@@ -25,6 +26,7 @@ import { prisma } from "../prisma"
 import { redis } from "../redis"
 import { ensureRelativeUrl } from "../utils"
 import { dictionaryRequirements } from "../utils/dictionary"
+import { getContext } from "../utils/events"
 
 export const providers: Provider[] = [
   Credentials({
@@ -84,6 +86,16 @@ export const providers: Provider[] = [
 
       if (!user) {
         logger.debug("User not found", creds.email)
+        events.push({
+          name: "signIn",
+          kind: "AUTHENTICATION",
+          level: "INFO",
+          context: getContext({ req, session: null }),
+          data: {
+            email: creds.email,
+            error: "User not found",
+          },
+        })
         return null
       }
 
@@ -96,6 +108,16 @@ export const providers: Provider[] = [
 
       if (!isValidPassword) {
         logger.debug("Invalid password", user.id)
+        events.push({
+          name: "signIn",
+          kind: "AUTHENTICATION",
+          level: "INFO",
+          context: getContext({ req, session: null }),
+          data: {
+            email: creds.email,
+            error: "Invalid password",
+          },
+        })
         return null
       }
 
@@ -139,6 +161,15 @@ export const providers: Provider[] = [
         hasPassword: user.hasPassword,
         lastLocale: user.lastLocale,
       }
+      events.push({
+        name: "signIn",
+        kind: "AUTHENTICATION",
+        level: "INFO",
+        context: getContext({ req, session: null }),
+        data: {
+          session,
+        },
+      })
       return session
     },
   }),

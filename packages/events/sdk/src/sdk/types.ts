@@ -16,7 +16,11 @@ export const PushEventSchema = z.object({
     }
   ),
   data: z.record(z.any()).optional(),
-  context: z.record(z.any()).optional(),
+  context: z.object({
+    app: z.string(),
+    date: z.string(),
+    extended: z.record(z.any()).optional(),
+  }),
 })
 export type TPushEvent = z.infer<typeof PushEventSchema>
 
