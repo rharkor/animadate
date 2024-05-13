@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { usePathname } from "next/navigation"
 import { Menu, X } from "lucide-react"
 
@@ -22,6 +22,10 @@ export default function SideBar({ dictionary }: { dictionary: TDictionary<typeof
   const resolvedRoutes = routes(dictionary, pathname)
 
   const [isOpen, setIsOpen] = useState(false)
+
+  useEffect(() => {
+    setIsOpen(false)
+  }, [pathname])
 
   return (
     <>

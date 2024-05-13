@@ -269,5 +269,9 @@
   "secret": "Secret",
   "actions": "Actions",
   "deleteKey": "Supprimer la clé",
-  "deleteKeyDescription": "Êtes-vous sûr de vouloir supprimer cette clé API ? Cette action est irréversible."
+  "deleteKeyDescription": "Êtes-vous sûr de vouloir supprimer cette clé API ? Cette action est irréversible.",
+  "eventsList": "Liste des événements",
+  "kind": "Type",
+  "level": "Niveau",
+  "date": "Date"
 }

@@ -19,12 +19,9 @@ export const getApiKeys = async ({ input }: apiInputFromSchema<typeof getApiKeys
     const orderBy: Prisma.ApiKeyOrderByWithRelationInput[] = await Promise.all(
       sort.map(async (s) => {
         const { direction, field } = s
-        const allowedFields = ["name", "lastUsedAt", "createdAt"]
+        const allowedFields = ["name", "createdAt"]
         if (!allowedFields.includes(field)) {
           await ApiError("invalidSortField")
-        }
-        if (field === "lastUsedAt") {
-          return {}
         }
         return {
           [field]: direction,
@@ -45,13 +42,6 @@ export const getApiKeys = async ({ input }: apiInputFromSchema<typeof getApiKeys
       ...k,
       lastUsedAt: lastUsedAts[i] ? new Date(parseInt(lastUsedAts[i] as string)) : null,
     }))
-
-    // Apply sort for lastUsedAt
-    apiKeysWithLastUsed.sort((a, b) => {
-      const aDate = a.lastUsedAt?.getTime() ?? 0
-      const bDate = b.lastUsedAt?.getTime() ?? 0
-      return aDate - bDate
-    })
 
     const res: z.infer<ReturnType<typeof getApiKeysResponseSchema>> = {
       data: apiKeysWithLastUsed,

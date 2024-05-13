@@ -59,6 +59,8 @@ let config = {
       { hostname: "animadate-public.s3.fr-par.scw.cloud" },
     ],
   },
+  //? See: https://github.com/vercel/next.js/issues/63318#issuecomment-2079677098
+  transpilePackages: ["shiki"],
 }
 
 config = process.env.ANALYZE === "true" ? bunldeAnalyzer()(config) : config

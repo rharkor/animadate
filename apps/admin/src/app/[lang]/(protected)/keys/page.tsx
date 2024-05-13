@@ -22,7 +22,7 @@ export default async function Home({
   const perPage = 10
   const sort = [
     {
-      field: "lastUsedAt",
+      field: "createdAt",
       direction: "desc",
     } as const,
   ]

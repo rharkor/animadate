@@ -76,11 +76,14 @@ export const handleServerError = async <T>(
       redirect(authRoutes.redirectOnUnhauthorized)
     }
     logger.error(error)
-    const errorParsed = error instanceof Error ? error.message : error
+    let errorParsed = error instanceof Error ? error.message : error
+    try {
+      errorParsed = JSON.parse(errorParsed as string)
+    } catch (e) {}
     events.push({
       kind: "OTHER",
       level: "ERROR",
-      name: "handleServerError",
+      name: "Unhandled error in trpc server",
       data: {
         path: path.join("."),
         error: errorParsed,
