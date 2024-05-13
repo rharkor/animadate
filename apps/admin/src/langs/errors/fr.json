@@ -1,4 +1,5 @@
 {
+  "invalidSortField": "Champ de tri invalide.",
   "invalidPassword": "Mot de passe invalide.",
   "tokenInvalid": "Code de vérification invalide.",
   "alreadyYourEmail": "C'est déjà votre email.",

@@ -15,8 +15,8 @@ export default async function Home({
   })
 
   return (
-    <main className="container m-auto flex flex-1 flex-col items-center justify-center gap-3">
+    <>
       <h1 className="text-4xl font-bold">{dictionary.homePage.title}</h1>
-    </main>
+    </>
   )
 }

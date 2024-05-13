@@ -17,6 +17,7 @@ export default function Copiable({
   dictionary,
   children,
   onClick,
+  size,
 }: {
   text: string | undefined
   isDisabled?: boolean
@@ -30,6 +31,7 @@ export default function Copiable({
   dictionary: TDictionary<typeof CopiableDr>
   children?: React.ReactNode
   onClick?: (textRef: React.RefObject<HTMLParagraphElement>) => void
+  size?: "sm" | "md"
 }) {
   const [isCopied, setIsCopied] = useState(false)
   const [isTooltipOpen, setIsTooltipOpen] = useState(false)
@@ -62,6 +64,7 @@ export default function Copiable({
           "block cursor-pointer rounded-small border border-foreground-300/20 bg-foreground-200/20 p-[3px] px-2 text-xs",
           {
             "pointer-events-none text-muted-foreground": isDisabled,
+            "text-sm": size === "md",
           },
           className,
           classNames?.text
@@ -81,6 +84,9 @@ export default function Copiable({
           className={cn(
             "block h-max min-h-[24px] min-w-0 cursor-pointer rounded-small border border-foreground-300/20 bg-[unset] p-1 px-3",
             "focus:border-primary focus:bg-foreground-200/20 focus:!outline-0",
+            {
+              "min-h-[28px]": size === "md",
+            },
             classNames?.button
           )}
           isDisabled={isDisabled}
@@ -88,7 +94,15 @@ export default function Copiable({
             copyToClipboard(text)
           }}
         >
-          <ClipboardList className={cn("size-3.5", classNames?.icon)} />
+          <ClipboardList
+            className={cn(
+              "size-3.5",
+              {
+                "size-4": size === "md",
+              },
+              classNames?.icon
+            )}
+          />
         </Button>
       </Tooltip>
     </div>

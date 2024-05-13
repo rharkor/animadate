@@ -24,7 +24,9 @@ model Event {
 }
 
 model ApiKey {
-  id        String   @id @default(cuid())
-  key       String   @unique
-  createdAt DateTime @default(now())
+  id        String    @id @default(cuid())
+  name      String
+  key       String    @unique
+  firstUsed DateTime?
+  createdAt DateTime  @default(now())
 }

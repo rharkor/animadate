@@ -60,7 +60,8 @@ export const env = createEnv({
       .optional()
       .transform((value) => value === "true"),
     EVENTS_API_URL: z.string().url(),
-    EVENTS_API_KEY: z.string().min(1),
+    EVENTS_API_KEY_ID: z.string().min(1),
+    EVENTS_API_KEY_SECRET: z.string().min(1),
     DISABLE_EVENTS_PUSH: z
       .enum(["true", "false"])
       .optional()
@@ -120,7 +121,8 @@ export const env = createEnv({
     ENABLE_S3_SERVICE: process.env.ENABLE_S3_SERVICE,
     DISABLE_REGISTRATION: process.env.DISABLE_REGISTRATION,
     EVENTS_API_URL: process.env.EVENTS_API_URL,
-    EVENTS_API_KEY: process.env.EVENTS_API_KEY,
+    EVENTS_API_KEY_ID: process.env.EVENTS_API_KEY_ID,
+    EVENTS_API_KEY_SECRET: process.env.EVENTS_API_KEY_SECRET,
     DISABLE_EVENTS_PUSH: process.env.DISABLE_EVENTS_PUSH,
   },
   onValidationError: (error) => {

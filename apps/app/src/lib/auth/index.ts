@@ -320,7 +320,7 @@ export const nextAuth = NextAuth({
     },
     error(error) {
       const { name, message } = error
-      if (["CredentialsSignin"].includes(name)) return
+      if (["CredentialsSignin", "JWTSessionError"].includes(name)) return
       logger.error("Next auth error", name, message)
     },
   },

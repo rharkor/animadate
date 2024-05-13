@@ -31,10 +31,10 @@ export const routes: (
     isActive: pathname.match(/^\/[a-z]+\/events\/?$/) !== null,
   },
   {
-    id: "api-keys",
+    id: "keys",
     name: dictionary.nav.apiKeys,
-    route: "/api-keys",
+    route: "/keys",
     icon: KeyRound,
-    isActive: pathname.match(/^\/[a-z]+\/api-keys\/?$/) !== null,
+    isActive: pathname.match(/^\/[a-z]+\/keys\/?$/) !== null,
   },
 ]

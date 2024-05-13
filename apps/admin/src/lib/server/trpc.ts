@@ -1,16 +1,19 @@
 import { headers } from "next/headers"
 import { NextResponse } from "next/server"
 import { Session } from "next-auth"
-import jwt from "jsonwebtoken"
 import superjson from "superjson"
 import { ZodError } from "zod"
 
 import { getAuthApi } from "@/components/auth/require-auth"
+import { getRedisApiKeyExists, getRedisApiKeyLastUsed } from "@/constants/auth"
 import { env } from "@/lib/env"
 import { User } from "@animadate/app-db/generated/client"
 import { initTRPC } from "@trpc/server"
 
+import { bcryptCompare } from "../bcrypt"
+import { eventsPrisma } from "../prisma/events"
 import { apiRateLimiter } from "../rate-limit"
+import { eventsRedis } from "../redis"
 import { Context } from "../trpc/context"
 import { ApiError } from "../utils/server-utils"
 
@@ -78,14 +81,18 @@ export const authenticatedProcedure = publicProcedure.use(isAuthenticated).use(h
 export const authenticatedNoEmailVerificationProcedure = publicProcedure.use(isAuthenticated)
 
 export const ensureApiAuth = async (_headers?: Headers) => {
-  let authorization: string | null
+  let apiKey: { id: string | null; secret: string | null } = { id: null, secret: null }
   if (!_headers) {
     const headersStore = headers()
-    authorization = headersStore.get("authorization")
+    const id = headersStore.get("x-api-key-id")
+    const secret = headersStore.get("x-api-key-secret")
+    apiKey = { id, secret }
   } else {
-    authorization = _headers.get("authorization")
+    const id = _headers.get("x-api-key-id")
+    const secret = _headers.get("x-api-key-secret")
+    apiKey = { id, secret }
   }
-  if (!authorization) {
+  if (!apiKey.id) {
     if (!_headers) {
       await ApiError("unauthorized", "UNAUTHORIZED")
       throw new Error("unauthorized")
@@ -93,25 +100,22 @@ export const ensureApiAuth = async (_headers?: Headers) => {
       return NextResponse.json(
         {
           code: "UNAUTHORIZED",
-          message: "Authorization header is missing",
+          message: "Api key id header is missing",
         },
         {
           status: 401,
         }
       )
     }
-  }
-  const token = authorization.split(" ")[1]
-  try {
-    jwt.verify(token, env.AUTH_SECRET)
-  } catch (error) {
+  } else if (!apiKey.secret) {
     if (!_headers) {
       await ApiError("unauthorized", "UNAUTHORIZED")
+      throw new Error("unauthorized")
     } else {
       return NextResponse.json(
         {
           code: "UNAUTHORIZED",
-          message: "Invalid token",
+          message: "Api key secret header is missing",
         },
         {
           status: 401,
@@ -119,6 +123,70 @@ export const ensureApiAuth = async (_headers?: Headers) => {
       )
     }
   }
+
+  //* Check if token is valid
+  const keyFromRedis = await eventsRedis.get(getRedisApiKeyExists(apiKey.id))
+  if (keyFromRedis) {
+    const keyMatch = await bcryptCompare(apiKey.secret, keyFromRedis)
+    if (!keyMatch) {
+      if (!_headers) {
+        await ApiError("unauthorized", "UNAUTHORIZED")
+        throw new Error("unauthorized")
+      } else {
+        return NextResponse.json(
+          {
+            code: "UNAUTHORIZED",
+            message: "Invalid token",
+          },
+          {
+            status: 401,
+          }
+        )
+      }
+    }
+  } else {
+    const keyFromDb = await eventsPrisma.apiKey.findUnique({
+      where: {
+        id: apiKey.id,
+      },
+      select: {
+        key: true,
+        firstUsed: true,
+        id: true,
+      },
+    })
+    const keyMatch = await bcryptCompare(apiKey.secret, keyFromDb?.key || "")
+    if (!keyFromDb || !keyMatch) {
+      if (!_headers) {
+        await ApiError("unauthorized", "UNAUTHORIZED")
+        throw new Error("unauthorized")
+      } else {
+        return NextResponse.json(
+          {
+            code: "UNAUTHORIZED",
+            message: "Invalid token",
+          },
+          {
+            status: 401,
+          }
+        )
+      }
+    }
+    await eventsRedis.setex(getRedisApiKeyExists(apiKey.id), 60 * 60, keyFromDb.key) // 1 hour
+    if (!keyFromDb?.firstUsed) {
+      await eventsPrisma.apiKey.update({
+        where: {
+          id: keyFromDb.id,
+        },
+        data: {
+          firstUsed: new Date(),
+        },
+      })
+    }
+  }
+
+  //* Save last used
+  await eventsRedis.setex(getRedisApiKeyLastUsed(apiKey.id), 60 * 60 * 24 * 30, Date.now().toString()) // 30 days
 }
 const isApiAuthenticated = middleware(async (opts) => {
   await ensureApiAuth()

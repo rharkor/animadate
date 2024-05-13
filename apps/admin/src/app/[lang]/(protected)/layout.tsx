@@ -51,7 +51,7 @@ export default async function ProtectedLayout({
         hasPetProfileSSR={hasPetProfile}
       >
         <SideBar dictionary={dictionary} />
-        {children}
+        <main className="container flex flex-1 flex-col gap-3 px-3 py-5">{children}</main>
       </VerifyEmailProvider>
     </SigningOutProvider>
   )

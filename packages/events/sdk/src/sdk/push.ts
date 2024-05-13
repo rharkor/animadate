@@ -14,7 +14,8 @@ export const pushEvent = async (params: TPushEvent) => {
     const res = await fetch(join(env.EVENTS_API_URL, "api", "events", "push"), {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${env.EVENTS_API_KEY}`,
+        "x-api-key-id": env.EVENTS_API_KEY_ID,
+        "x-api-key-secret": env.EVENTS_API_KEY_SECRET,
       },
       method: "POST",
       body: JSON.stringify(body),

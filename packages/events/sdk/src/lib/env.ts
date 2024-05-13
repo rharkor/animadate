@@ -11,7 +11,8 @@ export const env = createEnv({
   server: {
     ENV: z.enum(["development", "staging", "preproduction", "production"]).optional(),
     EVENTS_API_URL: z.string().url(),
-    EVENTS_API_KEY: z.string().min(1),
+    EVENTS_API_KEY_ID: z.string(),
+    EVENTS_API_KEY_SECRET: z.string(),
     DISABLE_EVENTS_PUSH: z
       .enum(["true", "false"])
       .optional()

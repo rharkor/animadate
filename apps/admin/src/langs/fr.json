@@ -252,5 +252,22 @@
   "or": "ou",
   "selectPhoto": "Sélectionner une photo",
   "upload": "Uploader",
-  "invalidFileType": "Type de fichier invalide"
+  "invalidFileType": "Type de fichier invalide",
+  "manageApiKeys": "Gérer les clés API",
+  "lastUsedAt": "Dernière utilisation",
+  "createdAt": "Créé le",
+  "days": "jours",
+  "never": "jamais",
+  "noData": "Aucune donnée",
+  "addKey": "Ajouter une clé",
+  "add": "Ajouter",
+  "nameLiteral": "Nom",
+  "apiKeyCreated": "Clé API créée",
+  "apiKey": "Clé API",
+  "apiKeyCreatedDesc": "Votre clé API a été créée avec succès. Veuillez la copier et la sauvegarder dans un endroit sûr. Vous ne pourrez plus la voir.",
+  "id": "ID",
+  "secret": "Secret",
+  "actions": "Actions",
+  "deleteKey": "Supprimer la clé",
+  "deleteKeyDescription": "Êtes-vous sûr de vouloir supprimer cette clé API ? Cette action est irréversible."
 }

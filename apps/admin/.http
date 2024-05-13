@@ -4,7 +4,8 @@
 ### Push event
 POST {{ url }}/events/push
 Content-Type: application/json
-Authorization: Bearer {{jwtToken}}
+x-api-key-id: clw56tn4u0009abq1hnk2109x
+x-api-key-secret: 7e331e6b-c054-4372-9150-03a879e9f0ad
 
 {
   "name": "signIn",

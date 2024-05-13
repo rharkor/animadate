@@ -11,3 +11,6 @@ const options: RedisOptions = {
 }
 
 export const redis = new Redis(options)
+
+// For now evenrs redis is the same as the main redis
+export const eventsRedis = redis.duplicate()
