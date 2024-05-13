@@ -218,7 +218,8 @@
   "unknownError": "Erreur inconnue",
   "nav": {
     "home": "Accueil",
-    "events": "Événements"
+    "events": "Événements",
+    "apiKeys": "Clés API"
   },
   "changeEmail": "Changer d'email",
   "changePassword": "Changer de mot de passe",

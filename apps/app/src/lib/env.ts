@@ -60,6 +60,11 @@ export const env = createEnv({
       .optional()
       .transform((value) => value === "true"),
     EVENTS_API_URL: z.string().url(),
+    EVENTS_API_KEY: z.string().min(1),
+    DISABLE_EVENTS_PUSH: z
+      .enum(["true", "false"])
+      .optional()
+      .transform((value) => value === "true"),
   },
   client: {
     NEXT_PUBLIC_BASE_URL: z.string().url().optional(),
@@ -115,6 +120,8 @@ export const env = createEnv({
     ENABLE_S3_SERVICE: process.env.ENABLE_S3_SERVICE,
     DISABLE_REGISTRATION: process.env.DISABLE_REGISTRATION,
     EVENTS_API_URL: process.env.EVENTS_API_URL,
+    EVENTS_API_KEY: process.env.EVENTS_API_KEY,
+    DISABLE_EVENTS_PUSH: process.env.DISABLE_EVENTS_PUSH,
   },
   onValidationError: (error) => {
     logger.error(error)

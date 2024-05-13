@@ -1,4 +1,7 @@
+import { headers } from "next/headers"
+import { NextResponse } from "next/server"
 import { Session } from "next-auth"
+import jwt from "jsonwebtoken"
 import superjson from "superjson"
 import { ZodError } from "zod"
 
@@ -73,3 +76,52 @@ const hasVerifiedEmail = middleware(async (opts) => {
 })
 export const authenticatedProcedure = publicProcedure.use(isAuthenticated).use(hasVerifiedEmail)
 export const authenticatedNoEmailVerificationProcedure = publicProcedure.use(isAuthenticated)
+
+export const ensureApiAuth = async (_headers?: Headers) => {
+  let authorization: string | null
+  if (!_headers) {
+    const headersStore = headers()
+    authorization = headersStore.get("authorization")
+  } else {
+    authorization = _headers.get("authorization")
+  }
+  if (!authorization) {
+    if (!_headers) {
+      await ApiError("unauthorized", "UNAUTHORIZED")
+      throw new Error("unauthorized")
+    } else {
+      return NextResponse.json(
+        {
+          code: "UNAUTHORIZED",
+          message: "Authorization header is missing",
+        },
+        {
+          status: 401,
+        }
+      )
+    }
+  }
+  const token = authorization.split(" ")[1]
+  try {
+    jwt.verify(token, env.AUTH_SECRET)
+  } catch (error) {
+    if (!_headers) {
+      await ApiError("unauthorized", "UNAUTHORIZED")
+    } else {
+      return NextResponse.json(
+        {
+          code: "UNAUTHORIZED",
+          message: "Invalid token",
+        },
+        {
+          status: 401,
+        }
+      )
+    }
+  }
+}
+const isApiAuthenticated = middleware(async (opts) => {
+  await ensureApiAuth()
+  return opts.next()
+})
+export const apiAuthenticatedProcedure = publicProcedure.use(isApiAuthenticated)

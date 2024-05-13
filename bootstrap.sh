@@ -14,7 +14,7 @@ fi
 
 FOLDERS=""
 
-APPS="app cron docs landing"
+APPS="admin app cron docs landing"
 
 NEEDS_PACKAGE_JSON=false
 
@@ -25,6 +25,10 @@ for TEAM in "$@"; do
         echo "Running 'git sparse-checkout disable'"
         git sparse-checkout disable
         exit 0
+        ;;
+    "admin")
+        FOLDERS+="apps/admin packages"
+        NEEDS_PACKAGE_JSON=true
         ;;
     "app")
         FOLDERS+="apps/app packages"

@@ -218,7 +218,8 @@
   "unknownError": "An unknown error occurred.",
   "nav": {
     "home": "Home",
-    "events": "Events"
+    "events": "Events",
+    "apiKeys": "API keys"
   },
   "changeEmail": "Change email",
   "changePassword": "Change password",

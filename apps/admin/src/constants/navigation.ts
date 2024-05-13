@@ -1,4 +1,4 @@
-import { Home, LucideIcon, ScrollText } from "lucide-react"
+import { Home, KeyRound, LucideIcon, ScrollText } from "lucide-react"
 
 import { TDictionary } from "@/lib/langs"
 
@@ -29,5 +29,12 @@ export const routes: (
     route: "/events",
     icon: ScrollText,
     isActive: pathname.match(/^\/[a-z]+\/events\/?$/) !== null,
+  },
+  {
+    id: "api-keys",
+    name: dictionary.nav.apiKeys,
+    route: "/api-keys",
+    icon: KeyRound,
+    isActive: pathname.match(/^\/[a-z]+\/api-keys\/?$/) !== null,
   },
 ]
