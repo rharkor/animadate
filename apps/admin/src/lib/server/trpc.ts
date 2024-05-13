@@ -193,3 +193,11 @@ const isApiAuthenticated = middleware(async (opts) => {
   return opts.next()
 })
 export const apiAuthenticatedProcedure = publicProcedure.use(isApiAuthenticated)
+
+const onlyDev = middleware(async (opts) => {
+  if (env.ENV !== "development") {
+    await ApiError("unauthorized", "UNAUTHORIZED")
+  }
+  return opts.next()
+})
+export const devProcedure = publicProcedure.use(onlyDev)
