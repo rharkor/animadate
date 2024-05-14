@@ -10,6 +10,9 @@ export const getEventsSchema = () =>
   z.object({
     page: queriesOptionPage(),
     perPage: queriesOptionPerPage(),
+    kinds: z.array(PushEventSchema.shape.kind),
+    levels: z.array(PushEventSchema.shape.level),
+    name: z.string(),
   })
 
 export const eventSchema = () =>

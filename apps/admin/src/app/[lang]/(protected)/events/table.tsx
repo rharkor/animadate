@@ -5,10 +5,11 @@ import { Eye } from "lucide-react"
 import { codeToHtml } from "shiki"
 import { z } from "zod"
 
-import { eventSchema, getEventsResponseSchema, onNewEventResponseSchema } from "@/api/events/schemas"
+import { eventSchema, getEventsResponseSchema, getEventsSchema, onNewEventResponseSchema } from "@/api/events/schemas"
 import { ModalHeader } from "@/components/ui/modal"
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
+import { getTimeBetween } from "@/lib/utils"
 import {
   Button,
   Modal,
@@ -27,25 +28,39 @@ import {
 } from "@nextui-org/react"
 
 import { EventsTableDr } from "./table.dr"
+import TableTopContent from "./table-top-content"
+
+type TKinds = z.infer<ReturnType<typeof getEventsSchema>>["kinds"]
+type TLevels = z.infer<ReturnType<typeof getEventsSchema>>["levels"]
 
 export default function EventsTable({
   dictionary,
   ssrData,
   defaultPage,
   defaultPerPage,
+  defaultKinds,
+  defaultLevels,
 }: {
   dictionary: TDictionary<typeof EventsTableDr>
   ssrData: z.infer<ReturnType<typeof getEventsResponseSchema>>
   defaultPage: number
   defaultPerPage: number
+  defaultKinds: TKinds
+  defaultLevels: TLevels
 }) {
   const session = useSession()
   const [page, setPage] = useState(defaultPage)
+  const [name, setName] = useState("")
+  const [kinds, setKinds] = useState<TKinds>(defaultKinds)
+  const [levels, setLevels] = useState<TLevels>(defaultLevels)
 
   const events = trpc.events.getEvents.useQuery(
     {
       page,
       perPage: defaultPerPage,
+      name,
+      kinds,
+      levels,
     },
     {
       initialData: page === defaultPage ? ssrData : undefined,
@@ -114,6 +129,15 @@ export default function EventsTable({
   return (
     <>
       <div className="relative z-0 flex w-full flex-col justify-between gap-4 rounded-large bg-content1 p-4 shadow-small">
+        <TableTopContent
+          dictionary={dictionary}
+          name={name}
+          setName={setName}
+          kinds={kinds}
+          setKinds={setKinds}
+          levels={levels}
+          setLevels={setLevels}
+        />
         <div className="min-h-[500px] overflow-auto">
           <Table
             aria-label={dictionary.eventsList}
@@ -126,13 +150,13 @@ export default function EventsTable({
               <TableColumn key={"name"} className="min-w-[340px]">
                 {dictionary.nameLiteral}
               </TableColumn>
-              <TableColumn key={"kind"} width={140}>
+              <TableColumn key={"kind"} width={160}>
                 {dictionary.kind}
               </TableColumn>
               <TableColumn key={"level"} width={140}>
                 {dictionary.level}
               </TableColumn>
-              <TableColumn key={"createdAt"} width={200}>
+              <TableColumn key={"createdAt"} width={250}>
                 {dictionary.createdAt}
               </TableColumn>
               <TableColumn width={100}>{dictionary.actions}</TableColumn>
@@ -148,7 +172,14 @@ export default function EventsTable({
                       <TableCell>{event.name}</TableCell>
                       <TableCell>{event.kind}</TableCell>
                       <TableCell>{event.level}</TableCell>
-                      <TableCell>{new Date(event.context.date).toDateString()}</TableCell>
+                      <TableCell>
+                        <p className="flex flex-row justify-between" suppressHydrationWarning>
+                          {getTimeBetween(new Date(event.context.date), new Date(), {
+                            dictionary,
+                          })}
+                          <span className="ml-2 text-xs text-muted-foreground">({event.context.date})</span>
+                        </p>
+                      </TableCell>
                       <TableCell className="flex flex-row justify-end gap-2">
                         <Button
                           color="primary"
@@ -180,14 +211,14 @@ export default function EventsTable({
         ) : null}
       </div>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="5xl">
-        <ModalContent>
+        <ModalContent className="!my-0 h-full max-h-[90vh]">
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">{viewData?.event.name}</ModalHeader>
-              <ModalBody>
+              <ModalBody className="h-0">
                 <div
                   dangerouslySetInnerHTML={{ __html: viewData?.prettyContent ?? "" }}
-                  className="[&>*]:overflow-auto [&>*]:rounded-medium [&>*]:p-2"
+                  className="h-full [&>*]:h-full [&>*]:overflow-auto [&>*]:rounded-medium [&>*]:p-2"
                 />
               </ModalBody>
               <ModalFooter>

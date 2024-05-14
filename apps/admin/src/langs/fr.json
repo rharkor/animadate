@@ -273,5 +273,7 @@
   "eventsList": "Liste des événements",
   "kind": "Type",
   "level": "Niveau",
-  "date": "Date"
+  "date": "Date",
+  "kinds": "Types",
+  "levels": "Niveaux"
 }

@@ -3,6 +3,7 @@ import { getDictionary } from "@/lib/langs"
 import { serverTrpc } from "@/lib/trpc/server"
 import { cn } from "@/lib/utils"
 import { dictionaryRequirements } from "@/lib/utils/dictionary"
+import { kinds as sdkKinds, levels as sdkLevels } from "@animadate/events-sdk/dist/sdk/types"
 
 import EventsTable from "./table"
 import { EventsTableDr } from "./table.dr"
@@ -18,15 +19,27 @@ export default async function Home({
 
   const page = 1
   const perPage = 10
+  const kinds = [...sdkKinds]
+  const levels = [...sdkLevels]
   const events = await serverTrpc.events.getEvents({
     page,
     perPage,
+    kinds,
+    levels,
+    name: "",
   })
 
   return (
     <>
       <h1 className={cn("text-2xl font-medium")}>{dictionary.eventsList}</h1>
-      <EventsTable dictionary={dictionary} ssrData={events} defaultPage={page} defaultPerPage={perPage} />
+      <EventsTable
+        dictionary={dictionary}
+        ssrData={events}
+        defaultPage={page}
+        defaultPerPage={perPage}
+        defaultKinds={kinds}
+        defaultLevels={levels}
+      />
     </>
   )
 }

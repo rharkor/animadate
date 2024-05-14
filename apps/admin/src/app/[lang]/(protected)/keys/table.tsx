@@ -124,7 +124,7 @@ export default function KeysTable({
                     <TableRow key={key.id}>
                       <TableCell>{key.id}</TableCell>
                       <TableCell>{key.name}</TableCell>
-                      <TableCell>
+                      <TableCell suppressHydrationWarning>
                         {key.lastUsedAt === null
                           ? key.firstUsed !== null
                             ? ">30 " + dictionary.days

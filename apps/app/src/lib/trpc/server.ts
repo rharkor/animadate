@@ -76,17 +76,28 @@ export const handleServerError = async <T>(
       redirect(authRoutes.redirectOnUnhauthorized)
     }
     logger.error(error)
-    let errorParsed = error instanceof Error ? error.message : error
-    try {
-      errorParsed = JSON.parse(errorParsed as string)
-    } catch (e) {}
+    const errorOutput: { [key: string]: unknown } = {
+      raw: error,
+    }
+    if (error instanceof Error) {
+      errorOutput.message = error.message
+      errorOutput.name = error.name
+      errorOutput.stack = error.stack
+    }
+    if (typeof error === "string") {
+      try {
+        const errorJsonParsed = JSON.parse(error)
+        errorOutput.json = errorJsonParsed
+      } catch (e) {}
+    }
+    const pathString = path.join(".")
     events.push({
       kind: "OTHER",
       level: "ERROR",
-      name: "unhandledServerError",
+      name: `unhandledServerError${path.length > 0 ? `.${pathString}` : ""}`,
       data: {
-        path: path.join("."),
-        error: errorParsed,
+        path: pathString,
+        error: errorOutput,
       },
       context: getDefaultContext(),
     })
