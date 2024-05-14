@@ -10,8 +10,9 @@ export const kinds = [
   "SECURITY",
   "PET",
   "MATCH",
-  "OTHER",
+  "CRON",
   "FILE",
+  "OTHER",
 ] as const
 export const levels = ["DEBUG", "INFO", "WARNING", "ERROR"] as const
 export const PushEventSchema = z.object({

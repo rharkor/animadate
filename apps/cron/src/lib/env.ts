@@ -12,11 +12,20 @@ export const env = createEnv({
     ENV: z.enum(["development", "staging", "preproduction", "production"]).optional(),
     APP_DATABASE_PRISMA_URL: z.string().min(1),
     APP_DATABASE_URL_NON_POOLING: z.string().optional(),
+    EVENTS_DATABASE_PRISMA_URL: z.string().min(1),
+    EVENTS_DATABASE_URL_NON_POOLING: z.string().optional(),
     S3_REGION: z.string().optional(),
     S3_ENDPOINT: z.string().optional(),
     S3_ACCESS_KEY_ID: z.string().optional(),
     S3_SECRET_ACCESS_KEY: z.string().optional(),
     ENABLE_S3_SERVICE: z
+      .enum(["true", "false"])
+      .optional()
+      .transform((value) => value === "true"),
+    EVENTS_API_URL: z.string().url(),
+    EVENTS_API_KEY_ID: z.string().min(1),
+    EVENTS_API_KEY_SECRET: z.string().min(1),
+    DISABLE_EVENTS_PUSH: z
       .enum(["true", "false"])
       .optional()
       .transform((value) => value === "true"),

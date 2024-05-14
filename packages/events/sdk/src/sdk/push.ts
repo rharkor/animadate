@@ -23,15 +23,19 @@ export const pushEvent = async (params: TPushEvent) => {
     if (!res.ok) {
       const json = await res.json().catch(() => null)
       throw new Error(
-        "Failed to push event: " +
-          JSON.stringify({
+        JSON.stringify(
+          {
             status: res.status,
             statusText: res.statusText,
             json,
-          })
+          },
+          null,
+          2
+        )
       )
     }
   } catch (error) {
-    logger.error(error)
+    logger.error("Failed to push event:")
+    console.error(error)
   }
 }

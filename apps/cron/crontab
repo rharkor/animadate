@@ -2,5 +2,8 @@
 @daily /usr/sbin/logrotate /etc/logrotate.d/app
 
 
-# Sample (every minute)
-* * * * * cd /usr/src/app/apps/cron && npm run -s clear-unused-uploads >> /var/log/cron.log 2>&1
+# Clear unused uploads (every day)
+* * 1 * * cd /usr/src/app/apps/cron && npm run -s clear-unused-uploads >> /var/log/cron.log 2>&1
+
+# Clear old events (every day)
+* * 1 * * cd /usr/src/app/apps/cron && npm run -s clear-old-events >> /var/log/cron.log 2>&1

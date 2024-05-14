@@ -3,7 +3,9 @@
   "scripts": {
     "build": "tsc && tsc-alias",
     "clear-unused-uploads": "node dist/cron/clear-unused-uploads/index.js",
-    "dev:clear-unused-uploads": "npm run build && npm run clear-unused-uploads",
+    "dev:clear-unused-uploads": "npm run -s build && npm run clear-unused-uploads",
+    "clear-old-events": "node dist/cron/clear-old-events/index.js",
+    "dev:clear-old-events": "npm run -s build && npm run clear-old-events",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "prettier": "prettier --check \"**/*.{js,jsx,ts,tsx}\"",
@@ -14,21 +16,19 @@
   "license": "ISC",
   "dependencies": {
     "@animadate/app-db": "*",
+    "@animadate/events-db": "*",
+    "@animadate/events-sdk": "*",
     "@animadate/lib": "*",
     "custom-prettier-config": "*",
     "eslint-config-custom": "*",
-    "@animadate/events-sdk": "*",
     "@aws-sdk/client-s3": "^3.549.0",
     "@t3-oss/env-core": "^0.9.2",
     "@types/node": "^20.11.19",
     "chalk": "^5.3.0",
     "dotenv": "^16.4.4",
-    "tsc-alias": "^1.8.8",
+    "tsc-alias": "^1.8.10",
     "typescript": "^5.3.3",
     "zod": "^3.22.4"
-  },
-  "prisma": {
-    "schema": "../../packages/app/db/prisma/schema.prisma"
   },
   "type": "module"
 }
