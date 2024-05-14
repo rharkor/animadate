@@ -6,14 +6,16 @@ import { env } from "@/lib/env"
 import { prisma } from "@/lib/prisma"
 import { s3Client } from "@/lib/s3"
 import { stringToSlug } from "@/lib/utils"
+import { getContext } from "@/lib/utils/events"
 import { ApiError, ensureLoggedIn, handleApiError } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
+import events from "@animadate/events-sdk"
 import { logger } from "@animadate/lib"
 import { createPresignedPost } from "@aws-sdk/s3-presigned-post"
 
 import { presignedUrlResponseSchema, presignedUrlSchema } from "./schemas"
 
-export const presignedUrl = async ({ input, ctx: { session } }: apiInputFromSchema<typeof presignedUrlSchema>) => {
+export const presignedUrl = async ({ input, ctx: { session, req } }: apiInputFromSchema<typeof presignedUrlSchema>) => {
   ensureLoggedIn(session)
   try {
     if (!env.ENABLE_S3_SERVICE || !s3Client) {
@@ -59,6 +61,13 @@ export const presignedUrl = async ({ input, ctx: { session } }: apiInputFromSche
         "Content-Type": filetype,
       },
       Expires: expiresInSeconds, //? Seconds before the presigned post expires. 3600 by default.
+    })
+    events.push({
+      name: "file.presignedUrlGenerated",
+      kind: "FILE",
+      level: "INFO",
+      context: getContext({ req, session }),
+      data: { filename, filetype, Key, expires, bucket, endpoint },
     })
 
     const response: z.infer<ReturnType<typeof presignedUrlResponseSchema>> = {

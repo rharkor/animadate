@@ -17,13 +17,15 @@ import { _getDictionary } from "@/lib/langs"
 import { sendMail } from "@/lib/mailer"
 import { prisma } from "@/lib/prisma"
 import rateLimiter from "@/lib/rate-limit"
+import { getContext } from "@/lib/utils/events"
 import { ApiError, ensureLoggedIn, handleApiError } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
 import ResetPasswordTemplate from "@animadate/emails/emails/reset-password"
+import events from "@animadate/events-sdk"
 import { logger } from "@animadate/lib"
 import { render } from "@react-email/render"
 
-export const forgotPassword = async ({ input }: apiInputFromSchema<typeof forgotPasswordSchema>) => {
+export const forgotPassword = async ({ input, ctx: { req } }: apiInputFromSchema<typeof forgotPasswordSchema>) => {
   try {
     const { email } = input
     //? Check if user exists
@@ -104,6 +106,13 @@ export const forgotPassword = async ({ input }: apiInputFromSchema<typeof forgot
       text,
       html,
     })
+    events.push({
+      name: "user.password.forgot",
+      kind: "PROFILE",
+      level: "INFO",
+      context: getContext({ req, session: null }),
+      data: { email, token: resetPasswordToken },
+    })
 
     return { email }
   } catch (error: unknown) {
@@ -111,7 +120,7 @@ export const forgotPassword = async ({ input }: apiInputFromSchema<typeof forgot
   }
 }
 
-export const resetPassword = async ({ input }: apiInputFromSchema<typeof resetPasswordSchema>) => {
+export const resetPassword = async ({ input, ctx: { req } }: apiInputFromSchema<typeof resetPasswordSchema>) => {
   try {
     const { token, password } = input
     const resetPassordToken = await prisma.resetPassordToken.findUnique({
@@ -141,6 +150,13 @@ export const resetPassword = async ({ input }: apiInputFromSchema<typeof resetPa
         password: await hash(password, 12),
       },
     })
+    events.push({
+      name: "user.password.reset",
+      kind: "PROFILE",
+      level: "INFO",
+      context: getContext({ req, session: null }),
+      data: { token, email: resetPassordToken.user.email },
+    })
 
     const data: z.infer<ReturnType<typeof resetPasswordResponseSchema>> = { success: true }
     return data
@@ -149,7 +165,10 @@ export const resetPassword = async ({ input }: apiInputFromSchema<typeof resetPa
   }
 }
 
-export const changePassword = async ({ input, ctx: { session } }: apiInputFromSchema<typeof changePasswordSchema>) => {
+export const changePassword = async ({
+  input,
+  ctx: { session, req },
+}: apiInputFromSchema<typeof changePasswordSchema>) => {
   ensureLoggedIn(session)
   try {
     const { currentPassword, newPassword } = input
@@ -188,6 +207,12 @@ export const changePassword = async ({ input, ctx: { session } }: apiInputFromSc
       data: {
         password: await hash(newPassword, 12),
       },
+    })
+    events.push({
+      name: "user.password.changed",
+      kind: "PROFILE",
+      level: "INFO",
+      context: getContext({ req, session }),
     })
 
     const data: z.infer<ReturnType<typeof changePasswordResponseSchema>> = { success: true }

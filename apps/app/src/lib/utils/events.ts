@@ -9,18 +9,26 @@ export const getDefaultContext = () => {
   }
 }
 
-export const getContext = ({ req, session }: { req: Request; session: Session | null }) => {
-  const headers: Record<string, string> = {}
-  req.headers.forEach((value, key) => {
-    headers[key] = value
-  })
-  const identifier = requestIp.getClientIp({
-    ...req,
-    headers,
-  })
-  const extended = {
-    ip: identifier,
-    session,
+export const getContext = ({ req, session }: { req: Request | null | undefined; session: Session | null }) => {
+  const extended: {
+    session?: Session | null
+    identifier?: string
+  } = {}
+  if (session) {
+    extended.session = session
+  }
+  if (req) {
+    const headers: Record<string, string> = {}
+    req.headers.forEach((value, key) => {
+      headers[key] = value
+    })
+    const identifier = requestIp.getClientIp({
+      ...req,
+      headers,
+    })
+    if (identifier) {
+      extended.identifier = identifier
+    }
   }
   return {
     ...getDefaultContext(),

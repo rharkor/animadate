@@ -5,6 +5,7 @@ import superjson from "superjson"
 import { ZodError } from "zod"
 
 import { getAuthApi } from "@/components/auth/require-auth"
+import { rolesAsObject } from "@/constants"
 import { getRedisApiKeyExists, getRedisApiKeyLastUsed } from "@/constants/auth"
 import { env } from "@/lib/env"
 import { User } from "@animadate/app-db/generated/client"
@@ -55,6 +56,10 @@ const hasRateLimit = middleware(async (opts) => {
 export const publicProcedure = t.procedure.use(hasRateLimit)
 const isAuthenticated = middleware(async (opts) => {
   const { session } = await getAuthApi()
+
+  if (session?.user?.role !== rolesAsObject.admin) {
+    await ApiError("unauthorized", "UNAUTHORIZED")
+  }
 
   if (!session) {
     await ApiError("unauthorized", "UNAUTHORIZED")

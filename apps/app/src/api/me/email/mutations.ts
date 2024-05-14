@@ -20,14 +20,19 @@ import { sendMail } from "@/lib/mailer"
 import { prisma } from "@/lib/prisma"
 import rateLimiter from "@/lib/rate-limit"
 import { generateOTP } from "@/lib/utils"
+import { getContext } from "@/lib/utils/events"
 import { ApiError, ensureLoggedIn, handleApiError } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
 import ChangeEmailOTPTemplate from "@animadate/emails/emails/change-email-otp"
 import VerifyEmail from "@animadate/emails/emails/verify-email"
+import events from "@animadate/events-sdk"
 import { logger } from "@animadate/lib"
 import { render } from "@react-email/render"
 
-export const sendVerificationEmail = async ({ input }: apiInputFromSchema<typeof sendVerificationEmailSchema>) => {
+export const sendVerificationEmail = async ({
+  input,
+  ctx: { req },
+}: apiInputFromSchema<typeof sendVerificationEmailSchema>) => {
   try {
     const { silent, email: iEmail, user: iUser } = input
     const email = (iUser ? iUser.email?.toLowerCase() : iEmail?.toLowerCase()) ?? ""
@@ -119,6 +124,13 @@ export const sendVerificationEmail = async ({ input }: apiInputFromSchema<typeof
       if (silent) return { email }
       return ApiError("emailServiceDisabled", "PRECONDITION_FAILED")
     }
+    events.push({
+      name: "user.email.verification.sent",
+      kind: "PROFILE",
+      level: "INFO",
+      context: getContext({ req, session: null }),
+      data: { email, silent, token },
+    })
 
     return { email }
   } catch (error: unknown) {
@@ -126,7 +138,7 @@ export const sendVerificationEmail = async ({ input }: apiInputFromSchema<typeof
   }
 }
 
-export const verifyEmail = async ({ input }: apiInputFromSchema<typeof verifyEmailSchema>) => {
+export const verifyEmail = async ({ input, ctx: { req } }: apiInputFromSchema<typeof verifyEmailSchema>) => {
   try {
     const { token } = input
 
@@ -174,6 +186,13 @@ export const verifyEmail = async ({ input }: apiInputFromSchema<typeof verifyEma
         emailVerified: new Date(),
       },
     })
+    events.push({
+      name: "user.email.verification.verified",
+      kind: "PROFILE",
+      level: "INFO",
+      context: getContext({ req, session: null }),
+      data: { email: user.email, token },
+    })
 
     const data: z.infer<ReturnType<typeof verifyEmailResponseSchema>> = {
       success: true,
@@ -184,7 +203,7 @@ export const verifyEmail = async ({ input }: apiInputFromSchema<typeof verifyEma
   }
 }
 
-export const changeEmail = async ({ input, ctx: { session } }: apiInputFromSchema<typeof changeEmailSchema>) => {
+export const changeEmail = async ({ input, ctx: { session, req } }: apiInputFromSchema<typeof changeEmailSchema>) => {
   ensureLoggedIn(session)
   try {
     const { email, password } = input
@@ -289,6 +308,13 @@ export const changeEmail = async ({ input, ctx: { session } }: apiInputFromSchem
       logger.debug("Email verification disabled")
       return ApiError("emailServiceDisabled", "PRECONDITION_FAILED")
     }
+    events.push({
+      name: "user.email.change.requested",
+      kind: "PROFILE",
+      level: "INFO",
+      context: getContext({ req, session }),
+      data: { email },
+    })
 
     const res: z.infer<ReturnType<typeof changeEmailResponseSchema>> = {
       success: true,
@@ -301,7 +327,7 @@ export const changeEmail = async ({ input, ctx: { session } }: apiInputFromSchem
 
 export const validateChangeEmail = async ({
   input,
-  ctx: { session },
+  ctx: { session, req },
 }: apiInputFromSchema<typeof validateChangeEmailSchema>) => {
   ensureLoggedIn(session)
   try {
@@ -350,6 +376,14 @@ export const validateChangeEmail = async ({
       where: {
         identifier: session.user.id,
       },
+    })
+
+    events.push({
+      name: "user.email.changed",
+      kind: "PROFILE",
+      level: "INFO",
+      context: getContext({ req, session }),
+      data: { email: changeEmailToken.newEmail },
     })
 
     const res: z.infer<ReturnType<typeof validateChangeEmailResponseSchema>> = {

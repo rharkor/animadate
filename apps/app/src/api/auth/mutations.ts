@@ -19,16 +19,18 @@ import { _getDictionary } from "@/lib/langs"
 import { sendMail } from "@/lib/mailer"
 import { prisma } from "@/lib/prisma"
 import { redis } from "@/lib/redis"
+import { getContext } from "@/lib/utils/events"
 import { ApiError, ensureLoggedIn, generateRandomSecret, handleApiError } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
 import { Prisma } from "@animadate/app-db/generated/client"
 import VerifyEmail from "@animadate/emails/emails/verify-email"
+import events from "@animadate/events-sdk"
 import { logger } from "@animadate/lib"
 import { render } from "@react-email/render"
 
 import { signUpResponseSchema } from "../me/schemas"
 
-export const register = async ({ input }: apiInputFromSchema<typeof signUpSchema>) => {
+export const register = async ({ input, ctx: { req } }: apiInputFromSchema<typeof signUpSchema>) => {
   const { email, password, name } = input
   try {
     if (env.DISABLE_REGISTRATION === true) {
@@ -48,6 +50,13 @@ export const register = async ({ input }: apiInputFromSchema<typeof signUpSchema
       },
     })
     await redis.setex(`lastLocale:${user.id}`, lastLocaleExpirationInSeconds, input.locale)
+    events.push({
+      name: "user.registered",
+      kind: "AUTHENTICATION",
+      level: "INFO",
+      context: getContext({ req, session: null }),
+      data: user,
+    })
 
     //* Send verification email
     if (env.NEXT_PUBLIC_ENABLE_MAILING_SERVICE === true) {
@@ -113,7 +122,7 @@ export const register = async ({ input }: apiInputFromSchema<typeof signUpSchema
   }
 }
 
-export const generateTotpSecret = async ({ ctx: { session } }: apiInputFromSchema<typeof undefined>) => {
+export const generateTotpSecret = async ({ ctx: { session, req } }: apiInputFromSchema<typeof undefined>) => {
   ensureLoggedIn(session)
   try {
     const user = await prisma.user.findFirst({
@@ -143,6 +152,13 @@ export const generateTotpSecret = async ({ ctx: { session } }: apiInputFromSchem
       },
     })
     if (!user.email) return ApiError("unknownError")
+    events.push({
+      name: "user.otpSecretGenerated",
+      kind: "AUTHENTICATION",
+      level: "INFO",
+      context: getContext({ req, session }),
+      data: { userId: user.id },
+    })
     const totp = new OTPAuth.TOTP({
       issuer: "animadate",
       label: user.email,
@@ -162,7 +178,7 @@ export const generateTotpSecret = async ({ ctx: { session } }: apiInputFromSchem
   }
 }
 
-export const verifyTotp = async ({ input, ctx: { session } }: apiInputFromSchema<typeof verifyTotpSchema>) => {
+export const verifyTotp = async ({ input, ctx: { session, req } }: apiInputFromSchema<typeof verifyTotpSchema>) => {
   ensureLoggedIn(session)
   try {
     const { token } = verifyTotpSchema().parse(input)
@@ -193,6 +209,13 @@ export const verifyTotp = async ({ input, ctx: { session } }: apiInputFromSchema
           otpVerified: true,
         },
       })
+      events.push({
+        name: "user.otpVerified",
+        kind: "AUTHENTICATION",
+        level: "INFO",
+        context: getContext({ req, session }),
+        data: { userId: user.id, token },
+      })
     }
     if (!isValid) return ApiError("otpInvalid")
     return { success: true }
@@ -202,7 +225,7 @@ export const verifyTotp = async ({ input, ctx: { session } }: apiInputFromSchema
 }
 
 export const desactivateTotp = async ({
-  ctx: { session },
+  ctx: { session, req },
   input,
 }: apiInputFromSchema<typeof desactivateTotpSchema>) => {
   ensureLoggedIn(session)
@@ -236,13 +259,20 @@ export const desactivateTotp = async ({
         otpVerified: false,
       },
     })
+    events.push({
+      name: "user.otpDesactivated",
+      kind: "AUTHENTICATION",
+      level: "INFO",
+      context: getContext({ req, session }),
+      data: { userId: user.id, token: input.token },
+    })
     return { success: true }
   } catch (error: unknown) {
     return handleApiError(error)
   }
 }
 
-export const recover2FA = async ({ input }: apiInputFromSchema<typeof recover2FASchema>) => {
+export const recover2FA = async ({ input, ctx: { req } }: apiInputFromSchema<typeof recover2FASchema>) => {
   try {
     const { email, mnemonic } = recover2FASchema().parse(input)
     const tries = await redis.get(`recover2FA:${email.toLowerCase()}`)
@@ -266,6 +296,13 @@ export const recover2FA = async ({ input }: apiInputFromSchema<typeof recover2FA
         otpMnemonic: "",
         otpVerified: false,
       },
+    })
+    events.push({
+      name: "user.otpRecovered",
+      kind: "AUTHENTICATION",
+      level: "INFO",
+      context: getContext({ req, session: null }),
+      data: { userId: user.id },
     })
     return { success: true }
   } catch (error: unknown) {

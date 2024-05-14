@@ -10,16 +10,18 @@ import { sendMail } from "@/lib/mailer"
 import { prisma } from "@/lib/prisma"
 import rateLimiter from "@/lib/rate-limit"
 import { s3Client } from "@/lib/s3"
+import { getContext } from "@/lib/utils/events"
 import { ApiError } from "@/lib/utils/server-utils"
 import { ensureLoggedIn, handleApiError } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
 import NeedHelpConfirmationTemplate from "@animadate/emails/emails/need-help-confirmation"
 import NeedHelpSupportTemplate from "@animadate/emails/emails/need-help-support"
+import events from "@animadate/events-sdk"
 import { logger } from "@animadate/lib"
 import { DeleteObjectCommand } from "@aws-sdk/client-s3"
 import { render } from "@react-email/render"
 
-export const updateUser = async ({ input, ctx: { session } }: apiInputFromSchema<typeof updateUserSchema>) => {
+export const updateUser = async ({ input, ctx: { session, req } }: apiInputFromSchema<typeof updateUserSchema>) => {
   ensureLoggedIn(session)
   try {
     const { name, profilePictureKey } = input
@@ -95,6 +97,13 @@ export const updateUser = async ({ input, ctx: { session } }: apiInputFromSchema
         profilePicture: true,
       },
     })
+    events.push({
+      name: "user.updated",
+      kind: "PROFILE",
+      level: "INFO",
+      context: getContext({ req, session }),
+      data: input,
+    })
 
     const data: z.infer<ReturnType<typeof updateUserResponseSchema>> = {
       user: updatedUser,
@@ -105,7 +114,7 @@ export const updateUser = async ({ input, ctx: { session } }: apiInputFromSchema
   }
 }
 
-export const deleteAccount = async ({ ctx: { session } }: apiInputFromSchema<undefined>) => {
+export const deleteAccount = async ({ ctx: { session, req } }: apiInputFromSchema<undefined>) => {
   try {
     ensureLoggedIn(session)
     //* Ensure not admin
@@ -130,6 +139,12 @@ export const deleteAccount = async ({ ctx: { session } }: apiInputFromSchema<und
         id: session.user.id,
       },
     })
+    events.push({
+      name: "user.deleted",
+      kind: "PROFILE",
+      level: "INFO",
+      context: getContext({ req, session }),
+    })
 
     return { user }
   } catch (error: unknown) {
@@ -137,7 +152,7 @@ export const deleteAccount = async ({ ctx: { session } }: apiInputFromSchema<und
   }
 }
 
-export const needHelp = async ({ input, ctx: { session } }: apiInputFromSchema<typeof needHelpSchema>) => {
+export const needHelp = async ({ input, ctx: { session, req } }: apiInputFromSchema<typeof needHelpSchema>) => {
   ensureLoggedIn(session)
   try {
     const { message, email, name, locale: localeWanted } = input
@@ -208,6 +223,13 @@ export const needHelp = async ({ input, ctx: { session } }: apiInputFromSchema<t
       subject: confirmationDictionary.yourRequestHasBeenSent,
       text: confirmationText,
       html: confirmationHtml,
+    })
+    events.push({
+      name: "user.need-help",
+      kind: "PROFILE",
+      level: "INFO",
+      context: getContext({ req, session }),
+      data: { message, email, name },
     })
 
     const data: z.infer<ReturnType<typeof needHelpResponseSchema>> = {

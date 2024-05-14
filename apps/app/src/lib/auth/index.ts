@@ -86,7 +86,7 @@ export const providers: Provider[] = [
       if (!user) {
         logger.debug("User not found", creds.email)
         events.push({
-          name: "signIn",
+          name: "signIn.userNotFound",
           kind: "AUTHENTICATION",
           level: "INFO",
           context: getContext({ req, session: null }),
@@ -108,7 +108,7 @@ export const providers: Provider[] = [
       if (!isValidPassword) {
         logger.debug("Invalid password", user.id)
         events.push({
-          name: "signIn",
+          name: "signIn.invalidPassword",
           kind: "AUTHENTICATION",
           level: "INFO",
           context: getContext({ req, session: null }),
@@ -161,7 +161,7 @@ export const providers: Provider[] = [
         lastLocale: user.lastLocale,
       }
       events.push({
-        name: "signIn",
+        name: "signIn.successful",
         kind: "AUTHENTICATION",
         level: "INFO",
         context: getContext({ req, session: null }),

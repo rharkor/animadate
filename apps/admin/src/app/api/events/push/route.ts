@@ -1,11 +1,10 @@
-import { NextRequest, NextResponse } from "next/server"
+import { NextResponse } from "next/server"
 
 import { pushEvent } from "@/api/events/mutations"
 import { pushEventResponseSchema, pushEventSchema } from "@/api/events/schemas"
 import { ensureApiAuth } from "@/lib/server/trpc"
-import { ITrpcContext } from "@/types"
 
-export async function POST(request: NextRequest) {
+export async function POST(request: Request) {
   const json = await request.json()
   const parsed = pushEventSchema().safeParse(json)
   if (!parsed.success) {
@@ -13,8 +12,16 @@ export async function POST(request: NextRequest) {
   }
   const error = await ensureApiAuth(request.headers)
   if (error) return error
+  const parsedHeaders: { [k: string]: string } = {}
+  request.headers.forEach((v, k) => {
+    parsedHeaders[k] = v
+  })
   const res = await pushEvent({
-    ctx: {} as ITrpcContext,
+    ctx: {
+      req: request,
+      session: null,
+      headers: parsedHeaders,
+    },
     input: parsed.data,
   })
   const resParsed = pushEventResponseSchema().safeParse(res)

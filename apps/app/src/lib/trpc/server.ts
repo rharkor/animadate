@@ -83,7 +83,7 @@ export const handleServerError = async <T>(
     events.push({
       kind: "OTHER",
       level: "ERROR",
-      name: "Unhandled error in trpc server",
+      name: "unhandledServerError",
       data: {
         path: path.join("."),
         error: errorParsed,

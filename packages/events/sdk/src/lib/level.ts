@@ -1,6 +1,14 @@
-import { LEVEL } from "@/sdk/types"
+import { LEVEL, levels } from "@/sdk/types"
 
 import { env } from "./env"
+
+export const getEnabledLevels = () => {
+  if (env.DISABLE_EVENTS_PUSH) {
+    return []
+  }
+
+  return levels.filter((level) => isLevelEnabled(level))
+}
 
 export const isLevelEnabled = (level: LEVEL) => {
   if (env.DISABLE_EVENTS_PUSH) {

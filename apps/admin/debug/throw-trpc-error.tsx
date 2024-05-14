@@ -22,7 +22,7 @@ const main = async () => {
     events.push({
       kind: "OTHER",
       level: "ERROR",
-      name: "Unhandled error in trpc server",
+      name: "unhandledServerError",
       data: {
         path: path.join("."),
         error: errorParsed,
