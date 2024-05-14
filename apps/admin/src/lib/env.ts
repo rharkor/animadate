@@ -81,6 +81,7 @@ export const env = createEnv({
       .enum(["true", "false"])
       .optional()
       .transform((value) => value === "true"),
+    NEXT_PUBLIC_WS_URL: z.string().min(1),
   },
   runtimeEnv: {
     ANALYZE: process.env.ANALYZE,
@@ -124,6 +125,7 @@ export const env = createEnv({
     EVENTS_API_KEY_ID: process.env.EVENTS_API_KEY_ID,
     EVENTS_API_KEY_SECRET: process.env.EVENTS_API_KEY_SECRET,
     DISABLE_EVENTS_PUSH: process.env.DISABLE_EVENTS_PUSH,
+    NEXT_PUBLIC_WS_URL: process.env.NEXT_PUBLIC_WS_URL,
   },
   onValidationError: (error) => {
     logger.error(error)

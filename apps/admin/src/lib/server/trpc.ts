@@ -1,20 +1,23 @@
 import { headers } from "next/headers"
 import { NextResponse } from "next/server"
 import { Session } from "next-auth"
+import { IncomingMessage } from "http"
 import superjson from "superjson"
-import { ZodError } from "zod"
+import { z, ZodError } from "zod"
 
+import { sessionsSchema } from "@/api/me/schemas"
 import { getAuthApi } from "@/components/auth/require-auth"
 import { rolesAsObject } from "@/constants"
 import { getRedisApiKeyExists, getRedisApiKeyLastUsed } from "@/constants/auth"
 import { env } from "@/lib/env"
+import { wssAuthSchema } from "@/schemas/auth"
 import { User } from "@animadate/app-db/generated/client"
 import { initTRPC } from "@trpc/server"
 
 import { bcryptCompare } from "../bcrypt"
 import { eventsPrisma } from "../prisma/events"
 import { apiRateLimiter } from "../rate-limit"
-import { eventsRedis } from "../redis"
+import { eventsRedis, redis } from "../redis"
 import { Context } from "../trpc/context"
 import { ApiError } from "../utils/server-utils"
 
@@ -43,7 +46,7 @@ export const createCallerFactory = t.createCallerFactory
 export const router = t.router
 export const middleware = t.middleware
 const hasRateLimit = middleware(async (opts) => {
-  if (opts.ctx.req) {
+  if (opts.ctx.req && !(opts.ctx.req instanceof IncomingMessage)) {
     const { headers } = await apiRateLimiter(opts.ctx.req)
     return opts.next({
       ctx: {
@@ -206,3 +209,29 @@ const onlyDev = middleware(async (opts) => {
   return opts.next()
 })
 export const devProcedure = publicProcedure.use(onlyDev)
+
+const wsIsAuthenticated = middleware(async (opts) => {
+  const rawInput = await opts.getRawInput()
+  const input = await wssAuthSchema()
+    .parseAsync(rawInput)
+    .catch(() => null)
+  if (!input) return ApiError("unknownError", "BAD_REQUEST")
+  if (!opts.ctx.req) return ApiError("unauthorized", "UNAUTHORIZED")
+  if (!(opts.ctx.req instanceof IncomingMessage)) {
+    return ApiError("unauthorized", "UNAUTHORIZED")
+  }
+
+  const key = `session:${input.userId}:${input.uuid}`
+  const loginSession = await redis.get(key)
+  if (!loginSession) {
+    return ApiError("unauthorized", "UNAUTHORIZED")
+  }
+  const data = JSON.parse(loginSession) as z.infer<ReturnType<typeof sessionsSchema>>
+  return opts.next({
+    ctx: {
+      ...opts.ctx,
+      session: { user: data } as unknown as Session,
+    },
+  })
+})
+export const wsAuthenticatedProcedure = publicProcedure.use(wsIsAuthenticated)

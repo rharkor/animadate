@@ -24,7 +24,7 @@ export const eventSchema = () =>
       date: z.string(),
       extended: z.record(z.any()).optional(),
     }),
-    createdAt: z.date(),
+    createdAt: z.coerce.date(),
   })
 
 export const getEventsResponseSchema = () =>
@@ -37,3 +37,5 @@ export const getEventsResponseSchema = () =>
       totalPages: z.number(),
     }),
   })
+
+export const onNewEventResponseSchema = () => eventSchema()

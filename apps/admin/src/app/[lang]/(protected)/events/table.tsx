@@ -1,10 +1,11 @@
 "use client"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
+import { useSession } from "next-auth/react"
 import { Eye } from "lucide-react"
 import { codeToHtml } from "shiki"
 import { z } from "zod"
 
-import { eventSchema, getEventsResponseSchema } from "@/api/events/schemas"
+import { eventSchema, getEventsResponseSchema, onNewEventResponseSchema } from "@/api/events/schemas"
 import { ModalHeader } from "@/components/ui/modal"
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
@@ -38,6 +39,7 @@ export default function EventsTable({
   defaultPage: number
   defaultPerPage: number
 }) {
+  const session = useSession()
   const [page, setPage] = useState(defaultPage)
 
   const events = trpc.events.getEvents.useQuery(
@@ -66,6 +68,48 @@ export default function EventsTable({
     })
     onOpen()
   }
+
+  //* Subscription
+  const [needRefetch, setNeedRefetch] = useState(false)
+  const handleSubscriptionData = (_data: z.infer<ReturnType<typeof onNewEventResponseSchema>>) => {
+    // Do nothing with data because if the user have applied filter it will be hard to know if the new event should be displayed
+    setNeedRefetch(true)
+  }
+
+  useEffect(() => {
+    let timeout: NodeJS.Timeout | null = null
+    if (needRefetch) {
+      const lastRefetch = events.dataUpdatedAt
+      const limit = 1000 // Max 1 req/second
+      const now = Date.now()
+      if (now - lastRefetch < limit) {
+        timeout = setTimeout(
+          () => {
+            events.refetch()
+            setNeedRefetch(false)
+          },
+          limit - (now - lastRefetch)
+        )
+      } else {
+        events.refetch()
+        setNeedRefetch(false)
+      }
+    }
+    return () => {
+      if (timeout) {
+        clearTimeout(timeout)
+      }
+    }
+  }, [needRefetch, events])
+
+  trpc.events.onNewEvent.useSubscription(
+    { uuid: session.data?.user?.uuid ?? "", userId: session.data?.user?.id ?? "" },
+    {
+      onData(data) {
+        handleSubscriptionData(data)
+      },
+    }
+  )
 
   return (
     <>

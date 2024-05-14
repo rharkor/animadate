@@ -1,3 +1,4 @@
+import { IncomingMessage } from "http"
 import requestIp from "request-ip"
 
 import { Session } from "@/types/auth"
@@ -9,7 +10,13 @@ export const getDefaultContext = () => {
   }
 }
 
-export const getContext = ({ req, session }: { req: Request | null | undefined; session: Session | null }) => {
+export const getContext = ({
+  req,
+  session,
+}: {
+  req: Request | IncomingMessage | null | undefined
+  session: Session | null
+}) => {
   const extended: {
     session?: Session | null
     identifier?: string
@@ -19,15 +26,19 @@ export const getContext = ({ req, session }: { req: Request | null | undefined; 
   }
   if (req) {
     const headers: Record<string, string> = {}
-    req.headers.forEach((value, key) => {
-      headers[key] = value
-    })
-    const identifier = requestIp.getClientIp({
-      ...req,
-      headers,
-    })
-    if (identifier) {
-      extended.identifier = identifier
+    if (req instanceof IncomingMessage) {
+      req.headers = req.headers || {}
+    } else {
+      req.headers.forEach((value, key) => {
+        headers[key] = value
+      })
+      const identifier = requestIp.getClientIp({
+        ...req,
+        headers,
+      })
+      if (identifier) {
+        extended.identifier = identifier
+      }
     }
   }
   return {
