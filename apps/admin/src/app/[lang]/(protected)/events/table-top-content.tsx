@@ -62,7 +62,7 @@ export default function TableTopContent({
       <Input
         isClearable
         className="w-full sm:max-w-[44%]"
-        placeholder={dictionary.searchByName}
+        placeholder={dictionary.searchByErrorName}
         startContent={<SearchIcon />}
         value={nameDebounced}
         onClear={() => setNameDebounced("")}

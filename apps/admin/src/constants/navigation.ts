@@ -1,4 +1,4 @@
-import { AlertCircle, Home, KeyRound, LucideIcon, ScrollText } from "lucide-react"
+import { AlertCircle, KeyRound, LucideIcon, ScrollText } from "lucide-react"
 
 import { TDictionary } from "@/lib/langs"
 
@@ -16,13 +16,13 @@ export const routes: (
   }>,
   pathname: string
 ) => TRoute[] = (dictionary, pathname) => [
-  {
-    id: "home",
-    name: dictionary.nav.home,
-    route: "/",
-    icon: Home,
-    isActive: pathname.match(/^\/[a-z]+\/?$/) !== null,
-  },
+  // {
+  //   id: "home",
+  //   name: dictionary.nav.home,
+  //   route: "/",
+  //   icon: Home,
+  //   isActive: pathname.match(/^\/[a-z]+\/?$/) !== null,
+  // },
   {
     id: "events",
     name: dictionary.nav.events,

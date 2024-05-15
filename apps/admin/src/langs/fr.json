@@ -50,7 +50,7 @@
     "enterEmail": "Entrez votre adresse email pour créer un compte"
   },
   "signInPage": {
-    "loginToYourAccount": "Connectez-vous à votre compte",
+    "loginToYourAccount": "Espace Admin",
     "enterDetails": "Entrez vos détails pour vous connecter"
   },
   "profilePage": {
@@ -282,7 +282,7 @@
   "deleteEmailContactDescription": "Êtes-vous sûr de vouloir supprimer cet email ?",
   "emailContacts": "Emails de contact",
   "emailContactsDescription": "Ces emails sont utilisé pour vous contacter lorsqu'un alerte est détectée",
-  "searchByName": "Rechercher par nom",
+  "searchByErrorName": "Rechercher par nom d'erreur",
   "searchByEmail": "Rechercher par email",
   "searchByApplicationName": "Rechercher par nom d'application",
   "appLiteral": "Application"

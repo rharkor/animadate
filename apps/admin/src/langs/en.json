@@ -50,7 +50,7 @@
     "enterEmail": "Enter your email below to create your account"
   },
   "signInPage": {
-    "loginToYourAccount": "Login to your account",
+    "loginToYourAccount": "Admin Space",
     "enterDetails": "Enter your details below."
   },
   "profilePage": {
@@ -282,7 +282,7 @@
   "deleteEmailContactDescription": "Are you sure you want to delete this email? This action is irreversible.",
   "emailContacts": "Contact emails",
   "emailContactsDescription": "Those emails are used to contact you when an alert is raised",
-  "searchByName": "Search by name",
+  "searchByErrorName": "Search by error name",
   "searchByEmail": "Search by email",
   "searchByApplicationName": "Search by application name",
   "appLiteral": "Application"
