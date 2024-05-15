@@ -9,7 +9,7 @@ keywords=("TODO")
 source_code_dir="../"
 
 # Exclude node_modules and .next directories
-exclude_dir="--exclude-dir=node_modules --exclude-dir=.next --exclude-dir=.git --exclude=banned-keywords.sh --exclude-dir=.terraform --exclude-dir=dist --exclude-dir=build"
+exclude_dir="--exclude-dir=node_modules --exclude-dir=.next --exclude-dir=.git --exclude=banned-keywords.sh --exclude-dir=.terraform --exclude-dir=dist --exclude-dir=build --exclude-dir=generated"
 
 
 echo Start searching..
