@@ -23,8 +23,10 @@ COPY packages/events/sdk/package.json ./packages/events/sdk/package.json
 COPY packages/app/db ./packages/app/db
 #? Copy full events/db because we need the prisma schema for postinstall
 COPY packages/events/db ./packages/events/db
+#? Copy patch files
+COPY patches ./patches
 
-RUN npm ci --omit=dev
+RUN npm ci --omit=dev && npm run postinstall
 
 
 FROM base AS builder
