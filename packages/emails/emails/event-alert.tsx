@@ -1,7 +1,7 @@
-import { Button } from "components/button"
 import * as React from "react"
 
 import { Body } from "@animadate/emails/components/body"
+import { Button } from "@animadate/emails/components/button"
 import { Card } from "@animadate/emails/components/card"
 import { Container } from "@animadate/emails/components/container"
 import { Footer } from "@animadate/emails/components/footer"
