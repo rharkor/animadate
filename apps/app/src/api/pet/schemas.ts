@@ -2,7 +2,7 @@ import { z } from "zod"
 
 import { dictionaryRequirements } from "@/lib/utils/dictionary"
 import { fileSchemaMinimal } from "@/schemas/file"
-import { CHARACTERISTIC, PET_KIND } from "@prisma/client"
+import { CHARACTERISTIC, PET_KIND } from "@animadate/app-db/generated/client"
 
 import { TDictionary } from "../../lib/langs"
 

@@ -7,8 +7,8 @@ import { ChevronLeft, Plus, Shuffle, X } from "lucide-react"
 import { maxPetCharacteristics } from "@/api/pet/schemas"
 import { TDictionary } from "@/lib/langs"
 import { cn } from "@/lib/utils"
+import { CHARACTERISTIC } from "@animadate/app-db/generated/client"
 import { Button, Chip, Input, Textarea } from "@nextui-org/react"
-import { CHARACTERISTIC } from "@prisma/client"
 
 import { DesktopFormDr } from "./desktop-form.dr"
 

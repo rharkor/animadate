@@ -1,11 +1,10 @@
-import { exit } from "process"
-
 import { env } from "@/lib/env"
 import { prisma } from "@/lib/prisma"
 import { s3Client as _s3Client } from "@/lib/s3"
+import { Prisma } from "@animadate/app-db/generated/client/index.js"
+import events from "@animadate/events-sdk"
 import { chunk, logger } from "@animadate/lib"
 import { DeleteObjectCommand } from "@aws-sdk/client-s3"
-import { Prisma } from "@prisma/client"
 
 const clearUnusedUploads = async () => {
   const now = new Date()
@@ -30,7 +29,7 @@ const clearUnusedUploads = async () => {
   if (!expiredUploadingFiles.length) {
     logger.debug(`No expired uploading files found`)
   } else {
-    logger.info(`Found ${expiredUploadingFiles.length} expired uploading files`)
+    logger.debug(`Found ${expiredUploadingFiles.length} expired uploading files`)
     const chuked = chunk(expiredUploadingFiles, 100)
     const deletedFiles: string[] = []
 
@@ -68,7 +67,19 @@ const clearUnusedUploads = async () => {
         deletedFiles.push(...deleted)
       })
     )
-    logger.success(`Deleted ${deletedFiles.length} expired uploading files`)
+    logger.debug(`Deleted ${deletedFiles.length} expired uploading files`)
+    events.push({
+      name: "cron.clearUnusedUploads.expiredUploadingFiles",
+      kind: "CRON",
+      level: "INFO",
+      data: {
+        count: deletedFiles.length,
+      },
+      context: {
+        app: "cron",
+        date: now.toISOString(),
+      },
+    })
   }
 
   //* Delete already uploaded files that are not linked to any item
@@ -102,7 +113,7 @@ const clearUnusedUploads = async () => {
   if (!unlikedFiles.length) {
     logger.debug(`No unlinked files found`)
   } else {
-    logger.info(`Found ${unlikedFiles.length} unlinked files`)
+    logger.debug(`Found ${unlikedFiles.length} unlinked files`)
     const chuked = chunk(unlikedFiles, 100)
     const deletedFiles: string[] = []
 
@@ -136,7 +147,19 @@ const clearUnusedUploads = async () => {
         deletedFiles.push(...deleted)
       })
     )
-    logger.success(`Deleted ${deletedFiles.length} unlinked files`)
+    logger.debug(`Deleted ${deletedFiles.length} unlinked files`)
+    events.push({
+      name: "cron.clearUnusedUploads.unlinkedFiles",
+      kind: "CRON",
+      level: "INFO",
+      data: {
+        count: deletedFiles.length,
+      },
+      context: {
+        app: "cron",
+        date: now.toISOString(),
+      },
+    })
   }
 }
 
@@ -154,8 +177,6 @@ const main = async () => {
   })
   const took = new Date().getTime() - now.getTime()
   if (took > maxDurationWarning) logger.warn(`${name} took ${took}ms`)
-
-  exit(0)
 }
 
 main()

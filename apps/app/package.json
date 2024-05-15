@@ -2,7 +2,7 @@
   "name": "@animadate/app",
   "license": "MIT",
   "scripts": {
-    "dev": "npm run is-initialized && prisma migrate dev && cross-env FORCE_COLOR=1 next dev --turbo",
+    "dev": "npm run -s is-initialized && prisma migrate dev && cross-env FORCE_COLOR=1 next dev --turbo",
     "build": "next build",
     "start": "npm run deploy-db:prod && next start --port ${PORT:-3000}",
     "deploy-db:prod": "prisma migrate deploy && npm run seed",
@@ -11,13 +11,14 @@
     "prettier": "prettier --check \"**/*.{js,jsx,ts,tsx}\"",
     "prettier:fix": "prettier --write \"**/*.{js,jsx,ts,tsx}\"",
     "test": "cross-env FORCE_COLOR=1 jest --passWithNoTests",
-    "seed": "cross-env NODE_ENV=development tsx prisma/seed.ts",
     "is-initialized": "cd ../../packages/scripts && npm run is-initialized",
     "analyze": "ANALYZE=true npm run build && cd .next/analyze && npx -y serve",
-    "postinstall": "prisma generate"
+    "seed": "cross-env NODE_ENV=development prisma db seed"
   },
   "dependencies": {
+    "@animadate/app-db": "*",
     "@animadate/emails": "*",
+    "@animadate/events-sdk": "*",
     "@animadate/lib": "*",
     "@animadate/scripts": "*",
     "@animadate/tsconfig": "*",
@@ -28,15 +29,15 @@
     "@hookform/resolvers": "^3.2.0",
     "@next/bundle-analyzer": "^14.1.2",
     "@nextui-org/react": "^2.3.1",
-    "@prisma/client": "^5.12.1",
+    "@prisma/client": "^5.14.0",
     "@serwist/next": "^9.0.0-preview.21",
     "@t3-oss/env-nextjs": "^0.9.2",
     "@tanstack/react-query": "^5.32.1",
     "@tanstack/react-query-devtools": "^5.35.1",
     "@total-typescript/ts-reset": "^0.5.0",
-    "@trpc/client": "^11.0.0-rc.364",
-    "@trpc/react-query": "^11.0.0-rc.364",
-    "@trpc/server": "^11.0.0-rc.364",
+    "@trpc/client": "^11.0.0-rc.370",
+    "@trpc/react-query": "^11.0.0-rc.370",
+    "@trpc/server": "^11.0.0-rc.370",
     "@types/bcryptjs": "^2.4.2",
     "@types/cli-spinner": "^0.2.3",
     "@types/crypto-js": "^4.2.1",
@@ -66,7 +67,6 @@
     "next-themes": "^0.3.0",
     "nodemailer": "^6.9.5",
     "otpauth": "^9.2.2",
-    "prisma": "^5.12.1",
     "qrcode.react": "^3.1.0",
     "react": "^18.2.0",
     "react-device-detect": "^2.2.3",
@@ -79,9 +79,8 @@
     "sharp": "^0.33.0",
     "superjson": "^2.0.0",
     "tailwind-merge": "^2.0.0",
-    "tsx": "^4.7.0",
     "ua-parser-js": "^1.0.35",
-    "zod": "^3.21.4"
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@babel/core": "^7.22.17",
@@ -108,7 +107,7 @@
     "node": ">=18.15.0"
   },
   "prisma": {
-    "schema": "prisma/schema.prisma",
-    "seed": "npx -y tsx prisma/seed.ts"
+    "schema": "../../packages/app/db/prisma/schema.prisma",
+    "seed": "npx -y tsx database/seed.ts"
   }
 }

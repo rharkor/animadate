@@ -16,13 +16,13 @@ export const env = createEnv({
       .optional()
       .transform((value) => value === "true"),
     PASSWORD_HASHER_SECRET: z.string(),
-    DATABASE_PRISMA_URL: z.string().min(1),
-    DATABASE_URL_NON_POOLING: z.string().optional(),
+    APP_DATABASE_PRISMA_URL: z.string().min(1),
+    APP_DATABASE_URL_NON_POOLING: z.string().optional(),
+    EVENTS_DATABASE_PRISMA_URL: z.string().min(1),
+    EVENTS_DATABASE_URL_NON_POOLING: z.string().optional(),
     AUTH_SECRET: z.string(),
     AUTH_URL: z.string().optional(),
     AUTH_TRUST_HOST: z.string().optional(),
-    GITHUB_CLIENT_ID: z.string().min(1),
-    GITHUB_CLIENT_SECRET: z.string().min(1),
     AUTH_ADMIN_EMAIL: z.string().min(1),
     AUTH_ADMIN_PASSWORD: z.string().min(1),
     REDIS_HOST: z.string().optional(),
@@ -59,6 +59,13 @@ export const env = createEnv({
       .enum(["true", "false"])
       .optional()
       .transform((value) => value === "true"),
+    EVENTS_API_URL: z.string().url(),
+    EVENTS_API_KEY_ID: z.string().min(1),
+    EVENTS_API_KEY_SECRET: z.string().min(1),
+    DISABLE_EVENTS_PUSH: z
+      .enum(["true", "false"])
+      .optional()
+      .transform((value) => value === "true"),
   },
   client: {
     NEXT_PUBLIC_BASE_URL: z.string().url().optional(),
@@ -78,13 +85,13 @@ export const env = createEnv({
   runtimeEnv: {
     ANALYZE: process.env.ANALYZE,
     PASSWORD_HASHER_SECRET: process.env.PASSWORD_HASHER_SECRET,
-    DATABASE_PRISMA_URL: process.env.DATABASE_PRISMA_URL,
-    DATABASE_URL_NON_POOLING: process.env.DATABASE_URL_NON_POOLING,
+    APP_DATABASE_PRISMA_URL: process.env.APP_DATABASE_PRISMA_URL,
+    APP_DATABASE_URL_NON_POOLING: process.env.APP_DATABASE_URL_NON_POOLING,
+    EVENTS_DATABASE_PRISMA_URL: process.env.EVENTS_DATABASE_PRISMA_URL,
+    EVENTS_DATABASE_URL_NON_POOLING: process.env.EVENTS_DATABASE_URL_NON_POOLING,
     AUTH_SECRET: process.env.AUTH_SECRET,
     AUTH_URL: process.env.AUTH_URL,
     AUTH_TRUST_HOST: process.env.AUTH_TRUST_HOST,
-    GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID,
-    GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET,
     AUTH_ADMIN_EMAIL: process.env.AUTH_ADMIN_EMAIL,
     AUTH_ADMIN_PASSWORD: process.env.AUTH_ADMIN_PASSWORD,
     REDIS_HOST: process.env.REDIS_HOST,
@@ -113,6 +120,10 @@ export const env = createEnv({
     NEXT_PUBLIC_S3_ENDPOINT: process.env.NEXT_PUBLIC_S3_ENDPOINT,
     ENABLE_S3_SERVICE: process.env.ENABLE_S3_SERVICE,
     DISABLE_REGISTRATION: process.env.DISABLE_REGISTRATION,
+    EVENTS_API_URL: process.env.EVENTS_API_URL,
+    EVENTS_API_KEY_ID: process.env.EVENTS_API_KEY_ID,
+    EVENTS_API_KEY_SECRET: process.env.EVENTS_API_KEY_SECRET,
+    DISABLE_EVENTS_PUSH: process.env.DISABLE_EVENTS_PUSH,
   },
   onValidationError: (error) => {
     logger.error(error)

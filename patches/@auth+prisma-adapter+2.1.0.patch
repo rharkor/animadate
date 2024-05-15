@@ -1,0 +1,14 @@
+diff --git a/node_modules/@auth/prisma-adapter/package.json b/node_modules/@auth/prisma-adapter/package.json
+index ac6293e..393fddf 100644
+--- a/node_modules/@auth/prisma-adapter/package.json
++++ b/node_modules/@auth/prisma-adapter/package.json
+@@ -21,7 +21,8 @@
+   "exports": {
+     ".": {
+       "types": "./index.d.ts",
+-      "import": "./index.js"
++      "import": "./index.js",
++      "default": "./index.js"
+     }
+   },
+   "license": "ISC",

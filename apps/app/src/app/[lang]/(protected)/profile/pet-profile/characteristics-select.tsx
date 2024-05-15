@@ -7,8 +7,8 @@ import { maxPetCharacteristics, minPetCharacteristics } from "@/api/pet/schemas"
 import { ModalDescription, ModalHeader, ModalTitle } from "@/components/ui/modal"
 import { TDictionary } from "@/lib/langs"
 import { cn } from "@/lib/utils"
+import { CHARACTERISTIC } from "@animadate/app-db/generated/client"
 import { Button, Chip, Input, Modal, ModalBody, ModalContent, ModalFooter, useDisclosure } from "@nextui-org/react"
-import { CHARACTERISTIC } from "@prisma/client"
 
 import { CharacteristicsSelectDr } from "./characteristics-select.dr"
 

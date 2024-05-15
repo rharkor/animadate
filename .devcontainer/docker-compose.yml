@@ -19,10 +19,12 @@ services:
     restart: unless-stopped
     volumes:
       - postgres-data:/var/lib/postgresql/data
+      - ../docker/init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
     environment:
       POSTGRES_PASSWORD: postgres
       POSTGRES_USER: postgres
       POSTGRES_DB: postgres
+      POSTGRES_ADDITIONAL_MULTIPLE_DATABASES: events
 
     # Add "forwardPorts": ["5432"] to **devcontainer.json** to forward PostgreSQL locally.
     # (Adding the "ports" property to this file will not forward from a Codespace.)

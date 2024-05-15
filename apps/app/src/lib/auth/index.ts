@@ -1,6 +1,5 @@
 import NextAuth, { Session } from "next-auth"
 import Credentials from "next-auth/providers/credentials"
-import GithubProvider from "next-auth/providers/github"
 import { Provider } from "next-auth/providers/index"
 import { randomUUID } from "crypto"
 import * as OTPAuth from "otpauth"
@@ -13,8 +12,10 @@ import { authCookieName, authRoutes, SESSION_MAX_AGE } from "@/constants/auth"
 import { env } from "@/lib/env"
 import { i18n } from "@/lib/i18n-config"
 import { ITrpcContext } from "@/types"
+import events from "@animadate/events-sdk"
 import { logger } from "@animadate/lib"
 import { PrismaAdapter } from "@auth/prisma-adapter"
+import type { PrismaClient } from "@prisma/client"
 
 import { signInSchema } from "../../api/auth/schemas"
 import { sessionsSchema } from "../../api/me/schemas"
@@ -24,6 +25,7 @@ import { prisma } from "../prisma"
 import { redis } from "../redis"
 import { ensureRelativeUrl } from "../utils"
 import { dictionaryRequirements } from "../utils/dictionary"
+import { getContext } from "../utils/events"
 
 export const providers: Provider[] = [
   Credentials({
@@ -83,6 +85,16 @@ export const providers: Provider[] = [
 
       if (!user) {
         logger.debug("User not found", creds.email)
+        events.push({
+          name: "signIn.userNotFound",
+          kind: "AUTHENTICATION",
+          level: "INFO",
+          context: getContext({ req, session: null }),
+          data: {
+            email: creds.email,
+            error: "User not found",
+          },
+        })
         return null
       }
 
@@ -95,6 +107,16 @@ export const providers: Provider[] = [
 
       if (!isValidPassword) {
         logger.debug("Invalid password", user.id)
+        events.push({
+          name: "signIn.invalidPassword",
+          kind: "AUTHENTICATION",
+          level: "INFO",
+          context: getContext({ req, session: null }),
+          data: {
+            email: creds.email,
+            error: "Invalid password",
+          },
+        })
         return null
       }
 
@@ -128,7 +150,7 @@ export const providers: Provider[] = [
       }
 
       // logger.debug("User logged in", user.id)
-      return {
+      const session = {
         id: user.id.toString(),
         email: user.email,
         name: user.name,
@@ -138,18 +160,28 @@ export const providers: Provider[] = [
         hasPassword: user.hasPassword,
         lastLocale: user.lastLocale,
       }
+      events.push({
+        name: "signIn.successful",
+        kind: "AUTHENTICATION",
+        level: "INFO",
+        context: getContext({ req, session: null }),
+        data: {
+          session,
+        },
+      })
+      return session
     },
   }),
 ]
 
-if (env.DISABLE_REGISTRATION !== true) {
-  providers.push(
-    GithubProvider({
-      clientId: env.GITHUB_CLIENT_ID,
-      clientSecret: env.GITHUB_CLIENT_SECRET,
-    })
-  )
-}
+// if (env.DISABLE_REGISTRATION !== true) {
+//   providers.push(
+//     GithubProvider({
+//       clientId: env.GITHUB_CLIENT_ID,
+//       clientSecret: env.GITHUB_CLIENT_SECRET,
+//     })
+//   )
+// }
 
 export const providersByName: {
   [key: string]: Provider | undefined
@@ -162,7 +194,7 @@ export const providersByName: {
 
 export const nextAuth = NextAuth({
   secret: env.AUTH_SECRET,
-  adapter: PrismaAdapter(prisma), //? Require to use database
+  adapter: PrismaAdapter(prisma as PrismaClient), //? Require to use database
   providers,
   callbacks: {
     jwt: async ({ token, user }) => {
@@ -285,6 +317,11 @@ export const nextAuth = NextAuth({
   logger: {
     warn(code) {
       logger.warn("warn", code)
+    },
+    error(error) {
+      const { name, message } = error
+      if (["CredentialsSignin", "JWTSessionError"].includes(name)) return
+      logger.error("Next auth error", name, message)
     },
   },
 })

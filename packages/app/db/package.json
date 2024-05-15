@@ -1,0 +1,11 @@
+{
+  "name": "@animadate/app-db",
+  "scripts": {
+    "postinstall": "prisma generate"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "prisma": "^5.12.1"
+  },
+  "type": "module"
+}

@@ -1,13 +1,15 @@
 import { z } from "zod"
 
 import { prisma } from "@/lib/prisma"
+import { getContext } from "@/lib/utils/events"
 import { ApiError, ensureLoggedIn, handleApiError } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
-import { CHARACTERISTIC, PET_KIND } from "@prisma/client"
+import { CHARACTERISTIC, PET_KIND } from "@animadate/app-db/generated/client"
+import events from "@animadate/events-sdk"
 
 import { upsertPetResponseSchema, upsertPetSchema } from "./schemas"
 
-export const upsertPet = async ({ input, ctx: { session } }: apiInputFromSchema<typeof upsertPetSchema>) => {
+export const upsertPet = async ({ input, ctx: { session, req } }: apiInputFromSchema<typeof upsertPetSchema>) => {
   ensureLoggedIn(session)
   try {
     const { id, name, description, birthdate, breed, characteristics, kind, photos } = input
@@ -137,6 +139,15 @@ export const upsertPet = async ({ input, ctx: { session } }: apiInputFromSchema<
       }
       return res
     })
+
+    events.push({
+      name: "pet.upsert",
+      kind: "PET",
+      level: "INFO",
+      context: getContext({ req, session }),
+      data: { pet: res.pet, input },
+    })
+
     return res
   } catch (error: unknown) {
     return handleApiError(error)

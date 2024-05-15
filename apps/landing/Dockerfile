@@ -15,8 +15,10 @@ COPY package-lock.json ./
 COPY turbo.json ./
 
 COPY apps/landing/package.json ./apps/landing/package.json
+#? Copy patch files
+COPY patches ./patches
 
-RUN npm ci --omit=dev
+RUN npm ci --omit=dev && npm run postinstall
 
 
 FROM base AS builder

@@ -6,10 +6,12 @@ services:
     restart: unless-stopped
     volumes:
       - animadate-postgres-data:/var/lib/postgresql/data
+      - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: postgres
+      POSTGRES_ADDITIONAL_MULTIPLE_DATABASES: events
     logging:
       driver: json-file
       options:
@@ -30,5 +32,5 @@ services:
     ports:
       - 6379:6379
 volumes:
-  animadate-postgres-data: null
-  animadate-redis-data: null
+  animadate-postgres-data:
+  animadate-redis-data:

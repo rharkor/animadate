@@ -125,7 +125,6 @@ const onlyFrontAppsAdaptaion: {
           "@aws-sdk/s3-presigned-post",
           "@hookform/resolvers",
           "@next-auth/prisma-adapter",
-          "@prisma/client",
           "@tanstack/react-query",
           "@trpc/client",
           "@trpc/react-query",

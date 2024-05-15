@@ -1,0 +1,33 @@
+diff --git a/node_modules/@auth/core/package.json b/node_modules/@auth/core/package.json
+index 99fe3ce..a17788a 100644
+--- a/node_modules/@auth/core/package.json
++++ b/node_modules/@auth/core/package.json
+@@ -35,14 +35,16 @@
+   "exports": {
+     ".": {
+       "types": "./index.d.ts",
+-      "import": "./index.js"
++      "import": "./index.js"  ,
++      "default": "./index.js"
+     },
+     "./adapters": {
+       "types": "./adapters.d.ts"
+     },
+     "./errors": {
+       "types": "./errors.d.ts",
+-      "import": "./errors.js"
++      "import": "./errors.js",
++      "default": "./errors.js"
+     },
+     "./jwt": {
+       "types": "./jwt.d.ts",
+@@ -53,7 +55,8 @@
+     },
+     "./providers/*": {
+       "types": "./providers/*.d.ts",
+-      "import": "./providers/*.js"
++      "import": "./providers/*.js",
++      "default": "./providers/*.js"
+     },
+     "./types": {
+       "types": "./types.d.ts"

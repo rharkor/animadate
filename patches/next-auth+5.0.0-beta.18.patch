@@ -1,0 +1,37 @@
+diff --git a/node_modules/next-auth/next.js b/node_modules/next-auth/next.js
+index eac69d0..fa621df 100644
+--- a/node_modules/next-auth/next.js
++++ b/node_modules/next-auth/next.js
+@@ -4,7 +4,7 @@
+  * :::
+  *
+  * @module next
+- */
++*/
+ throw new ReferenceError([
+     '"next-auth/next" is deprecated. If you are not ready to migrate, keep using "next-auth@4".',
+     "Read more on https://authjs.dev/getting-started/migrating-to-v5",
+diff --git a/node_modules/next-auth/package.json b/node_modules/next-auth/package.json
+index 6122ec7..6de5b59 100644
+--- a/node_modules/next-auth/package.json
++++ b/node_modules/next-auth/package.json
+@@ -15,7 +15,8 @@
+   "exports": {
+     ".": {
+       "types": "./index.d.ts",
+-      "import": "./index.js"
++      "import": "./index.js",
++      "default": "./index.js"
+     },
+     "./jwt": {
+       "types": "./jwt.d.ts",
+@@ -37,7 +38,8 @@
+     },
+     "./providers/*": {
+       "types": "./providers/*.d.ts",
+-      "import": "./providers/*.js"
++      "import": "./providers/*.js",
++      "default": "./providers/*.js" 
+     },
+     "./react": {
+       "types": "./react.d.ts",

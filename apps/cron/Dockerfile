@@ -17,7 +17,16 @@ COPY turbo.json ./
 
 COPY apps/cron/package.json ./apps/cron/package.json
 
-RUN npm ci --omit=dev
+COPY packages/lib/package.json ./packages/lib/package.json
+COPY packages/events/sdk/package.json ./packages/events/sdk/package.json
+#? Copy full app/db because we need the prisma schema for postinstall
+COPY packages/app/db ./packages/app/db
+#? Copy full events/db because we need the prisma schema for postinstall
+COPY packages/events/db ./packages/events/db
+#? Copy patch files
+COPY patches ./patches
+
+RUN npm ci --omit=dev && npm run postinstall
 
 FROM base AS builder
 
@@ -35,11 +44,12 @@ ENV NODE_ENV production
 COPY --from=deps /usr/src/app .
 
 COPY apps/cron ./apps/cron
-COPY apps/app/prisma/schema.prisma apps/app/prisma/schema.prisma
 COPY packages/configs ./packages/configs
 COPY packages/lib ./packages/lib
+COPY packages/events/sdk ./packages/events/sdk
 
-RUN cd apps/cron && npx -y prisma generate && turbo run build
+
+RUN cd apps/cron && turbo run build
 
 FROM base AS runner
 
