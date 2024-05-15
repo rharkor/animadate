@@ -1,10 +1,10 @@
+import { exit } from "process"
 import ws from "ws"
 
 import { appRouter } from "@/api/_app"
 import { createContext } from "@/lib/trpc/context"
 import { logger } from "@animadate/lib"
 import { applyWSSHandler } from "@trpc/server/adapters/ws"
-import { exit } from "process"
 
 const wss = new ws.Server({
   // eslint-disable-next-line no-process-env
