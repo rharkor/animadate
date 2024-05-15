@@ -1,7 +1,6 @@
 import { eventsPrisma } from "@/lib/prisma/events"
 import { Prisma } from "@animadate/events-db/generated/client"
 import events from "@animadate/events-sdk"
-import { logger } from "@animadate/lib"
 
 const main = async () => {
   try {
@@ -43,7 +42,6 @@ const main = async () => {
       },
     })
   }
-  logger.success("Error sent!")
 }
 
 main()

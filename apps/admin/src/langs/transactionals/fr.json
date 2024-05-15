@@ -13,5 +13,11 @@
   "changeEmailAddressDescription": "Vous avez demandé à changer votre adresse e-mail. Veuillez utiliser le code suivant pour valider votre demande.",
   "resetPasswordRequest": "Demande de réinitialisation du mot de passe",
   "resetYourPassword": "Réinitialisez votre mot de passe",
-  "resetPasswordDescription": "Vous avez récemment demandé à réinitialiser votre mot de passe pour votre compte. Cliquez sur le bouton ci-dessous pour le réinitialiser."
+  "resetPasswordDescription": "Vous avez récemment demandé à réinitialiser votre mot de passe pour votre compte. Cliquez sur le bouton ci-dessous pour le réinitialiser.",
+  "newErrorWasReported": "Une nouvelle erreur a été signalée.",
+  "name": "Nom",
+  "kind": "Type",
+  "level": "Niveau",
+  "app": "Application",
+  "viewError": "Voir l'erreur"
 }

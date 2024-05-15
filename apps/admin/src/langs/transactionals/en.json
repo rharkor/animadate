@@ -13,5 +13,11 @@
   "changeEmailAddressDescription": "You have requested to change your email address. Please use the following code to validate your request.",
   "resetPasswordRequest": "Reset password request",
   "resetYourPassword": "Reset your password",
-  "resetPasswordDescription": "You recently requested to reset your password for your account. Click the button below to reset it."
+  "resetPasswordDescription": "You recently requested to reset your password for your account. Click the button below to reset it.",
+  "newErrorWasReported": "A new error was reported.",
+  "name": "Name",
+  "kind": "Kind",
+  "level": "Level",
+  "app": "App",
+  "viewError": "View error"
 }
