@@ -1,3 +1,5 @@
+import { headers } from "next/headers"
+
 import { Locale } from "@/lib/i18n-config"
 import { getDictionary } from "@/lib/langs"
 import { serverTrpc } from "@/lib/trpc/server"
@@ -15,6 +17,9 @@ export default async function Home({
     lang: Locale
   }
 }) {
+  // Required due to the use of serverTrpc
+  headers()
+
   const dictionary = await getDictionary(lang, dictionaryRequirements({ eventsList: true }, EventsTableDr))
 
   const page = 1
