@@ -15,7 +15,7 @@ const apps = fs.readdirSync(appsRootPath)
 const packagesPath = packages
   .map((pkg) => path.join(rootPath, pkg))
   .flatMap((pkg) => {
-    if (pkg.includes("packages/configs")) {
+    if (pkg.includes("packages/configs") || pkg.includes("packages/app") || pkg.includes("packages/events")) {
       const subPackages = fs.readdirSync(pkg)
       return subPackages.map((subPkg) => path.join(pkg, subPkg))
     } else return pkg
@@ -47,6 +47,8 @@ const main = async () => {
         "autoprefixer",
         "@react-email/render"
       )
+    } else if (pkg === path.join(appsRootPath, "admin")) {
+      options.ignoreMatches.push("@nextui-org/*", "@react-email/render", "sharp", "autoprefixer")
     } else if (pkg === path.join(appsRootPath, "landing")) {
       options.ignoreMatches.push("@types/react-dom")
     } else if (pkg === path.join(rootPath, "scripts")) {
