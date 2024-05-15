@@ -1,4 +1,4 @@
-import { Home, KeyRound, LucideIcon, ScrollText } from "lucide-react"
+import { AlertCircle, Home, KeyRound, LucideIcon, ScrollText } from "lucide-react"
 
 import { TDictionary } from "@/lib/langs"
 
@@ -36,5 +36,12 @@ export const routes: (
     route: "/keys",
     icon: KeyRound,
     isActive: pathname.match(/^\/[a-z]+\/keys\/?$/) !== null,
+  },
+  {
+    id: "email-contacts",
+    name: dictionary.nav.emailContacts,
+    route: "/email-contacts",
+    icon: AlertCircle,
+    isActive: pathname.match(/^\/[a-z]+\/email-contacts\/?$/) !== null,
   },
 ]

@@ -51,6 +51,7 @@ export default function EventsTable({
   const session = useSession()
   const [page, setPage] = useState(defaultPage)
   const [name, setName] = useState("")
+  const [application, setApplication] = useState("")
   const [kinds, setKinds] = useState<TKinds>(defaultKinds)
   const [levels, setLevels] = useState<TLevels>(defaultLevels)
 
@@ -61,9 +62,17 @@ export default function EventsTable({
       name,
       kinds,
       levels,
+      application,
     },
     {
-      initialData: page === defaultPage ? ssrData : undefined,
+      initialData:
+        page === defaultPage &&
+        name === "" &&
+        JSON.stringify(kinds) === JSON.stringify(defaultKinds) &&
+        JSON.stringify(levels) === JSON.stringify(defaultLevels) &&
+        application === ""
+          ? ssrData
+          : undefined,
     }
   )
 
@@ -137,6 +146,8 @@ export default function EventsTable({
           setKinds={setKinds}
           levels={levels}
           setLevels={setLevels}
+          application={application}
+          setApplication={setApplication}
         />
         <div className="min-h-[500px] overflow-auto">
           <Table
@@ -149,6 +160,9 @@ export default function EventsTable({
             <TableHeader>
               <TableColumn key={"name"} className="min-w-[340px]">
                 {dictionary.nameLiteral}
+              </TableColumn>
+              <TableColumn key={"app"} width={140}>
+                {dictionary.appLiteral}
               </TableColumn>
               <TableColumn key={"kind"} width={160}>
                 {dictionary.kind}
@@ -170,6 +184,7 @@ export default function EventsTable({
                 ? events.data.data.map((event) => (
                     <TableRow key={event.id}>
                       <TableCell>{event.name}</TableCell>
+                      <TableCell>{event.context.app}</TableCell>
                       <TableCell>{event.kind}</TableCell>
                       <TableCell>{event.level}</TableCell>
                       <TableCell>

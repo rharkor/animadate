@@ -22,6 +22,8 @@ export default function TableTopContent({
   setLevels,
   name,
   setName,
+  application,
+  setApplication,
 }: {
   dictionary: TDictionary<typeof TableTopContentDr>
   name: string
@@ -30,6 +32,8 @@ export default function TableTopContent({
   setKinds: (kinds: TKinds) => void
   levels: TLevels
   setLevels: (levels: TLevels) => void
+  application: string
+  setApplication: (application: string) => void
 }) {
   const [nameDebounced, setNameDebounced] = useState(name)
   useEffect(() => {
@@ -42,16 +46,36 @@ export default function TableTopContent({
     }
   }, [nameDebounced, setName])
 
+  const [applicationDebounced, setApplicationDebounced] = useState(application)
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setApplication(applicationDebounced)
+    }, 300)
+
+    return () => {
+      clearTimeout(timeout)
+    }
+  }, [applicationDebounced, setApplication])
+
   return (
     <div className="flex items-end justify-between gap-3">
       <Input
         isClearable
         className="w-full sm:max-w-[44%]"
-        placeholder="Search by name..."
+        placeholder={dictionary.searchByName}
         startContent={<SearchIcon />}
         value={nameDebounced}
         onClear={() => setNameDebounced("")}
         onValueChange={setNameDebounced}
+      />
+      <Input
+        isClearable
+        className="w-full sm:max-w-[44%]"
+        placeholder={dictionary.searchByApplicationName}
+        startContent={<SearchIcon />}
+        value={applicationDebounced}
+        onClear={() => setApplicationDebounced("")}
+        onValueChange={setApplicationDebounced}
       />
       <div className="flex gap-3">
         <Dropdown>

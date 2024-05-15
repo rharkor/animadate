@@ -13,6 +13,7 @@ export const getEventsSchema = () =>
     kinds: z.array(PushEventSchema.shape.kind),
     levels: z.array(PushEventSchema.shape.level),
     name: z.string(),
+    application: z.string(),
   })
 
 export const eventSchema = () =>

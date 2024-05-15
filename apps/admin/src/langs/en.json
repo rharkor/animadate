@@ -219,7 +219,8 @@
   "nav": {
     "home": "Home",
     "events": "Events",
-    "apiKeys": "API keys"
+    "apiKeys": "API keys",
+    "emailContacts": "Email contacts"
   },
   "changeEmail": "Change email",
   "changePassword": "Change password",
@@ -275,5 +276,14 @@
   "level": "Level",
   "date": "Date",
   "kinds": "Kinds",
-  "levels": "Levels"
+  "levels": "Levels",
+  "addEmailContact": "Add email",
+  "deleteEmailContact": "Delete email",
+  "deleteEmailContactDescription": "Are you sure you want to delete this email? This action is irreversible.",
+  "emailContacts": "Contact emails",
+  "emailContactsDescription": "Those emails are used to contact you when an alert is raised",
+  "searchByName": "Search by name",
+  "searchByEmail": "Search by email",
+  "searchByApplicationName": "Search by application name",
+  "appLiteral": "Application"
 }

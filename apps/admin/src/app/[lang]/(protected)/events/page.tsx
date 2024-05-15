@@ -27,6 +27,7 @@ export default async function Home({
     kinds,
     levels,
     name: "",
+    application: "",
   })
 
   return (

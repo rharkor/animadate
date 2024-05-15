@@ -9,7 +9,7 @@ import { getEventsResponseSchema, getEventsSchema } from "./schemas"
 
 export const getEvents = async ({ input }: apiInputFromSchema<typeof getEventsSchema>) => {
   try {
-    const { page, perPage, kinds, levels, name } = input
+    const { page, perPage, kinds, levels, name, application } = input
 
     const skip = (page - 1) * perPage
     const take = perPage
@@ -23,6 +23,10 @@ export const getEvents = async ({ input }: apiInputFromSchema<typeof getEventsSc
       },
       level: {
         in: levels,
+      },
+      context: {
+        path: ["app"],
+        string_contains: application,
       },
     }
     const events = await eventsPrisma.event.findMany({

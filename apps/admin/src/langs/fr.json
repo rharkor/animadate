@@ -219,7 +219,8 @@
   "nav": {
     "home": "Accueil",
     "events": "Événements",
-    "apiKeys": "Clés API"
+    "apiKeys": "Clés API",
+    "emailContacts": "Emails de contact"
   },
   "changeEmail": "Changer d'email",
   "changePassword": "Changer de mot de passe",
@@ -275,5 +276,14 @@
   "level": "Niveau",
   "date": "Date",
   "kinds": "Types",
-  "levels": "Niveaux"
+  "levels": "Niveaux",
+  "addEmailContact": "Ajouter un email",
+  "deleteEmailContact": "Supprimer l'email",
+  "deleteEmailContactDescription": "Êtes-vous sûr de vouloir supprimer cet email ?",
+  "emailContacts": "Emails de contact",
+  "emailContactsDescription": "Ces emails sont utilisé pour vous contacter lorsqu'un alerte est détectée",
+  "searchByName": "Rechercher par nom",
+  "searchByEmail": "Rechercher par email",
+  "searchByApplicationName": "Rechercher par nom d'application",
+  "appLiteral": "Application"
 }
