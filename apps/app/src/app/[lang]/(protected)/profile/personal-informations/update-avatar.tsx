@@ -123,6 +123,7 @@ export default function UpdateAvatar({
           width={128}
           height={128}
           priority
+          onClick={() => setShowModal(true)}
         />
         <div
           className={cn("flex flex-row justify-center gap-2 transition-all", {
