@@ -1,10 +1,10 @@
 import React from "react"
 import { cookies } from "next/headers"
+import Link from "next/link"
 
 import { Locale } from "@/lib/i18n-config"
 import { getDictionary } from "@/lib/langs"
 import { Button } from "@nextui-org/button"
-import { Link } from "@nextui-org/link"
 
 export default async function Page404MatchAll() {
   const cookiesStore = cookies()
