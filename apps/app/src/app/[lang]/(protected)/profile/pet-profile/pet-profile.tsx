@@ -122,11 +122,14 @@ export default function PetProfile({
   }
 
   const upsertPetMutation = trpc.pet.upsertPet.useMutation()
+  const [isLoading, setIsLoading] = useState(false)
   const onSubmit = async (data: z.infer<ReturnType<typeof formSchema>>) => {
+    setIsLoading(true)
     await upsertPetMutation.mutateAsync(data)
     utils.me.getAccount.invalidate()
     utils.pet.invalidate()
 
+    // Do not set isLoading to false, we will change location
     const onSuccessSp = sp.get("onSuccess")
     if (onSuccessSp) {
       router.push(onSuccessSp)
@@ -194,7 +197,7 @@ export default function PetProfile({
           characteristics={characteristics}
           onCharacteristicsChange={handleCharacteristicsChange}
           breedError={breedError}
-          isLoading={upsertPetMutation.isPending}
+          isLoading={isLoading}
           ageError={ageError}
           characteristicsError={characteristicsError}
           descriptionError={descriptionError}
@@ -244,7 +247,7 @@ export default function PetProfile({
                   <Button
                     color="success"
                     type="submit"
-                    isLoading={upsertPetMutation.isPending}
+                    isLoading={isLoading}
                     size={hasPetProfile ? "sm" : "md"}
                     className="lg:hidden"
                   >
