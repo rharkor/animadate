@@ -69,7 +69,7 @@ export const mock = async () => {
     if (!dogExists) {
       // Photos
       const getDogImageKey = (dogImage: string) => {
-        return `dogs/pet-profile/mock/${dog.name}/${dogImage}.jpg`
+        return `dogs/pet-profile/mock/${dog.name.toLocaleLowerCase()}/${dogImage}.jpg`
       }
       for (const dogImage of dog.photos) {
         const dogImageExists = await prisma.file.findUnique({
@@ -80,8 +80,8 @@ export const mock = async () => {
         if (!dogImageExists) {
           await prisma.file.create({
             data: {
-              bucket: env.NEXT_PUBLIC_S3_BUCKET_NAME,
-              endpoint: "animadate-public",
+              bucket: "animadate-public",
+              endpoint: env.NEXT_PUBLIC_S3_ENDPOINT,
               key: getDogImageKey(dogImage),
               filetype: "image/jpeg",
             },
