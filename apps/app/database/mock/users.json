@@ -1,0 +1,52 @@
+[
+  {
+    "email": "antoine.dupont@example.com",
+    "name": "Antoine Dupont",
+    "password": "Azerty123!"
+  },
+  {
+    "email": "lucie.leroy@example.com",
+    "name": "Lucie Leroy",
+    "password": "Azerty123!"
+  },
+  {
+    "email": "thomas.martin@example.com",
+    "name": "Thomas Martin",
+    "password": "Azerty123!"
+  },
+  {
+    "email": "camille.robert@example.com",
+    "name": "Camille Robert",
+    "password": "Azerty123!"
+  },
+  {
+    "email": "julie.dubois@example.com",
+    "name": "Julie Dubois",
+    "password": "Azerty123!"
+  },
+  {
+    "email": "nicolas.petit@example.com",
+    "name": "Nicolas Petit",
+    "password": "Azerty123!"
+  },
+  {
+    "email": "laetitia.moreau@example.com",
+    "name": "Laetitia Moreau",
+    "password": "Azerty123!"
+  },
+  {
+    "email": "pierre.dufour@example.com",
+    "name": "Pierre Dufour",
+    "password": "Azerty123!"
+  },
+  {
+    "email": "clementine.sanchez@example.com",
+    "name": "Clémentine Sanchez",
+    "password": "Azerty123!"
+  },
+  {
+    "email": "vincent.girard@example.com",
+    "name": "Vincent Girard",
+    "password": "Azerty123!"
+  }
+]

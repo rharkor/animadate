@@ -75,8 +75,8 @@ export const env = createEnv({
       .transform((value) => value === "true"),
     NEXT_PUBLIC_DEMO_EMAIL: z.string().optional(),
     NEXT_PUBLIC_DEMO_PASSWORD: z.string().optional(),
-    NEXT_PUBLIC_S3_ENDPOINT: z.string().optional(),
-    NEXT_PUBLIC_S3_BUCKET_NAME: z.string().optional(),
+    NEXT_PUBLIC_S3_ENDPOINT: z.string().min(1),
+    NEXT_PUBLIC_S3_BUCKET_NAME: z.string().min(1),
     NEXT_PUBLIC_ENABLE_MAILING_SERVICE: z
       .enum(["true", "false"])
       .optional()

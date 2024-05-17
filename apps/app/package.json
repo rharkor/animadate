@@ -5,7 +5,7 @@
     "dev": "npm run -s is-initialized && prisma migrate dev && cross-env FORCE_COLOR=1 next dev --turbo",
     "build": "next build",
     "start": "npm run deploy-db:prod && next start --port ${PORT:-3000}",
-    "deploy-db:prod": "prisma migrate deploy && npm run seed",
+    "deploy-db:prod": "prisma migrate deploy && prisma db seed",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
     "prettier": "prettier --check \"**/*.{js,jsx,ts,tsx}\"",
@@ -13,7 +13,7 @@
     "test": "cross-env FORCE_COLOR=1 jest --passWithNoTests",
     "is-initialized": "cd ../../packages/scripts && npm run is-initialized",
     "analyze": "ANALYZE=true npm run build && cd .next/analyze && npx -y serve",
-    "seed": "cross-env NODE_ENV=development prisma db seed"
+    "seed": "cross-env NODE_ENV=development prisma db seed -- --mock"
   },
   "dependencies": {
     "@animadate/app-db": "*",

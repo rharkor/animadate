@@ -1,0 +1,65 @@
+[
+  {
+    "owner_email": "antoine.dupont@example.com",
+    "name": "Alexandre",
+    "breed": "Labrador Retriever",
+    "birthdate": "2019-05-10",
+    "description": "Alexandre est un chien fidèle et énergique, qui aime jouer et courir dans le parc.",
+    "characteristics": ["FRIENDLY", "PLAYFUL", "ENERGETIC"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "lucie.leroy@example.com",
+    "name": "Bella",
+    "breed": "Golden Retriever",
+    "birthdate": "2020-02-15",
+    "description": "Bella est une chienne douce et intelligente, qui aime être proche de sa famille.",
+    "characteristics": ["AFFECTIONATE", "INTELLIGENT", "CALM", "SOCIAL"],
+    "photos": ["1", "2", "3", "4"]
+  },
+  {
+    "owner_email": "thomas.martin@example.com",
+    "name": "Buddy",
+    "breed": "Border Collie",
+    "birthdate": "2018-11-20",
+    "description": "Buddy est un chien actif et intelligent, toujours prêt pour une nouvelle aventure.",
+    "characteristics": ["INTELLIGENT", "PLAYFUL", "ENERGETIC", "SOCIAL", "OBEDIENT"],
+    "photos": ["1", "2", "3"]
+  },
+  {
+    "owner_email": "camille.robert@example.com",
+    "name": "Marco",
+    "breed": "Shih Tzu",
+    "birthdate": "2017-08-25",
+    "description": "Marco est un chien doux et affectueux, qui aime se faire dorloter.",
+    "characteristics": ["AFFECTIONATE", "GENTLE", "CALM", "HAPPY"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "julie.dubois@example.com",
+    "name": "Matis",
+    "breed": "Bulldog anglais",
+    "birthdate": "2016-04-12",
+    "description": "Matis est un chien courageux et fidèle, qui aime passer du temps avec sa famille.",
+    "characteristics": ["BRAVE", "STRONG", "AFFECTIONATE"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "nicolas.petit@example.com",
+    "name": "Max",
+    "breed": "Jack Russell Terrier",
+    "birthdate": "2019-10-08",
+    "description": "Max est un chien déterminé et plein de vie, toujours prêt pour une nouvelle aventure.",
+    "characteristics": ["DETERMINED", "PLAYFUL", "ENERGETIC", "FUNNY"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "laetitia.moreau@example.com",
+    "name": "Rocky",
+    "breed": "Cavalier King Charles",
+    "birthdate": "2020-07-03",
+    "description": "Rocky est un chien doux et aimant, qui aime passer du temps avec ses proches.",
+    "characteristics": ["GENTLE", "LOVING", "SOCIAL", "HAPPY"],
+    "photos": ["1", "2"]
+  }
+]
