@@ -3,8 +3,8 @@ import { prisma } from "database/utils"
 import { rolesAsObject } from "@/constants"
 import { hash } from "@/lib/bcrypt"
 import { env } from "@/lib/env"
+import { CHARACTERISTIC } from "@animadate/app-db/generated/client"
 import { cmd } from "@animadate/lib"
-import { CHARACTERISTIC } from "@prisma/client"
 
 import dogs from "./dogs.json"
 import users from "./users.json"
@@ -100,8 +100,8 @@ export const mock = async () => {
           birthdate: new Date(dog.birthdate),
           breed: dog.breed,
           characteristics: {
-            create: (dog.characteristics as CHARACTERISTIC[]).map((c) => ({
-              value: c,
+            create: dog.characteristics.map((c) => ({
+              value: c as CHARACTERISTIC,
             })),
           },
           kind: "DOG",
