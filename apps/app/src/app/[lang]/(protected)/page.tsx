@@ -21,11 +21,14 @@ export default async function Home({
 
   const dictionary = await getDictionary(lang, dictionaryRequirements({}, MatchDr))
 
-  const suggested = await serverTrpc.match.getSuggestedPets({})
+  const suggestedLimit = 5
+  const suggested = await serverTrpc.match.getSuggestedPets({
+    limit: suggestedLimit,
+  })
 
   return (
     <main className="container flex flex-1 flex-col gap-4 p-3">
-      <MatchProvider initialData={suggested}>
+      <MatchProvider initialData={suggested} suggestedLimit={suggestedLimit}>
         <Match dictionary={dictionary} />
       </MatchProvider>
     </main>
