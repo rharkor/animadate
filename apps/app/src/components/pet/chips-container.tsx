@@ -18,15 +18,17 @@ export default function ChipsContainer({
   breed,
   characteristics,
   chipsContainer,
+  isReadOnly,
 }: {
   dictionary: TDictionary<typeof ChipsContainerDr>
-  breedError: string | null
-  characteristicsError: string | null
-  handleCharacteristicsChange: (value: string[]) => void
-  handleBreedChange: (value: string) => string
+  breedError?: string | null
+  characteristicsError?: string | null
+  handleCharacteristicsChange?: (value: string[]) => void
+  handleBreedChange?: (value: string) => string
   breed: string
   characteristics: string[]
   chipsContainer: React.RefObject<HTMLDivElement>
+  isReadOnly?: boolean
 }) {
   const [isChipsDragged, setIsChipsDragged] = useState<boolean>(false)
   const [hasChipsBeenDraggedRecently, setHasChipsBeenDraggedRecently] = useState<boolean>(false)
@@ -60,8 +62,15 @@ export default function ChipsContainer({
           setCharacteristics={handleCharacteristicsChange}
           error={characteristicsError}
           clickDisabled={hasChipsBeenDraggedRecently}
+          isReadOnly={isReadOnly}
         />
-        <BreedSelect dictionary={dictionary} breed={breed} setBreed={handleBreedChange} error={breedError} />
+        <BreedSelect
+          dictionary={dictionary}
+          breed={breed}
+          setBreed={handleBreedChange}
+          error={breedError}
+          isReadOnly={isReadOnly}
+        />
       </motion.div>
     </div>
   )

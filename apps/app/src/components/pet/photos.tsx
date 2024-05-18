@@ -21,23 +21,23 @@ import PhotosDisplay from "./photos-display"
 export default function PetProfilePhotos({
   carousel,
   defaultPhoto,
-  photoIndex,
-  setPhotoIndex,
   photos,
   setPhotos,
   dictionary,
   error,
   isDescriptionFocused,
+  isReadOnly,
+  setPhotoIndex,
 }: {
   carousel?: boolean
-  defaultPhoto: number
-  photoIndex: number
-  setPhotoIndex: (index: number) => void
+  defaultPhoto?: number
   photos: { key: string; url: string; order: number | null }[]
-  setPhotos: (keys: { key: string; url: string; order: number | null }[]) => void
+  setPhotos?: (keys: { key: string; url: string; order: number | null }[]) => void
   dictionary: TDictionary<typeof PetProfilePhotosDr>
-  error: string | null
-  isDescriptionFocused: boolean
+  error?: string | null
+  isDescriptionFocused?: boolean
+  isReadOnly?: boolean
+  setPhotoIndex?: (index: number) => void
 }) {
   //* Upload
   const [currentFile, setCurrentFile] = useState<File | null>(null)
@@ -83,7 +83,7 @@ export default function PetProfilePhotos({
           }) ?? ""
 
         if (uploadResponse.ok) {
-          setPhotos([...photos, { key: fields.key, url: imageUrl, order: photos.length }])
+          setPhotos?.([...photos, { key: fields.key, url: imageUrl, order: photos.length }])
           setCurrentFile(null)
           setShowUploadModal(false)
         } else {
@@ -115,75 +115,77 @@ export default function PetProfilePhotos({
         <PhotosDisplay
           photos={photos}
           setPhotos={setPhotos}
-          photoIndex={photoIndex}
-          setPhotoIndex={setPhotoIndex}
           dictionary={dictionary}
           setShowUploadModal={setShowUploadModal}
           defaultPhoto={defaultPhoto}
           carousel={carousel}
           error={error}
           isDescriptionFocused={isDescriptionFocused}
+          isReadOnly={isReadOnly}
+          setPhotoIndex={setPhotoIndex}
         />
       </div>
-      <Modal
-        isOpen={showUploadModal}
-        onOpenChange={(open) => {
-          setShowUploadModal(open)
-          if (!open) setCurrentFile(null)
-        }}
-        classNames={{
-          wrapper: "z-[71]",
-          backdrop: "z-[70]",
-        }}
-      >
-        <ModalContent>
-          <ModalHeader>
-            <ModalTitle>{dictionary.uploadPhoto}</ModalTitle>
-          </ModalHeader>
-          <ModalBody>
-            <FileUpload
-              dictionary={dictionary}
-              onFilesChange={(files) => {
-                const file = files[0]
-                setCurrentFile(file)
-              }}
-              maxFiles={1}
-              accept={{
-                "image/png": [".png"],
-                "image/jpeg": [".jpg", ".jpeg"],
-              }}
-              disabled={uploading}
-              singleDisplay
-              singleDisplayClassName="w-[140px] h-[250px]"
-              imageCropProps={{
-                classNames: {
-                  wrapper: "z-[71]",
-                  backdrop: "z-[70]",
-                },
-              }}
-            />
-            {currentFile && (
-              <Button
-                color="primary"
-                type="button"
-                onPress={() => {
-                  addFile(currentFile)
+      {!isReadOnly && (
+        <Modal
+          isOpen={showUploadModal}
+          onOpenChange={(open) => {
+            setShowUploadModal(open)
+            if (!open) setCurrentFile(null)
+          }}
+          classNames={{
+            wrapper: "z-[71]",
+            backdrop: "z-[70]",
+          }}
+        >
+          <ModalContent>
+            <ModalHeader>
+              <ModalTitle>{dictionary.uploadPhoto}</ModalTitle>
+            </ModalHeader>
+            <ModalBody>
+              <FileUpload
+                dictionary={dictionary}
+                onFilesChange={(files) => {
+                  const file = files[0]
+                  setCurrentFile(file)
                 }}
-                isDisabled={uploading}
-                startContent={
-                  uploading ? (
-                    <Spinner classNames={{ wrapper: "size-4" }} color="current" size="sm" />
-                  ) : (
-                    <ImageUp className="size-4" />
-                  )
-                }
-              >
-                {dictionary.upload}
-              </Button>
-            )}
-          </ModalBody>
-        </ModalContent>
-      </Modal>
+                maxFiles={1}
+                accept={{
+                  "image/png": [".png"],
+                  "image/jpeg": [".jpg", ".jpeg"],
+                }}
+                disabled={uploading}
+                singleDisplay
+                singleDisplayClassName="w-[140px] h-[250px]"
+                imageCropProps={{
+                  classNames: {
+                    wrapper: "z-[71]",
+                    backdrop: "z-[70]",
+                  },
+                }}
+              />
+              {currentFile && (
+                <Button
+                  color="primary"
+                  type="button"
+                  onPress={() => {
+                    addFile(currentFile)
+                  }}
+                  isDisabled={uploading}
+                  startContent={
+                    uploading ? (
+                      <Spinner classNames={{ wrapper: "size-4" }} color="current" size="sm" />
+                    ) : (
+                      <ImageUp className="size-4" />
+                    )
+                  }
+                >
+                  {dictionary.upload}
+                </Button>
+              )}
+            </ModalBody>
+          </ModalContent>
+        </Modal>
+      )}
     </div>
   )
 }

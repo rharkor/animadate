@@ -1,9 +1,9 @@
 import { upsertPetSchemaDr } from "@/api/pet/schemas"
+import { ChipsContainerDr } from "@/components/pet/chips-container.dr"
+import { PetProfilePhotosDr } from "@/components/pet/photos.dr"
 import { dictionaryRequirements } from "@/lib/utils/dictionary"
 
-import { ChipsContainerDr } from "./chips-container.dr"
 import { DesktopFormDr } from "./desktop-form.dr"
-import { PetProfilePhotosDr } from "./photos.dr"
 
 export const PetProfileDr = dictionaryRequirements(
   {

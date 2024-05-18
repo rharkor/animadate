@@ -1,8 +1,12 @@
-import Link from "next/link"
+import { headers } from "next/headers"
 
 import { Locale } from "@/lib/i18n-config"
 import { getDictionary } from "@/lib/langs"
-import { Button } from "@nextui-org/button"
+import { serverTrpc } from "@/lib/trpc/server"
+import { dictionaryRequirements } from "@/lib/utils/dictionary"
+
+import Match from "./(match)/match"
+import { MatchDr } from "./(match)/match.dr"
 
 export default async function Home({
   params: { lang },
@@ -11,25 +15,16 @@ export default async function Home({
     lang: Locale
   }
 }) {
-  const dictionary = await getDictionary(lang, {
-    homePage: {
-      title: true,
-    },
-    profile: true,
-  })
+  // Required due to the use of serverTrpc
+  headers()
+
+  const dictionary = await getDictionary(lang, dictionaryRequirements({}, MatchDr))
+
+  const suggested = await serverTrpc.match.getSuggestedPets({})
 
   return (
     <main className="container m-auto flex flex-1 flex-col items-center justify-center gap-3">
-      <h1 className="text-4xl font-bold">{dictionary.homePage.title}</h1>
-      <nav className="flex flex-col items-center justify-center">
-        <ul className="flex flex-row items-center justify-center gap-2">
-          <li>
-            <Button as={Link} href="/examples/profile" color="primary" variant="flat">
-              {dictionary.profile}
-            </Button>
-          </li>
-        </ul>
-      </nav>
+      <Match ssrSuggested={suggested} dictionary={dictionary} />
     </main>
   )
 }

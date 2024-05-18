@@ -20,33 +20,47 @@ interface Photo {
 
 interface PhotosDisplayProps {
   photos: Photo[]
-  photoIndex: number
-  setPhotoIndex: (index: number) => void
   dictionary: TDictionary<typeof PhotosDisplayDr>
   setShowUploadModal: (show: boolean) => void
   carousel?: boolean
-  defaultPhoto: number
-  setPhotos: (keys: { key: string; url: string; order: number | null }[]) => void
-  error: string | null
-  isDescriptionFocused: boolean
+  defaultPhoto?: number
+  setPhotos?: (keys: { key: string; url: string; order: number | null }[]) => void
+  error?: string | null
+  isDescriptionFocused?: boolean
+  isReadOnly?: boolean
+  setPhotoIndex?: (index: number) => void
 }
 
 export default function PhotosDisplay({
   photos,
   setPhotos,
-  photoIndex,
-  setPhotoIndex,
   dictionary,
   setShowUploadModal,
   carousel,
   defaultPhoto,
   error,
   isDescriptionFocused: _isDescriptionFocused,
+  isReadOnly,
+  setPhotoIndex: propsSetPhotoIndex,
 }: PhotosDisplayProps) {
+  const [photoIndex, _setPhotoIndex] = useState(0)
+  const setPhotoIndex = (index: number) => {
+    if (index < 0) return
+    _setPhotoIndex(index)
+    propsSetPhotoIndex?.(index)
+  }
+
+  useEffect(() => {
+    if (!error) return
+    // Scroll to the end of the container
+    setPhotoIndex(photos.length)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [error])
+
   //* Swipe
   const x = useMotionValue(0)
 
-  const canAddPhoto = photos.length < maxPetPhotos
+  const canAddPhoto = !isReadOnly && photos.length < maxPetPhotos
   const realPhotosLength = canAddPhoto ? photos.length + 1 : photos.length
 
   // Minimum distance (in pixels) to trigger swipe
@@ -78,7 +92,7 @@ export default function PhotosDisplay({
   useEffect(() => {
     if (!carousel) return
     const interval = setInterval(() => {
-      setActive((prev) => (prev + 1) % petProfileImagesPlaceholder.length)
+      setActive((prev) => ((prev ?? 0) + 1) % petProfileImagesPlaceholder.length)
     }, 10000)
 
     return () => clearInterval(interval)
@@ -98,10 +112,19 @@ export default function PhotosDisplay({
     return () => clearTimeout(timeout)
   }, [_isDescriptionFocused])
 
+  //* Slide
+  const handleSlide = (direction: "left" | "right") => {
+    if (direction === "left") {
+      setPhotoIndex(photoIndex === 0 ? 0 : photoIndex - 1)
+    } else {
+      setPhotoIndex(photoIndex === realPhotosLength - 1 ? realPhotosLength - 1 : photoIndex + 1)
+    }
+  }
+
   return (
     <div className="absolute inset-0 h-[calc(100%-9rem)] w-full">
       <motion.div
-        className="flex h-full touch-none flex-row"
+        className="flex h-full touch-none flex-row will-change-transform"
         style={{
           width: `${realPhotosLength * 100}%`,
           x,
@@ -110,10 +133,14 @@ export default function PhotosDisplay({
           translateX: `-${(photoIndex * 100) / realPhotosLength}%`,
         }}
         transition={{ type: "spring", bounce: 0.15, duration: 0.5 }}
-        drag="x"
-        dragConstraints={{ left: 0, right: 0 }}
-        dragTransition={{ bounceDamping: 60, bounceStiffness: 600 }}
-        onDragEnd={onDragEnd}
+        {...(isReadOnly
+          ? {}
+          : {
+              drag: "x",
+              dragConstraints: { left: 0, right: 0 },
+              dragTransition: { bounceDamping: 60, bounceStiffness: 600 },
+              onDragEnd,
+            })}
       >
         {photos.map((photo, index) => (
           <div
@@ -122,14 +149,9 @@ export default function PhotosDisplay({
             })}
             key={photo.key}
           >
-            <PhotoControlPanel
-              index={index}
-              realPhotosLength={realPhotosLength}
-              photos={photos}
-              setPhotos={setPhotos}
-              setPhotoIndex={setPhotoIndex}
-              isDescriptionFocused={isDescriptionFocused}
-            />
+            {!isReadOnly && (
+              <PhotoControlPanel index={index} photos={photos} setPhotos={setPhotos} setPhotoIndex={setPhotoIndex} />
+            )}
             <Image
               key={photo.key}
               src={photo.url}
@@ -144,7 +166,7 @@ export default function PhotosDisplay({
           </div>
         ))}
         {/* Add an empty div at the end in order to display the upload photo button */}
-        {canAddPhoto && (
+        {canAddPhoto && active !== undefined && (
           <div
             className={cn(
               "relative flex flex-1 flex-col items-center justify-center gap-2 bg-black/50 text-slate-50",
@@ -195,18 +217,35 @@ export default function PhotosDisplay({
                 height={1480}
               />
             )}
-            <PhotoControlPanel
-              index={photos.length}
-              realPhotosLength={realPhotosLength}
-              photos={photos}
-              setPhotos={setPhotos}
-              setPhotoIndex={setPhotoIndex}
-              isDescriptionFocused={isDescriptionFocused}
-              noButtons
-            />
           </div>
         )}
       </motion.div>
+      {/* Left invisible section */}
+      <div
+        className={cn("absolute left-0 top-0 z-10 h-full w-1/2", {
+          "w-1/3": isReadOnly,
+        })}
+        aria-label="Slide left"
+        role="button"
+        tabIndex={0}
+        onClick={() => !isDescriptionFocused && handleSlide("left")}
+        onKeyDown={(e) => {
+          if (!isDescriptionFocused && (e.key === "Enter" || e.key === " ")) handleSlide("left")
+        }}
+      />
+      {/* Right invisible section */}
+      <div
+        className={cn("absolute right-0 top-0 z-10 h-full w-1/2", {
+          "w-1/3": isReadOnly,
+        })}
+        aria-label="Slide right"
+        role="button"
+        tabIndex={0}
+        onClick={() => !isDescriptionFocused && handleSlide("right")}
+        onKeyDown={(e) => {
+          if (!isDescriptionFocused && (e.key === "Enter" || e.key === " ")) handleSlide("right")
+        }}
+      />
     </div>
   )
 }
@@ -217,17 +256,11 @@ function PhotoControlPanel({
   photos,
   setPhotos,
   setPhotoIndex,
-  realPhotosLength,
-  noButtons,
-  isDescriptionFocused,
 }: {
   photos: { key: string; url: string; order: number | null }[]
-  setPhotos: (keys: { key: string; url: string; order: number | null }[]) => void
+  setPhotos?: (keys: { key: string; url: string; order: number | null }[]) => void
   index: number
   setPhotoIndex: (index: number) => void
-  realPhotosLength: number
-  noButtons?: boolean
-  isDescriptionFocused: boolean
 }) {
   const handleMove = (direction: "left" | "right") => {
     const currentPhoto = photos[index]
@@ -236,7 +269,7 @@ function PhotoControlPanel({
       //? Swap the current photo with the previous one
       photos[index] = photos[index - 1]
       photos[index - 1] = currentPhoto
-      setPhotos(photos)
+      setPhotos?.(photos)
       // Move the focused photo
       setPhotoIndex(index - 1)
     } else {
@@ -244,7 +277,7 @@ function PhotoControlPanel({
       //? Swap the current photo with the next one
       photos[index] = photos[index + 1]
       photos[index + 1] = currentPhoto
-      setPhotos(photos)
+      setPhotos?.(photos)
       // Move the focused photo
       setPhotoIndex(index + 1)
     }
@@ -252,67 +285,33 @@ function PhotoControlPanel({
 
   const handleDelete = () => {
     const newPhotos = photos.filter((_, i) => i !== index)
-    setPhotos(newPhotos)
+    setPhotos?.(newPhotos)
     setPhotoIndex(index === newPhotos.length ? index - 1 : index)
   }
 
-  const handleSlide = (direction: "left" | "right") => {
-    if (direction === "left") {
-      setPhotoIndex(index === 0 ? 0 : index - 1)
-    } else {
-      setPhotoIndex(index === realPhotosLength - 1 ? realPhotosLength - 1 : index + 1)
-    }
-  }
-
   return (
-    <>
-      {!noButtons && (
-        <div className="absolute left-1/2 top-16 z-20 flex -translate-x-1/2 flex-row gap-1 rounded-full bg-content1 p-1 shadow-medium">
-          {index !== 0 && (
-            <Button color="primary" onPress={() => handleMove("left")} className={smallButtonStyle}>
-              <ChevronLeft className="size-4" />
-            </Button>
-          )}
-          {/* Do not use onPress because the event will propagate */}
-          <Button
-            color="danger"
-            className={smallButtonStyle}
-            onClick={handleDelete}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === " ") handleDelete()
-            }}
-          >
-            <Trash className="size-4" />
-          </Button>
-          {index !== photos.length - 1 && (
-            <Button color="primary" onPress={() => handleMove("right")} className={smallButtonStyle}>
-              <ChevronRight className="size-4" />
-            </Button>
-          )}
-        </div>
+    <div className="absolute left-1/2 top-16 z-20 flex -translate-x-1/2 flex-row gap-1 rounded-full bg-content1 p-1 shadow-medium">
+      {index !== 0 && (
+        <Button color="primary" onPress={() => handleMove("left")} className={smallButtonStyle}>
+          <ChevronLeft className="size-4" />
+        </Button>
       )}
-      {/* Left invisible section */}
-      <div
-        className="absolute left-0 top-0 z-10 h-full w-1/2"
-        aria-label="Slide left"
-        role="button"
-        tabIndex={0}
-        onClick={() => !isDescriptionFocused && handleSlide("left")}
+      {/* Do not use onPress because the event will propagate */}
+      <Button
+        color="danger"
+        className={smallButtonStyle}
+        onClick={handleDelete}
         onKeyDown={(e) => {
-          if (!isDescriptionFocused && (e.key === "Enter" || e.key === " ")) handleMove("left")
+          if (e.key === "Enter" || e.key === " ") handleDelete()
         }}
-      />
-      {/* Right invisible section */}
-      <div
-        className="absolute right-0 top-0 z-10 h-full w-1/2"
-        aria-label="Slide right"
-        role="button"
-        tabIndex={0}
-        onClick={() => !isDescriptionFocused && handleSlide("right")}
-        onKeyDown={(e) => {
-          if (!isDescriptionFocused && (e.key === "Enter" || e.key === " ")) handleMove("right")
-        }}
-      />
-    </>
+      >
+        <Trash className="size-4" />
+      </Button>
+      {index !== photos.length - 1 && (
+        <Button color="primary" onPress={() => handleMove("right")} className={smallButtonStyle}>
+          <ChevronRight className="size-4" />
+        </Button>
+      )}
+    </div>
   )
 }

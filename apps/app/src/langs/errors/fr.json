@@ -1,4 +1,5 @@
 {
+  "pleaseConfigureYourPetProfile": "Veuillez configurer le profil de votre animal.",
   "petNotFound": "Animal introuvable.",
   "notPetOwner": "Vous n'êtes pas le propriétaire de cet animal.",
   "invalidPassword": "Mot de passe invalide.",

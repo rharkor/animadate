@@ -7,7 +7,10 @@ import { SubmitErrorHandler, useForm } from "react-hook-form"
 import { z } from "zod"
 
 import { getPetProfileResponseSchema, maxDescriptionLines, maxPetPhotos, upsertPetSchema } from "@/api/pet/schemas"
+import ChipsContainer from "@/components/pet/chips-container"
+import PetProfilePhotos from "@/components/pet/photos"
 import SmartPhoneDeviceLook from "@/components/ui/device-look/smart-phone"
+import EditableText from "@/components/ui/editable-text"
 import { TDictionary } from "@/lib/langs"
 import { trpc } from "@/lib/trpc/client"
 import { cn } from "@/lib/utils"
@@ -17,11 +20,8 @@ import { Button, Chip } from "@nextui-org/react"
 
 import { containerClassName } from "../utils"
 
-import ChipsContainer from "./chips-container"
 import DesktopForm from "./desktop-form"
-import EditableText from "./editable-text"
 import { PetProfileDr } from "./pet-profile.dr"
-import PetProfilePhotos from "./photos"
 import { preprocessValue } from "./utils"
 
 const formSchema = upsertPetSchema
@@ -84,11 +84,11 @@ export default function PetProfile({
     return value
   }
 
-  const getAge = (birthdate: string) => {
+  const getAge = (_birthdate: string) => {
     const today = new Date()
-    const birthDate = new Date(birthdate)
-    if (isNaN(birthDate.getTime())) return 0
-    return today.getFullYear() - birthDate.getFullYear()
+    const birthdate = new Date(_birthdate)
+    if (isNaN(birthdate.getTime())) return 0
+    return today.getFullYear() - birthdate.getFullYear()
   }
 
   const handleNameChange = (value: string) => {
@@ -139,11 +139,6 @@ export default function PetProfile({
   }
 
   const [isDescriptionFocused, setIsDescriptionFocused] = useState(false)
-  const [photoIndex, _setPhotoIndex] = useState(0)
-  const setPhotoIndex = (index: number) => {
-    if (index < 0) return
-    _setPhotoIndex(index)
-  }
 
   const photosError = form.formState.errors.photos?.message ?? null
   const nameError = form.formState.errors.name?.message ?? null
@@ -170,15 +165,12 @@ export default function PetProfile({
         behavior: "smooth",
       })
     }
-
-    if (errors.photos) {
-      // Scroll to the end of the container
-      setPhotoIndex(photos.length)
-    }
   }
 
   const age = getAge(birthdate)
   const ageFormatted = age > 0 ? age.toString() : ""
+
+  const [photoIndex, setPhotoIndex] = useState(0)
 
   return (
     <section className={cn(containerClassName, "fixed inset-0 z-[60] bg-black sm:max-w-screen-lg", "lg:bg-background")}>
@@ -229,13 +221,12 @@ export default function PetProfile({
               >
                 <PetProfilePhotos
                   defaultPhoto={defaultPhoto}
-                  photoIndex={photoIndex}
-                  setPhotoIndex={setPhotoIndex}
                   photos={photos}
                   setPhotos={handleSetPhotos}
                   dictionary={dictionary}
                   error={photosError}
                   isDescriptionFocused={isDescriptionFocused}
+                  setPhotoIndex={setPhotoIndex}
                 />
                 <div className="z-30 flex justify-between p-2">
                   <div className="flex flex-col gap-2">

@@ -4,7 +4,6 @@ import { redirect } from "next/navigation"
 import requireAuth from "@/components/auth/require-auth"
 import BottomBar from "@/components/navigation/bottom-bar"
 import { BottomBarDr } from "@/components/navigation/bottom-bar.dr"
-import { rolesAsObject } from "@/constants"
 import SigningOutProvider from "@/contexts/signing-out/provider"
 import VerifyEmailProvider from "@/contexts/verify-email/provider"
 import { VerifyEmailDr } from "@/contexts/verify-email/verify-email.dr"
@@ -37,7 +36,7 @@ export default async function ProtectedLayout({
   const hasPetProfile = account.user.hasPetProfile
 
   const headersStore = headers()
-  if (!account.user.hasPetProfile && account.user.role !== rolesAsObject.admin) {
+  if (!account.user.hasPetProfile) {
     const pathname = headersStore.get("x-url")
     const petProfilePath = "/profile/pet-profile"
     if (!pathname?.includes(petProfilePath)) redirect(petProfilePath + "?onSuccess=/")

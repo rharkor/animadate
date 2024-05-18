@@ -104,7 +104,7 @@ export const getPetProfileSchema = () =>
     // id: z.string(),
   })
 
-export const getPetProfileResponseSchema = () =>
+export const petProfileSchema = () =>
   z.object({
     id: z.string(),
     name: z.string(),
@@ -120,3 +120,5 @@ export const getPetProfileResponseSchema = () =>
     ),
     photos: z.array(fileSchemaMinimal()),
   })
+
+export const getPetProfileResponseSchema = () => petProfileSchema()
