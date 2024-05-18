@@ -52,18 +52,18 @@ export default async function PetProfilePage({
           hasPetProfile={account.user.hasPetProfile}
           defaultPhoto={defaultPhoto}
           backButton={
-            <Button
-              as={Link}
-              href={"/profile"}
-              variant="flat"
-              className={cn("z-[70] w-max lg:hidden", {
-                hidden: !account.user.hasPetProfile,
-              })}
-              size="sm"
-              startContent={<ChevronLeft className="size-4" />}
-            >
-              {dictionary.back}
-            </Button>
+            account.user.hasPetProfile && (
+              <Button
+                as={Link}
+                href={"/profile"}
+                variant="flat"
+                className={cn("z-[70] w-max lg:hidden")}
+                size="sm"
+                startContent={<ChevronLeft className="size-4" />}
+              >
+                {dictionary.back}
+              </Button>
+            )
           }
           ssrPetProfile={petProfile}
         />

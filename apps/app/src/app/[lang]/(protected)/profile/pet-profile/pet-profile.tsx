@@ -36,7 +36,7 @@ export default function PetProfile({
   dictionary: TDictionary<typeof PetProfileDr>
   hasPetProfile: boolean
   defaultPhoto: number
-  backButton: React.ReactNode
+  backButton?: React.ReactNode
   ssrPetProfile?: z.infer<ReturnType<typeof getPetProfileResponseSchema>>
 }) {
   const utils = trpc.useUtils()
@@ -109,6 +109,8 @@ export default function PetProfile({
   }
 
   const handleBreedChange = (value: string) => {
+    // Max 1 line
+    value = preprocessValue(value, breed, { maxLines: 1 })
     form.setValue("breed", value)
     return value
   }
@@ -228,13 +230,18 @@ export default function PetProfile({
                   isDescriptionFocused={isDescriptionFocused}
                   setPhotoIndex={setPhotoIndex}
                 />
-                <div className="z-30 flex justify-between p-2">
-                  <div className="flex flex-col gap-2">
-                    {backButton}
-                    <Chip color="default" variant="faded" className="bg-default-400">
-                      {photoIndex + 1}/{Math.min(photos.length + 1, maxPetPhotos)}
-                    </Chip>
-                  </div>
+                <div className="relative z-20 flex justify-between gap-2 p-2">
+                  {backButton}
+                  <Chip
+                    color="default"
+                    variant="faded"
+                    className={cn("bg-default-400", {
+                      "absolute max-lg:left-1/2 max-lg:top-1/2 max-lg:-translate-x-1/2 max-lg:-translate-y-1/2":
+                        backButton,
+                    })}
+                  >
+                    {photoIndex + 1}/{Math.min(photos.length + 1, maxPetPhotos)}
+                  </Chip>
                   <Button
                     color="success"
                     type="submit"
