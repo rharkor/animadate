@@ -7,6 +7,7 @@ import { dictionaryRequirements } from "@/lib/utils/dictionary"
 
 import Match from "./(match)/match"
 import { MatchDr } from "./(match)/match.dr"
+import { MatchProvider } from "./(match)/match-context"
 
 export default async function Home({
   params: { lang },
@@ -23,8 +24,10 @@ export default async function Home({
   const suggested = await serverTrpc.match.getSuggestedPets({})
 
   return (
-    <main className="container m-auto flex flex-1 flex-col items-center justify-center gap-3">
-      <Match ssrSuggested={suggested} dictionary={dictionary} />
+    <main className="container flex flex-1 flex-col gap-4 p-3">
+      <MatchProvider initialData={suggested}>
+        <Match dictionary={dictionary} />
+      </MatchProvider>
     </main>
   )
 }

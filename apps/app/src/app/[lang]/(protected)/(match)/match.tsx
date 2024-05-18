@@ -1,48 +1,39 @@
 "use client"
 
-import { useState } from "react"
-import { z } from "zod"
+import { Heart, X } from "lucide-react"
 
-import { getSuggestedPetsResponseSchema } from "@/api/match/schemas"
 import { TDictionary } from "@/lib/langs"
-import { trpc } from "@/lib/trpc/client"
-import { cn } from "@/lib/utils"
+import { Button } from "@nextui-org/react"
 
 import { MatchDr } from "./match.dr"
+import { useMatch } from "./match-context"
 import MatchProfile from "./match-profile"
 
-export default function Match({
-  ssrSuggested,
-  dictionary,
-}: {
-  ssrSuggested: z.infer<ReturnType<typeof getSuggestedPetsResponseSchema>>
-  dictionary: TDictionary<typeof MatchDr>
-}) {
-  const suggested = trpc.match.getSuggestedPets.useQuery(
-    {},
-    {
-      initialData: ssrSuggested,
-    }
-  )
-  const [profiles, setProfiles] = useState<z.infer<ReturnType<typeof getSuggestedPetsResponseSchema>>["pets"]>(
-    suggested.data.pets.slice(0, 2)
-  )
+export default function Match({ dictionary }: { dictionary: TDictionary<typeof MatchDr> }) {
+  const { suggested, dismiss, like } = useMatch()
 
   return (
     <>
-      <section className="relative size-full">
-        {profiles.map((pet, i) => (
+      <section className="relative flex-1 rounded-medium shadow-xl">
+        {suggested.map((pet, i) => (
           <MatchProfile
             key={pet.id}
             suggested={pet}
             dictionary={dictionary}
-            className={cn("absolute inset-0")}
             style={{
-              zIndex: suggested.data.pets.length - i + 1,
+              zIndex: suggested.length - i + 1,
             }}
           />
         ))}
       </section>
+      <div className="flex justify-center gap-4">
+        <Button className="h-max min-w-0 rounded-full bg-white p-4 text-danger shadow" onPress={dismiss}>
+          <X className="size-8" strokeWidth={3} />
+        </Button>
+        <Button className="h-max min-w-0 rounded-full bg-white p-4 text-primary shadow" onPress={like}>
+          <Heart className="size-8 fill-current" strokeWidth={3} />
+        </Button>
+      </div>
     </>
   )
 }

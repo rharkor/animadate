@@ -30,6 +30,7 @@ interface PhotosDisplayProps {
   isDescriptionFocused?: boolean
   isReadOnly?: boolean
   setPhotoIndex?: (index: number) => void
+  fullHeight?: boolean
 }
 
 export default function PhotosDisplay({
@@ -43,6 +44,7 @@ export default function PhotosDisplay({
   isDescriptionFocused: _isDescriptionFocused,
   isReadOnly,
   setPhotoIndex: propsSetPhotoIndex,
+  fullHeight,
 }: PhotosDisplayProps) {
   const [photoIndex, _setPhotoIndex] = useState(0)
   const setPhotoIndex = (index: number) => {
@@ -67,12 +69,9 @@ export default function PhotosDisplay({
   // Minimum distance (in pixels) to trigger swipe
   const minSwipeDistance = 70
 
-  const [invalidSwipe, setInvalidSwipe] = useState(false)
   const onDragEnd = (_: MouseEvent | TouchEvent, info: { offset: { x: number } }) => {
     const distance = Math.abs(info.offset.x)
     if (distance > minSwipeDistance) {
-      setInvalidSwipe(false)
-      setTimeout(() => setInvalidSwipe(false), 300)
       if (info.offset.x > 0) {
         // Swipe right
         setPhotoIndex(photoIndex === 0 ? 0 : photoIndex - 1)
@@ -80,8 +79,6 @@ export default function PhotosDisplay({
         // Swipe left
         setPhotoIndex(photoIndex === realPhotosLength - 1 ? realPhotosLength - 1 : photoIndex + 1)
       }
-    } else {
-      setInvalidSwipe(true)
     }
   }
 
@@ -130,7 +127,12 @@ export default function PhotosDisplay({
   const dragContainer = useRef<HTMLDivElement>(null)
 
   return (
-    <div className="absolute inset-0 h-[calc(100%-9rem)] w-full" ref={dragContainer}>
+    <div
+      className={cn("absolute inset-0 size-full", {
+        "h-[calc(100%-9rem)]": !fullHeight,
+      })}
+      ref={dragContainer}
+    >
       <motion.div
         className={cn("relative z-10 flex h-full touch-none flex-row")}
         style={{
@@ -165,10 +167,11 @@ export default function PhotosDisplay({
               <Image
                 key={photo.key}
                 src={photo.url}
-                className="size-full !max-w-[unset] rounded-none object-cover max-lg:w-screen"
+                className="size-full w-full !max-w-[unset] rounded-none object-cover"
                 alt="Pet profile picture"
                 width={720}
                 height={1480}
+                priority
               />
               <SwitchPhoto
                 handleSlide={handleSlide}
@@ -203,7 +206,7 @@ export default function PhotosDisplay({
                     key={`pet-profile-placeholder-${i}`}
                     src={src}
                     className={cn(
-                      "absolute inset-0 z-[-1] size-full !max-w-[unset] bg-default-700 object-cover opacity-0 transition-all duration-300 max-lg:w-screen",
+                      "absolute inset-0 z-[-1] size-full w-full !max-w-[unset] bg-default-700 object-cover opacity-0 transition-all duration-300",
                       {
                         hidden: i !== active && !willActive(i),
                         "opacity-100": i === active,
@@ -212,15 +215,17 @@ export default function PhotosDisplay({
                     alt="Pet profile picture"
                     width={720}
                     height={1480}
+                    priority
                   />
                 ))
               ) : (
                 <Image
                   src={petProfileImagesPlaceholder[active]}
-                  className="absolute inset-0 z-[-1] size-full !max-w-[unset] bg-default-700 object-cover max-lg:w-screen"
+                  className="absolute inset-0 z-[-1] size-full w-full !max-w-[unset] bg-default-700 object-cover"
                   alt="Pet profile picture"
                   width={720}
                   height={1480}
+                  priority
                 />
               )}
               <SwitchPhoto

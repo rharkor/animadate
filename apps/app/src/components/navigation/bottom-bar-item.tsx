@@ -67,6 +67,7 @@ export default function BottomBarItem({
               })}
               width={48}
               height={48}
+              priority
             />
           )}
           <span className="text-xs sm:hidden">{route.name}</span>
