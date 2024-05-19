@@ -22,7 +22,7 @@
     "custom-prettier-config": "*",
     "eslint-config-custom": "*",
     "@aws-sdk/client-s3": "^3.549.0",
-    "@t3-oss/env-core": "^0.9.2",
+    "@t3-oss/env-core": "^0.10.0",
     "@types/node": "^20.11.19",
     "chalk": "^5.3.0",
     "dotenv": "^16.4.4",
