@@ -11,6 +11,7 @@ CREATE TABLE "UserLocation" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "UserLocation_userId_key" ON "UserLocation"("userId");
+CREATE INDEX idx_userlocation_location ON "UserLocation" USING GIST ("location");
 
 -- AddForeignKey
 ALTER TABLE "UserLocation" ADD CONSTRAINT "UserLocation_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
