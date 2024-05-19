@@ -48,6 +48,7 @@ export default function EventsTable({
   defaultKinds: TKinds
   defaultLevels: TLevels
 }) {
+  const utils = trpc.useUtils()
   const session = useSession()
   const [page, setPage] = useState(defaultPage)
   const [name, setName] = useState("")
@@ -55,6 +56,12 @@ export default function EventsTable({
   const [kinds, setKinds] = useState<TKinds>(defaultKinds)
   const [levels, setLevels] = useState<TLevels>(defaultLevels)
 
+  const isInitialFilter =
+    page === defaultPage &&
+    name === "" &&
+    JSON.stringify(kinds) === JSON.stringify(defaultKinds) &&
+    JSON.stringify(levels) === JSON.stringify(defaultLevels) &&
+    application === ""
   const events = trpc.events.getEvents.useQuery(
     {
       page,
@@ -65,14 +72,7 @@ export default function EventsTable({
       application,
     },
     {
-      initialData:
-        page === defaultPage &&
-        name === "" &&
-        JSON.stringify(kinds) === JSON.stringify(defaultKinds) &&
-        JSON.stringify(levels) === JSON.stringify(defaultLevels) &&
-        application === ""
-          ? ssrData
-          : undefined,
+      initialData: isInitialFilter ? ssrData : undefined,
     }
   )
 
@@ -95,9 +95,29 @@ export default function EventsTable({
 
   //* Subscription
   const [needRefetch, setNeedRefetch] = useState(false)
-  const handleSubscriptionData = (_data: z.infer<ReturnType<typeof onNewEventResponseSchema>>) => {
-    // Do nothing with data because if the user have applied filter it will be hard to know if the new event should be displayed
-    setNeedRefetch(true)
+  const handleSubscriptionData = (data: z.infer<ReturnType<typeof onNewEventResponseSchema>>) => {
+    if (isInitialFilter && events.data) {
+      utils.events.getEvents.setData(
+        {
+          page,
+          perPage: defaultPerPage,
+          name,
+          kinds,
+          levels,
+          application,
+        },
+        {
+          meta: events.data.meta,
+          data: [data, ...events.data.data],
+        }
+      )
+      utils.events.getEvents.invalidate(undefined, {
+        refetchType: "none",
+      })
+    } else {
+      // Do nothing with data because if the user have applied filter it will be hard to know if the new event should be displayed
+      setNeedRefetch(true)
+    }
   }
 
   useEffect(() => {
