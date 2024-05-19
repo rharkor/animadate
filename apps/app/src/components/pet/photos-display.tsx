@@ -31,6 +31,8 @@ interface PhotosDisplayProps {
   isReadOnly?: boolean
   setPhotoIndex?: (index: number) => void
   fullHeight?: boolean
+  disableButtons?: boolean
+  topPagination?: boolean
 }
 
 export default function PhotosDisplay({
@@ -45,6 +47,8 @@ export default function PhotosDisplay({
   isReadOnly,
   setPhotoIndex: propsSetPhotoIndex,
   fullHeight,
+  disableButtons,
+  topPagination,
 }: PhotosDisplayProps) {
   const [photoIndex, _setPhotoIndex] = useState(0)
   const setPhotoIndex = (index: number) => {
@@ -127,117 +131,142 @@ export default function PhotosDisplay({
   const dragContainer = useRef<HTMLDivElement>(null)
 
   return (
-    <div
-      className={cn("absolute inset-0 size-full", {
-        "h-[calc(100%-9rem)]": !fullHeight,
-      })}
-      ref={dragContainer}
-    >
-      <motion.div
-        className={cn("relative z-10 flex h-full touch-none flex-row")}
-        style={{
-          width: `${realPhotosLength * 100}%`,
-          x,
-        }}
-        {...(isReadOnly
-          ? {}
-          : {
-              drag: "x",
-              dragConstraints: { left: 0, right: 0 },
-              dragTransition: { bounceDamping: 60, bounceStiffness: 600 },
-              onDragEnd,
-            })}
+    <>
+      <div
+        className={cn("absolute inset-0 size-full", {
+          "h-[calc(100%-9rem)]": !fullHeight,
+        })}
+        ref={dragContainer}
       >
-        <div
+        <motion.div
+          className={cn("relative z-10 flex h-full touch-none flex-row")}
           style={{
-            transform: `translateX(-${(photoIndex * 100) / realPhotosLength}%)`,
+            width: `${realPhotosLength * 100}%`,
+            x,
           }}
-          className="flex size-full touch-none flex-row transition-all duration-300"
-        >
-          {photos.map((photo, index) => (
-            <div
-              className={cn("relative flex-1", {
-                invisible: index !== photoIndex && !willActive(index),
+          {...(isReadOnly
+            ? {}
+            : {
+                drag: "x",
+                dragConstraints: { left: 0, right: 0 },
+                dragTransition: { bounceDamping: 60, bounceStiffness: 600 },
+                onDragEnd,
               })}
-              key={photo.key}
-            >
-              {!isReadOnly && (
-                <PhotoControlPanel index={index} photos={photos} setPhotos={setPhotos} setPhotoIndex={setPhotoIndex} />
-              )}
-              <Image
+        >
+          <div
+            style={{
+              transform: `translateX(-${(photoIndex * 100) / realPhotosLength}%)`,
+            }}
+            className="flex size-full touch-none flex-row transition-all duration-300"
+          >
+            {photos.map((photo, index) => (
+              <div
+                className={cn("relative flex-1", {
+                  invisible: index !== photoIndex && !willActive(index),
+                })}
                 key={photo.key}
-                src={photo.url}
-                className="size-full w-full !max-w-[unset] rounded-none object-cover"
-                alt="Pet profile picture"
-                width={720}
-                height={1480}
-                priority
-              />
-              <SwitchPhoto
-                handleSlide={handleSlide}
-                isDescriptionFocused={isDescriptionFocused}
-                isReadOnly={isReadOnly}
-              />
-            </div>
-          ))}
-          {/* Add an empty div at the end in order to display the upload photo button */}
-          {canAddPhoto && active !== undefined && (
-            <div
-              className={cn(
-                "relative flex flex-1 flex-col items-center justify-center gap-2 bg-black/50 text-slate-50",
-                "border-none focus:text-primary focus:outline-0 focus:ring-0"
-              )}
-              role="button"
-              tabIndex={0}
-            >
-              <Button
-                className="z-20"
-                startContent={<ImageUp className="size-4" />}
-                color="primary"
-                onPress={() => setShowUploadModal(true)}
               >
-                {dictionary.uploadPhoto}
-              </Button>
-              {error && <p className="z-10 max-w-48 text-center text-xs text-danger">{error}</p>}
-              <div className="absolute inset-0 bg-black/70" />
-              {carousel ? (
-                petProfileImagesPlaceholder.map((src, i) => (
-                  <Image
-                    key={`pet-profile-placeholder-${i}`}
-                    src={src}
-                    className={cn(
-                      "absolute inset-0 z-[-1] size-full w-full !max-w-[unset] bg-default-700 object-cover opacity-0 transition-all duration-300",
-                      {
-                        hidden: i !== active && !willActive(i),
-                        "opacity-100": i === active,
-                      }
-                    )}
-                    alt="Pet profile picture"
-                    width={720}
-                    height={1480}
-                    priority
+                {!isReadOnly && (
+                  <PhotoControlPanel
+                    index={index}
+                    photos={photos}
+                    setPhotos={setPhotos}
+                    setPhotoIndex={setPhotoIndex}
                   />
-                ))
-              ) : (
+                )}
                 <Image
-                  src={petProfileImagesPlaceholder[active]}
-                  className="absolute inset-0 z-[-1] size-full w-full !max-w-[unset] bg-default-700 object-cover"
+                  key={photo.key}
+                  src={photo.url}
+                  className={cn("size-full w-full !max-w-[unset] rounded-none object-cover")}
                   alt="Pet profile picture"
+                  draggable={false}
                   width={720}
                   height={1480}
                   priority
                 />
-              )}
-              <SwitchPhoto
-                handleSlide={handleSlide}
-                isDescriptionFocused={isDescriptionFocused}
-                isReadOnly={isReadOnly}
-              />
-            </div>
-          )}
+                <SwitchPhoto
+                  handleSlide={handleSlide}
+                  isDescriptionFocused={isDescriptionFocused}
+                  isReadOnly={isReadOnly}
+                  isDisabled={disableButtons}
+                />
+              </div>
+            ))}
+            {/* Add an empty div at the end in order to display the upload photo button */}
+            {canAddPhoto && active !== undefined && (
+              <div
+                className={cn(
+                  "relative flex flex-1 flex-col items-center justify-center gap-2 bg-black/50 text-slate-50",
+                  "border-none focus:text-primary focus:outline-0 focus:ring-0"
+                )}
+                role="button"
+                tabIndex={0}
+              >
+                <Button
+                  className="z-20"
+                  startContent={<ImageUp className="size-4" />}
+                  color="primary"
+                  onPress={() => setShowUploadModal(true)}
+                >
+                  {dictionary.uploadPhoto}
+                </Button>
+                {error && <p className="z-10 max-w-48 text-center text-xs text-danger">{error}</p>}
+                <div className="absolute inset-0 bg-black/70" />
+                {carousel ? (
+                  petProfileImagesPlaceholder.map((src, i) => (
+                    <Image
+                      key={`pet-profile-placeholder-${i}`}
+                      src={src}
+                      draggable={false}
+                      className={cn(
+                        "absolute inset-0 z-[-1] size-full w-full !max-w-[unset] bg-default-700 object-cover opacity-0 transition-all duration-300",
+                        {
+                          hidden: i !== active && !willActive(i),
+                          "opacity-100": i === active,
+                        }
+                      )}
+                      alt="Pet profile picture"
+                      width={720}
+                      height={1480}
+                      priority
+                    />
+                  ))
+                ) : (
+                  <Image
+                    src={petProfileImagesPlaceholder[active]}
+                    className="absolute inset-0 z-[-1] size-full w-full !max-w-[unset] bg-default-700 object-cover"
+                    alt="Pet profile picture"
+                    width={720}
+                    height={1480}
+                    priority
+                    draggable={false}
+                  />
+                )}
+                <SwitchPhoto
+                  handleSlide={handleSlide}
+                  isDescriptionFocused={isDescriptionFocused}
+                  isReadOnly={isReadOnly}
+                  isDisabled={disableButtons}
+                />
+              </div>
+            )}
+          </div>
+        </motion.div>
+      </div>
+      {/* Top image index indicator */}
+      {topPagination && (
+        <div className="absolute top-2 z-10 flex w-full justify-center gap-1">
+          {photos.map((photo) => (
+            <div
+              key={photo.key}
+              className={cn("size-3 shrink-0 rounded-full bg-primary/50 shadow-sm transition-all", {
+                "bg-primary shadow": photoIndex === photos.indexOf(photo),
+              })}
+            />
+          ))}
         </div>
-      </motion.div>
-    </div>
+      )}
+    </>
   )
 }
 
@@ -315,10 +344,12 @@ function SwitchPhoto({
   handleSlide,
   isDescriptionFocused,
   isReadOnly,
+  isDisabled,
 }: {
   handleSlide: (direction: "left" | "right") => void
   isDescriptionFocused: boolean
   isReadOnly?: boolean
+  isDisabled?: boolean
 }) {
   return (
     <>
@@ -326,6 +357,7 @@ function SwitchPhoto({
       <div
         className={cn("absolute left-0 top-0 h-full w-1/2", {
           "w-1/3": isReadOnly,
+          "pointer-events-none": isDisabled,
         })}
         aria-label="Slide left"
         role="button"
@@ -339,6 +371,7 @@ function SwitchPhoto({
       <div
         className={cn("absolute right-0 top-0 h-full w-1/2", {
           "w-1/3": isReadOnly,
+          "pointer-events-none": isDisabled,
         })}
         aria-label="Slide right"
         role="button"

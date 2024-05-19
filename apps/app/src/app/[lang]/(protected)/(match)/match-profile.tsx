@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef } from "react"
+import { useRef, useState } from "react"
 import { DragHandlers, motion, useMotionValue, useTransform } from "framer-motion"
 import { z } from "zod"
 
@@ -40,9 +40,14 @@ export default function MatchProfile({
   const scale = useTransform(x, [-350, 0, 350], [1.1, 1, 1.1])
   const opacity = useTransform(x, [-350, -150, 0, 150, 350], [0, 1, 1, 1, 0])
 
+  const [hasBeenDragged, setHasBeenDragged] = useState(false)
+
   // Minimum distance (in pixels) to trigger swipe
   const minSwipeDistance = 100
   const onDragEnd: DragHandlers["onDragEnd"] = async (_, info) => {
+    setTimeout(() => {
+      setHasBeenDragged(false)
+    }, 100)
     if (Math.abs(info.offset.x) > minSwipeDistance) {
       if (info.offset.x > 0) {
         await like()
@@ -54,15 +59,22 @@ export default function MatchProfile({
     }
   }
 
+  const onDragStart: DragHandlers["onDragStart"] = () => {
+    if (!hasBeenDragged) {
+      setHasBeenDragged(true)
+    }
+  }
+
   return (
     <motion.article
       className={cn(
         "absolute flex flex-col justify-end overflow-hidden bg-slate-100",
-        "size-full overflow-hidden rounded-medium"
+        "size-full cursor-pointer overflow-hidden rounded-medium lg:h-[740px] lg:w-[360px]"
       )}
       drag={true}
       dragConstraints={{ left: -200, right: 200, top: 0, bottom: 0 }}
       onDragEnd={onDragEnd}
+      onDragStart={onDragStart}
       animate={suggested.id === currentPet.id && animate}
       style={{ ...style, x, rotate, scale, opacity }}
     >
@@ -75,6 +87,8 @@ export default function MatchProfile({
         dictionary={dictionary}
         isReadOnly
         fullHeight
+        disableButtons={hasBeenDragged}
+        topPagination
       />
       <header className="absoute bottom-0 left-0 h-max w-full">
         <div className="relative z-30 p-2">

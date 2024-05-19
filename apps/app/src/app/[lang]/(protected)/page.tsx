@@ -27,7 +27,7 @@ export default async function Home({
   })
 
   return (
-    <main className="container flex flex-1 flex-col gap-4 p-3">
+    <main className="flex size-full flex-1 flex-col justify-center gap-4 overflow-hidden p-3">
       <MatchProvider initialData={suggested} suggestedLimit={suggestedLimit}>
         <Match dictionary={dictionary} />
       </MatchProvider>

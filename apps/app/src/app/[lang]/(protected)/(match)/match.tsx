@@ -15,7 +15,7 @@ export default function Match({ dictionary }: { dictionary: TDictionary<typeof M
 
   return (
     <>
-      <section className={cn("relative flex-1 rounded-medium")}>
+      <section className={cn("relative flex flex-1 justify-center rounded-medium")}>
         {suggested.map((pet, i) => (
           <MatchProfile
             key={pet.id}
@@ -30,21 +30,21 @@ export default function Match({ dictionary }: { dictionary: TDictionary<typeof M
       <div className="flex items-center justify-center gap-4">
         <Button
           isDisabled={!canUndo}
-          className="h-max min-w-0 rounded-full bg-white p-3 text-warning shadow"
+          className="h-max min-w-0 rounded-full bg-white p-3 text-warning shadow !transition-all hover:shadow-lg active:shadow-sm"
           onPress={undo}
         >
           <Undo className="size-6" strokeWidth={3} />
         </Button>
         <Button
           isDisabled={!canDismiss}
-          className="h-max min-w-0 rounded-full bg-white p-4 text-danger shadow"
+          className="h-max min-w-0 rounded-full bg-white p-4 text-danger shadow !transition-all hover:shadow-lg active:shadow-sm"
           onPress={dismiss}
         >
           <X className="size-8" strokeWidth={3} />
         </Button>
         <Button
           isDisabled={!canLike}
-          className="h-max min-w-0 rounded-full bg-white p-4 text-primary shadow"
+          className="h-max min-w-0 rounded-full bg-white p-4 text-primary shadow !transition-all hover:shadow-lg active:shadow-sm"
           onPress={like}
         >
           <Heart className="size-8 fill-current" strokeWidth={3} />

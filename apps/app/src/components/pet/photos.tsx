@@ -28,7 +28,9 @@ export default function PetProfilePhotos({
   isDescriptionFocused,
   isReadOnly,
   setPhotoIndex,
-  fullHeight
+  fullHeight,
+  disableButtons,
+  topPagination,
 }: {
   carousel?: boolean
   defaultPhoto?: number
@@ -40,6 +42,8 @@ export default function PetProfilePhotos({
   isReadOnly?: boolean
   setPhotoIndex?: (index: number) => void
   fullHeight?: boolean
+  disableButtons?: boolean
+  topPagination?: boolean
 }) {
   //* Upload
   const [currentFile, setCurrentFile] = useState<File | null>(null)
@@ -126,6 +130,8 @@ export default function PetProfilePhotos({
           isReadOnly={isReadOnly}
           setPhotoIndex={setPhotoIndex}
           fullHeight={fullHeight}
+          disableButtons={disableButtons}
+          topPagination={topPagination}
         />
       </div>
       {!isReadOnly && (
