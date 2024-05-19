@@ -41,7 +41,7 @@ services:
     ports:
       - 3002:3000
   db:
-    image: postgres:latest
+    image: postgis/postgis:latest
     container_name: animadate_db
     restart: unless-stopped
     volumes:

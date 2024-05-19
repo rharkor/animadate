@@ -2,14 +2,16 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
-  output   = "../generated/client"
+  provider        = "prisma-client-js"
+  output          = "../generated/client"
+  previewFeatures = ["postgresqlExtensions"]
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("APP_DATABASE_PRISMA_URL") // uses connection pooling
-  directUrl = env("APP_DATABASE_URL_NON_POOLING") // uses a direct connection
+  provider   = "postgresql"
+  url        = env("APP_DATABASE_PRISMA_URL") // uses connection pooling
+  directUrl  = env("APP_DATABASE_URL_NON_POOLING") // uses a direct connection
+  extensions = [postgis()]
 }
 
 model Account {
@@ -59,6 +61,19 @@ model User {
 
   pet              Pet?
   changeEmailToken ChangeEmailToken?
+  lastLocation     UserLocation?
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model UserLocation {
+  id       Int                                   @id @default(autoincrement())
+  location Unsupported("geography(Point, 4326)")
+
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   // Timestamps
   createdAt DateTime @default(now())

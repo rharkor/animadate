@@ -1,4 +1,4 @@
-import { prisma } from "database/utils"
+import { createUserLocation } from "database/utils"
 
 import { rolesAsObject } from "@/constants"
 import { hash } from "@/lib/bcrypt"
@@ -6,7 +6,10 @@ import { env } from "@/lib/env"
 import { CHARACTERISTIC } from "@animadate/app-db/generated/client"
 import { cmd } from "@animadate/lib"
 
+import { seedPrisma } from "../seed-utils"
+
 import dogs from "./dogs.json"
+import locations from "./locations.json"
 import users from "./users.json"
 
 export const mock = async () => {
@@ -16,13 +19,13 @@ export const mock = async () => {
   })
   let addedUsers = 0
   for (const user of users) {
-    const userExists = await prisma.user.findUnique({
+    const userExists = await seedPrisma.user.findUnique({
       where: {
         email: user.email,
       },
     })
     if (!userExists) {
-      await prisma.user.create({
+      await seedPrisma.user.create({
         data: {
           email: user.email,
           password: await hash(user.password, 12),
@@ -45,7 +48,7 @@ export const mock = async () => {
     name: `Creating ${dogs.length} dogs`,
   })
   let addedDogs = 0
-  const owners = await prisma.user.findMany({
+  const owners = await seedPrisma.user.findMany({
     where: {
       email: {
         in: users.map((user) => user.email),
@@ -58,7 +61,7 @@ export const mock = async () => {
       dogsImagesTask.print(`Owner ${dog.owner_email} not found`)
       continue
     }
-    const dogExists = await prisma.pet.findUnique({
+    const dogExists = await seedPrisma.pet.findUnique({
       where: {
         ownerId_name: {
           ownerId: owner.id,
@@ -72,13 +75,13 @@ export const mock = async () => {
         return `dogs/pet-profile/mock/${dog.name.toLocaleLowerCase()}/${dogImage}.jpg`
       }
       for (const dogImage of dog.photos) {
-        const dogImageExists = await prisma.file.findUnique({
+        const dogImageExists = await seedPrisma.file.findUnique({
           where: {
             key: getDogImageKey(dogImage),
           },
         })
         if (!dogImageExists) {
-          await prisma.file.create({
+          await seedPrisma.file.create({
             data: {
               bucket: "animadate-public",
               endpoint: env.NEXT_PUBLIC_S3_ENDPOINT,
@@ -93,7 +96,7 @@ export const mock = async () => {
       }
 
       // Profile
-      await prisma.pet.create({
+      await seedPrisma.pet.create({
         data: {
           name: dog.name,
           description: dog.description,
@@ -124,4 +127,42 @@ export const mock = async () => {
     }
   }
   dogsImagesTask.stop(`Added ${addedDogs} dogs`)
+
+  //* User locations
+  const userLocationsTask = cmd.startTask({
+    name: `Creating user locations`,
+  })
+  let i = 0
+  for (const jsonUser of users) {
+    const user = await seedPrisma.user.findFirst({
+      where: { email: jsonUser.email },
+      include: {
+        lastLocation: true,
+      },
+    })
+
+    if (!user) {
+      throw new Error("User not found")
+    } else {
+      if (user.lastLocation) {
+        userLocationsTask.print(`${user.email} already has location`)
+      } else {
+        userLocationsTask.print(`Creating user ${user.email} location`)
+        const resolvedLocation = locations.at(i)
+        if (!resolvedLocation) {
+          throw new Error("Location not found")
+        } else {
+          await createUserLocation(seedPrisma, {
+            userId: user.id,
+            location: {
+              latitude: resolvedLocation.latitude,
+              longitude: resolvedLocation.longitude,
+            },
+          })
+        }
+      }
+    }
+    i++
+  }
+  userLocationsTask.stop(`Added user locations`)
 }
