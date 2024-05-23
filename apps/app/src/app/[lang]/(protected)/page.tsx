@@ -21,9 +21,10 @@ export default async function Home({
 
   const dictionary = await getDictionary(lang, dictionaryRequirements({}, MatchDr))
 
-  const suggestedLimit = 5
+  const suggestedLimit = 10
   const suggested = await serverTrpc.match.getSuggestedPets({
     limit: suggestedLimit,
+    alreadyLoaded: [],
   })
 
   return (

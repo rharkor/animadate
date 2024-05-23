@@ -37,20 +37,9 @@ export const MatchProvider = ({
 }) => {
   const animate = useAnimation()
 
-  const suggestedQuery = trpc.match.getSuggestedPets.useInfiniteQuery(
-    {
-      limit: suggestedLimit,
-    },
-    {
-      initialData: {
-        pages: [initialData],
-        pageParams: [null],
-      },
-      getNextPageParam(lastPage) {
-        return lastPage.nextCursor
-      },
-    }
-  )
+  const [data, setData] = useState<z.infer<ReturnType<typeof getSuggestedPetsResponseSchema>>["pets"]>(initialData.pets)
+  const [alreadyLoaded, setAlreadyLoaded] = useState<string[]>(initialData.pets.map((pet) => pet.id))
+  const suggestedMutation = trpc.match.getSuggestedPets.useMutation()
 
   const [start, setStart] = useState(0)
   const [end, setEnd] = useState(preloadLength)
@@ -58,19 +47,7 @@ export const MatchProvider = ({
   const [rStart, setRStart] = useState(0)
   const [rEnd, setREnd] = useState(preloadLength)
 
-  const fullSuggested = suggestedQuery.data?.pages
-    .filter((_, i) => {
-      //? Only keep the last 5 pages to avoid memory leaks
-      return i >= suggestedQuery.data.pages.length - 5
-    })
-    .reduce<
-      (z.infer<ReturnType<typeof getSuggestedPetsResponseSchema>>["pets"][number] & { action?: "like" | "dismiss" })[]
-    >((acc, cur) => {
-      acc.push(...cur.pets)
-      return acc
-    }, [])
-
-  const suggested = fullSuggested?.slice(start, end) ?? []
+  const suggested = data.slice(start, end)
 
   const loadNext = async () => {
     //* Add a new pet to the list
@@ -78,14 +55,34 @@ export const MatchProvider = ({
     //* Remove the first pet from the list
     setStart(start + 1)
     //* Preload more pets
-    if (fullSuggested && end + 1 >= fullSuggested?.length) {
-      await suggestedQuery.fetchNextPage()
+    if (data.length - end < preloadLength) {
+      const newPets = await suggestedMutation.mutateAsync({
+        limit: suggestedLimit,
+        alreadyLoaded,
+      })
+
+      // Max limit is 50 pets in the list
+      //? Limit prevents the list from growing indefinitely
+      const bufferLimit = 50
+      const newAlreadyLoaded = [...alreadyLoaded, ...newPets.pets.map((pet) => pet.id)]
+      const newData = [...data, ...newPets.pets]
+      if (newData.length > bufferLimit) {
+        // Remove the first pet from the list
+        newData.shift()
+        newAlreadyLoaded.shift()
+        setStart((prev) => prev - 1)
+        setEnd((prev) => prev - 1)
+        setRStart((prev) => prev - 1)
+        setREnd((prev) => prev - 1)
+      }
+      setAlreadyLoaded(newAlreadyLoaded)
+      setData(newData)
     }
   }
 
   const [lastActionRateLimit, setLastActionRateLimit] = useState<boolean>(false)
 
-  const canLike = (fullSuggested?.slice(rStart, rEnd) ?? []).length > 0
+  const canLike = suggested.length > 0
   const like = async () => {
     if (!canLike || lastActionRateLimit) return
     setLastActionRateLimit(true)
@@ -97,13 +94,11 @@ export const MatchProvider = ({
         duration: transitionDuration,
       },
     })
-    await loadNext()
-    const current = suggested[0]
-    current.action = "like"
     setLastActionRateLimit(false)
+    await loadNext()
   }
 
-  const canDismiss = (fullSuggested?.slice(rStart, rEnd) ?? []).length > 0
+  const canDismiss = suggested.length > 0
   const dismiss = async () => {
     if (!canDismiss || lastActionRateLimit) return
     setLastActionRateLimit(true)
@@ -115,13 +110,11 @@ export const MatchProvider = ({
         duration: transitionDuration,
       },
     })
-    await loadNext()
-    const current = suggested[0]
-    current.action = "dismiss"
     setLastActionRateLimit(false)
+    await loadNext()
   }
 
-  const canUndo = rStart > 0 && fullSuggested?.at(rStart - 1) !== undefined
+  const canUndo = rStart > 0 && data.at(rStart - 1) !== undefined
   const undo = async () => {
     if (!canUndo || lastActionRateLimit) return
     setLastActionRateLimit(true)

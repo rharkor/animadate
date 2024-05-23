@@ -14,10 +14,7 @@ export const getSuggestedPets = async ({
   try {
     ensureLoggedIn(session)
 
-    const { limit, cursor } = input
-
-    // This cursor will be changed based on the match algorithm
-    const cursorKey = "id"
+    const { limit, alreadyLoaded } = input
 
     const petProfile = await prisma.pet.findFirst({
       where: {
@@ -31,6 +28,9 @@ export const getSuggestedPets = async ({
         ownerId: {
           not: session.user.id,
         },
+        id: {
+          notIn: alreadyLoaded,
+        },
       },
       include: {
         photos: {
@@ -40,20 +40,10 @@ export const getSuggestedPets = async ({
         },
         characteristics: true,
       },
-      take: limit + 1, // get an extra item at the end which we'll use as next cursor
-      cursor: cursor ? { [cursorKey]: cursor } : undefined,
-      orderBy: {
-        [cursorKey]: "asc",
-      },
+      take: limit,
     })
 
-    let nextCursor: typeof cursor | undefined = undefined
-    if (pets.length > limit) {
-      const nextItem = pets.pop()
-      nextCursor = nextItem![cursorKey]
-    }
-
-    const data: z.infer<ReturnType<typeof getSuggestedPetsResponseSchema>> = { pets, nextCursor }
+    const data: z.infer<ReturnType<typeof getSuggestedPetsResponseSchema>> = { pets }
     return data
   } catch (error: unknown) {
     return handleApiError(error)
