@@ -220,7 +220,8 @@
     "home": "Accueil",
     "events": "Événements",
     "apiKeys": "Clés API",
-    "emailContacts": "Emails de contact"
+    "emailContacts": "Emails de contact",
+    "map": "Carte"
   },
   "changeEmail": "Changer d'email",
   "changePassword": "Changer de mot de passe",
@@ -285,5 +286,6 @@
   "searchByErrorName": "Rechercher par nom d'erreur",
   "searchByEmail": "Rechercher par email",
   "searchByApplicationName": "Rechercher par nom d'application",
-  "appLiteral": "Application"
+  "appLiteral": "Application",
+  "map": "Carte"
 }

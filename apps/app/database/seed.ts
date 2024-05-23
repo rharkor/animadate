@@ -4,7 +4,7 @@ import { env } from "@/lib/env"
 import { cmd, logger } from "@animadate/lib"
 
 import { mock } from "./mock"
-import { seedPrisma, spinner } from "./seed-utils"
+import { seedPrisma, spinner } from "./utils"
 
 // Check if the params --mock or -m are passed
 const withMock = process.argv.includes("--mock") || process.argv.includes("-m")

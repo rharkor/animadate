@@ -24,7 +24,6 @@
     "yaml": "^2.3.4"
   },
   "devDependencies": {
-    "custom-prettier-config": "*",
-    "eslint-config-custom": "*"
+    "custom-prettier-config": "*"
   }
 }

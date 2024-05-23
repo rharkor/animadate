@@ -1,11 +1,17 @@
 {
   "name": "@animadate/app-db",
   "scripts": {
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
+    "prettier": "prettier --check \"**/*.{js,jsx,ts,tsx}\"",
+    "prettier:fix": "prettier --write \"**/*.{js,jsx,ts,tsx}\""
   },
   "license": "ISC",
   "dependencies": {
-    "prisma": "^5.12.1"
+    "prisma": "^5.12.1",
+    "eslint-config-custom": "*",
+    "custom-prettier-config": "*"
   },
   "type": "module"
 }

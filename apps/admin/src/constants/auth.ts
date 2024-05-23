@@ -3,8 +3,8 @@ export const SESSION_MAX_AGE = 360 * 24 * 60 * 60 // 360 days
 export const authRoutes = {
   signIn: ["/sign-in", "/login", "/signin"],
   signUp: ["/sign-up", "/register", "/signup"],
-  redirectAfterSignIn: "/events",
-  redirectAfterSignUp: "/events",
+  redirectAfterSignIn: "/",
+  redirectAfterSignUp: "/",
   redirectOnUnhauthorized: "/sign-in",
 }
 

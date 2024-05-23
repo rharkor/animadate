@@ -36,7 +36,3 @@ export async function POST(request: Request) {
   }
   return NextResponse.json(resParsed)
 }
-
-export async function GET() {
-  return NextResponse.json({ message: "Hello from push event" })
-}

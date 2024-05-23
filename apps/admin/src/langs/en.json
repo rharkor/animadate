@@ -220,7 +220,8 @@
     "home": "Home",
     "events": "Events",
     "apiKeys": "API keys",
-    "emailContacts": "Email contacts"
+    "emailContacts": "Email contacts",
+    "map": "Map"
   },
   "changeEmail": "Change email",
   "changePassword": "Change password",
@@ -285,5 +286,6 @@
   "searchByErrorName": "Search by error name",
   "searchByEmail": "Search by email",
   "searchByApplicationName": "Search by application name",
-  "appLiteral": "Application"
+  "appLiteral": "Application",
+  "map": "Map"
 }

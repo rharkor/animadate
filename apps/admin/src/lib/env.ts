@@ -82,6 +82,7 @@ export const env = createEnv({
       .optional()
       .transform((value) => value === "true"),
     NEXT_PUBLIC_WS_URL: z.string().min(1),
+    NEXT_PUBLIC_MAP_API_KEY: z.string().min(1),
   },
   runtimeEnv: {
     ANALYZE: process.env.ANALYZE,
@@ -126,6 +127,7 @@ export const env = createEnv({
     EVENTS_API_KEY_SECRET: process.env.EVENTS_API_KEY_SECRET,
     DISABLE_EVENTS_PUSH: process.env.DISABLE_EVENTS_PUSH,
     NEXT_PUBLIC_WS_URL: process.env.NEXT_PUBLIC_WS_URL,
+    NEXT_PUBLIC_MAP_API_KEY: process.env.NEXT_PUBLIC_MAP_API_KEY,
   },
   onValidationError: (error) => {
     logger.error(error)

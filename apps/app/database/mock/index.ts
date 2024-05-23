@@ -1,12 +1,11 @@
-import { createUserLocation } from "database/utils"
-
 import { rolesAsObject } from "@/constants"
 import { hash } from "@/lib/bcrypt"
 import { env } from "@/lib/env"
 import { CHARACTERISTIC } from "@animadate/app-db/generated/client"
+import { createUserLocation } from "@animadate/app-db/utils"
 import { cmd } from "@animadate/lib"
 
-import { seedPrisma } from "../seed-utils"
+import { seedPrisma } from "../utils"
 
 import dogs from "./dogs.json"
 import locations from "./locations.json"

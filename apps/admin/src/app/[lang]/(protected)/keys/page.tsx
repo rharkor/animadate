@@ -11,7 +11,7 @@ import { AddKeyDr } from "./add-key.dr"
 import KeysTable from "./table"
 import { KeysTableDr } from "./table.dr"
 
-export default async function Home({
+export default async function Keys({
   params: { lang },
 }: {
   params: {

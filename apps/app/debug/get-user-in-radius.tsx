@@ -1,10 +1,10 @@
 import inquirer from "inquirer"
 
 import { prisma } from "@/lib/prisma"
+import { getLatituteLongitude, getUsersInRadius } from "@animadate/app-db/utils"
 import { logger } from "@animadate/lib"
 
 import knownLocations from "../database/mock/locations.json"
-import { getLatituteLongitude, getUserInRadius } from "../database/utils"
 
 const main = async () => {
   const answers1 = await inquirer.prompt([
@@ -34,7 +34,7 @@ const main = async () => {
       type: "input",
       name: "radius",
       message: "Enter the radius in meters:",
-      default: 3000,
+      default: 1500,
     },
   ])
 
@@ -44,10 +44,11 @@ const main = async () => {
   }
 
   const location = (await getLatituteLongitude(prisma, user.id))[0]
-  const users = await getUserInRadius(prisma, {
+  const users = await getUsersInRadius(prisma, {
     latitude: location.latitude,
     longitude: location.longitude,
     radius: answers2.radius,
+    maxRadius: answers2.radius,
   })
   logger.info(`Found ${users.length} users in ${answers2.radius} meters radius`)
   users.forEach((user) => {
