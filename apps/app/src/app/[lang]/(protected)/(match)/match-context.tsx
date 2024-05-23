@@ -17,12 +17,13 @@ type MatchContextType = {
   suggested: z.infer<ReturnType<typeof getSuggestedPetsResponseSchema>>["pets"]
   animate: AnimationControls
   currentPet: z.infer<ReturnType<typeof getSuggestedPetsResponseSchema>>["pets"][number]
+  transitionDuration: number
 }
 
 export const MatchContext = createContext<MatchContextType | undefined>(undefined)
 
 const transitionLength = 350
-const transitionDuration = 300
+const transitionDuration = 0.2
 const preloadLength = 3
 
 export const MatchProvider = ({
@@ -88,33 +89,43 @@ export const MatchProvider = ({
   const like = async () => {
     if (!canLike || lastActionRateLimit) return
     setLastActionRateLimit(true)
-    setTimeout(() => setLastActionRateLimit(false), transitionDuration)
     setREnd(rEnd + 1)
     setRStart(rStart + 1)
-    await animate.start({ x: transitionLength })
+    await animate.start({
+      x: transitionLength,
+      transition: {
+        duration: transitionDuration,
+      },
+    })
     await loadNext()
     const current = suggested[0]
     current.action = "like"
+    setLastActionRateLimit(false)
   }
 
   const canDismiss = (fullSuggested?.slice(rStart, rEnd) ?? []).length > 0
   const dismiss = async () => {
     if (!canDismiss || lastActionRateLimit) return
     setLastActionRateLimit(true)
-    setTimeout(() => setLastActionRateLimit(false), transitionDuration)
     setREnd(rEnd + 1)
     setRStart(rStart + 1)
-    await animate.start({ x: -transitionLength })
+    await animate.start({
+      x: -transitionLength,
+      transition: {
+        duration: transitionDuration,
+      },
+    })
     await loadNext()
     const current = suggested[0]
     current.action = "dismiss"
+    setLastActionRateLimit(false)
   }
 
   const canUndo = rStart > 0 && fullSuggested?.at(rStart - 1) !== undefined
   const undo = async () => {
     if (!canUndo || lastActionRateLimit) return
     setLastActionRateLimit(true)
-    setTimeout(() => setLastActionRateLimit(false), transitionDuration)
+    setTimeout(() => setLastActionRateLimit(false), transitionDuration * 1000)
     setREnd(rEnd - 1)
     setRStart(rStart - 1)
     setEnd(end - 1)
@@ -125,7 +136,7 @@ export const MatchProvider = ({
 
   return (
     <MatchContext.Provider
-      value={{ like, canLike, dismiss, canDismiss, undo, canUndo, suggested, animate, currentPet }}
+      value={{ like, canLike, dismiss, canDismiss, undo, canUndo, suggested, animate, currentPet, transitionDuration }}
     >
       {children}
     </MatchContext.Provider>

@@ -29,7 +29,7 @@ export default function MatchProfile({
   suggested: z.infer<ReturnType<typeof getSuggestedPetsResponseSchema>>["pets"][number]
   style?: React.CSSProperties
 }) {
-  const { animate, dismiss, like, currentPet } = useMatch()
+  const { animate, dismiss, like, currentPet, transitionDuration } = useMatch()
 
   const chipsContainer = useRef<HTMLDivElement>(null)
 
@@ -55,7 +55,12 @@ export default function MatchProfile({
         await dismiss()
       }
     } else {
-      await animate.start({ x: 0 })
+      await animate.start({
+        x: 0,
+        transition: {
+          duration: transitionDuration,
+        },
+      })
     }
   }
 
