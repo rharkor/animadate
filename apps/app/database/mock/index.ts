@@ -1,5 +1,5 @@
 import { rolesAsObject } from "@/constants"
-import { hash } from "@/lib/bcrypt"
+import { hash as bhash } from "@/lib/bcrypt"
 import { env } from "@/lib/env"
 import { CHARACTERISTIC } from "@animadate/app-db/generated/client"
 import { createUserLocation } from "@animadate/app-db/utils"
@@ -10,6 +10,16 @@ import { seedPrisma } from "../utils"
 import dogs from "./dogs.json"
 import locations from "./locations.json"
 import users from "./users.json"
+
+const hashed = new Map<string, string>()
+const hash = async (data: string) => {
+  if (hashed.has(data)) {
+    return hashed.get(data)
+  }
+  const result = await bhash(data, 12)
+  hashed.set(data, result)
+  return result
+}
 
 export const mock = async () => {
   //* Users
@@ -27,7 +37,7 @@ export const mock = async () => {
       await seedPrisma.user.create({
         data: {
           email: user.email,
-          password: await hash(user.password, 12),
+          password: await hash(user.password),
           role: rolesAsObject.user,
           emailVerified: new Date(),
           hasPassword: true,
