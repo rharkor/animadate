@@ -9,9 +9,10 @@
   },
   "license": "ISC",
   "dependencies": {
-    "prisma": "^5.12.1",
+    "custom-prettier-config": "*",
     "eslint-config-custom": "*",
-    "custom-prettier-config": "*"
+    "prisma": "^5.12.1",
+    "zod": "^3.23.8"
   },
   "type": "module"
 }

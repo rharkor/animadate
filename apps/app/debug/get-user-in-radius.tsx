@@ -1,3 +1,5 @@
+import { config } from "dotenv"
+config()
 import inquirer from "inquirer"
 
 import { prisma } from "@/lib/prisma"

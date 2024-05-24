@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma"
 import { ApiError } from "@/lib/utils/server-utils"
 import { ensureLoggedIn, handleApiError } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
+import { getSuggestedPets as getSuggestedPetsDB } from "@animadate/app-db/utils"
 
 import { getSuggestedPetsResponseSchema, getSuggestedPetsSchema } from "./schemas"
 
@@ -23,13 +24,16 @@ export const getSuggestedPets = async ({
     })
     if (!petProfile) return ApiError("pleaseConfigureYourPetProfile", "NOT_FOUND")
 
+    const suggested = await getSuggestedPetsDB(prisma, {
+      alreadyLoaded,
+      limit,
+      userId: session.user.id,
+    })
+
     const pets = await prisma.pet.findMany({
       where: {
-        ownerId: {
-          not: session.user.id,
-        },
         id: {
-          notIn: alreadyLoaded,
+          in: suggested.map((s) => s.petId),
         },
       },
       include: {
@@ -40,7 +44,6 @@ export const getSuggestedPets = async ({
         },
         characteristics: true,
       },
-      take: limit,
     })
 
     const data: z.infer<ReturnType<typeof getSuggestedPetsResponseSchema>> = { pets }

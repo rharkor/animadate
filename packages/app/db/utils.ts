@@ -1,3 +1,5 @@
+import { z } from "zod"
+
 import { PrismaClient } from "./generated/client"
 
 export type Location = {
@@ -49,7 +51,7 @@ export const updateUserLocation = async (prisma: PrismaClient, data: UpdateUserL
   return data
 }
 
-export const maxDefaultRadius = 1500
+export const maxDefaultRadius = 2500
 
 export const getUsersInRadius = async (
   prisma: PrismaClient,
@@ -67,6 +69,16 @@ export const getUsersInRadius = async (
 ) => {
   maxRadius = maxRadius || maxDefaultRadius
   radius = Math.min(radius, maxRadius)
+  const schema = z.object({
+    latitude: z.number(),
+    longitude: z.number(),
+    radius: z.number(),
+  })
+  const input = schema.parse({
+    latitude,
+    longitude,
+    radius,
+  })
   const result = await prisma.$queryRawUnsafe<
     {
       id: number
@@ -91,15 +103,15 @@ left join "Pet" as "pet" on
 	select
 		ST_DistanceSphere(location::geometry,
     ${getStMakePoint({
-      latitude,
-      longitude,
+      latitude: input.latitude,
+      longitude: input.longitude,
     })}
 		) as distance
   ) as dist
 where
 	ST_DWithin(location::geography,
-	${getStMakePoint({ latitude, longitude })}::geography,
-	${Math.floor(radius)})
+	${getStMakePoint({ latitude: input.latitude, longitude: input.longitude })}::geography,
+	${Math.floor(input.radius)})
   and "pet"."id" is not null
 order by
 	distance asc`)
@@ -169,4 +181,92 @@ export const getUsersProfileWithPet = async (usersId: string[], prisma: PrismaCl
   })[]
 
   return users as UserWithPet
+}
+
+const idRegex = new RegExp(/^[0-9a-z]+$/) // Match a string of lowercase letters and numbers
+export const getSuggestedPets = async (
+  prisma: PrismaClient,
+  _input: {
+    userId: string
+    alreadyLoaded: string[]
+    limit: number
+  }
+) => {
+  const schema = z.object({
+    userId: z.string().regex(idRegex),
+    alreadyLoaded: z.array(z.string().regex(idRegex)),
+    limit: z.number(),
+  })
+  const input = schema.parse(_input)
+  const suggested: {
+    id: number
+    userId: string
+    st_x: number
+    st_y: number
+    distance: number
+    petId: string
+    petName: string
+  }[] = await prisma.$queryRawUnsafe(`
+  select
+	"userLocation".id,
+	ST_X("userLocation"."location"::geometry) as "st_x",
+	ST_Y("userLocation"."location"::geometry) as "st_y",
+	distance,
+	"userLocation"."userId",
+	"pet"."id" as "petId",
+	"pet"."name" as "petName"
+from
+	"UserLocation" as "userLocation"
+left join "UserLocation" as "sourceUserLocation" on
+	"sourceUserLocation"."userId" = '${input.userId}'
+left join "User" as "user" on
+	"user"."id" = "userLocation"."userId"
+left join "Pet" as "pet" on
+	"pet"."ownerId" = "user"."id"
+left join "Pet" as "sourcePet" on
+	"sourcePet"."ownerId" = '${input.userId}',
+	lateral (
+	select
+		ST_DistanceSphere("userLocation"."location"::geometry,
+		"sourceUserLocation"."location"::geometry) as distance
+  ) as dist
+where
+	-- Max radus
+	distance < ${maxDefaultRadius}
+	-- Not current owner's pet
+	and "pet"."ownerId" != '${input.userId}'
+	-- Not already loaded in frontend
+	and ${input.alreadyLoaded.length > 0 ? `"pet"."id" not in (${input.alreadyLoaded.map((id) => `'${id}'`).join(",")})` : "true = true"}
+	-- Have at least one characteristic in common
+	and exists (
+		select 1
+		from "Characteristic" "sourceCharacteristic"
+		where "sourceCharacteristic"."petId" = "sourcePet"."id"
+		and exists (
+			select 1
+			from "Characteristic" "characteristic"
+			where "characteristic"."petId" = "pet"."id"
+			and "sourceCharacteristic"."value" = "characteristic"."value"
+		)
+	)
+	-- Not already liked or dismissed within the last 30 days
+	and not exists (
+		select 1
+		from "PetAction" "petAction"
+		where "petAction"."sourcePetId" = "sourcePet"."id"
+		and (
+			-- Not already liked
+			"petAction"."action" = 'LIKE'
+			or (
+				-- Not already dismissed within the last 30 days
+				"petAction"."action" = 'DISMISS'
+				and "petAction"."updatedAt" < NOW() - interval '30 days' 
+			)
+		)
+	)
+order by distance asc
+limit ${input.limit};
+  `)
+
+  return suggested
 }

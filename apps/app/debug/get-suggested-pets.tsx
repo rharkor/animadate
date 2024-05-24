@@ -1,6 +1,9 @@
+import { config } from "dotenv"
+config()
 import inquirer from "inquirer"
 
 import { prisma } from "@/lib/prisma"
+import { getSuggestedPets } from "@animadate/app-db/utils"
 import { logger } from "@animadate/lib"
 
 const main = async () => {
@@ -29,14 +32,16 @@ const main = async () => {
 
   const limit = 10
   const alreadyLoaded: string[] = []
+  const suggested = await getSuggestedPets(prisma, {
+    alreadyLoaded,
+    limit,
+    userId: user.id,
+  })
 
   const pets = await prisma.pet.findMany({
     where: {
-      ownerId: {
-        not: user.id,
-      },
       id: {
-        notIn: alreadyLoaded,
+        in: suggested.map((s) => s.petId),
       },
     },
     include: {
@@ -47,9 +52,7 @@ const main = async () => {
       },
       characteristics: true,
     },
-    take: limit,
   })
-
   logger.info(`Found ${pets.length} pets\n` + pets.map((p) => `${p.id}: ${p.name}`).join("\n"))
 }
 
