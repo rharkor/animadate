@@ -168,6 +168,10 @@ model Pet {
   owner                     User             @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   photos                    File[]
   researchedCharacteristics CHARACTERISTIC[]
+  sourceActions             PetAction[]      @relation(name: "sourceAction")
+  targetActions             PetAction[]      @relation(name: "targetAction")
+  sourceMatches             Match[]          @relation(name: "sourceMatch")
+  targetMatches             Match[]          @relation(name: "targetMatch")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -239,4 +243,36 @@ model FileUploading {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+enum PET_ACTION {
+  LIKE
+  DISMISS
+}
+
+model PetAction {
+  id          String     @id @default(cuid())
+  sourcePetId String
+  sourcePet   Pet        @relation(name: "sourceAction", fields: [sourcePetId], references: [id], onDelete: Cascade)
+  targetPetId String
+  targetPet   Pet        @relation(name: "targetAction", fields: [targetPetId], references: [id], onDelete: Cascade)
+  action      PET_ACTION
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([sourcePetId, targetPetId])
+}
+
+model Match {
+  id        String @id @default(cuid())
+  petId     String
+  pet       Pet    @relation(name: "sourceMatch", fields: [petId], references: [id], onDelete: Cascade)
+  matchedId String
+  matched   Pet    @relation(name: "targetMatch", fields: [matchedId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([petId, matchedId])
 }

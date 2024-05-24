@@ -28,13 +28,15 @@ const main = async () => {
   }
 
   const limit = 10
-  const cursor = null
-  const cursorKey = "id"
+  const alreadyLoaded: string[] = []
 
   const pets = await prisma.pet.findMany({
     where: {
       ownerId: {
         not: user.id,
+      },
+      id: {
+        notIn: alreadyLoaded,
       },
     },
     include: {
@@ -45,14 +47,10 @@ const main = async () => {
       },
       characteristics: true,
     },
-    take: limit + 1, // get an extra item at the end which we'll use as next cursor
-    cursor: cursor ? { [cursorKey]: cursor } : undefined,
-    orderBy: {
-      [cursorKey]: "asc",
-    },
+    take: limit,
   })
 
-  logger.info(pets.map((p) => p.name))
+  logger.info(`Found ${pets.length} pets\n` + pets.map((p) => `${p.id}: ${p.name}`).join("\n"))
 }
 
 main()

@@ -5,7 +5,7 @@
     "breed": "Labrador Retriever",
     "birthdate": "2019-05-10",
     "description": "Alexandre est un chien fidèle et énergique, qui aime jouer et courir dans le parc.",
-    "characteristics": ["FRIENDLY", "PLAYFUL", "ENERGETIC"],
+    "characteristics": ["FRIENDLY", "PLAYFUL", "ENERGETIC", "SOCIAL", "HAPPY"],
     "photos": ["1", "2"]
   },
   {
