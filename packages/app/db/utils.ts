@@ -198,15 +198,17 @@ export const getSuggestedPets = async (
     limit: z.number(),
   })
   const input = schema.parse(_input)
-  const suggested: {
-    id: number
-    userId: string
-    st_x: number
-    st_y: number
-    distance: number
-    petId: string
-    petName: string
-  }[] = await prisma.$queryRawUnsafe(`
+  const suggested = await prisma.$queryRawUnsafe<
+    {
+      id: number
+      userId: string
+      st_x: number
+      st_y: number
+      distance: number
+      petId: string
+      petName: string
+    }[]
+  >(`
   select
 	"userLocation".id,
 	ST_X("userLocation"."location"::geometry) as "st_x",

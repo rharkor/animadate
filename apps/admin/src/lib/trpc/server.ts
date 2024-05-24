@@ -72,7 +72,11 @@ export const handleServerError = async <T>(
             redirect(authRoutes.redirectOnUnhauthorized)
           }
         }
-      } catch (e) {}
+      } catch (e) {
+        if (e instanceof Error && e.message === "NEXT_REDIRECT") {
+          throw e
+        }
+      }
       redirect(authRoutes.redirectOnUnhauthorized)
     }
     logger.error(error)

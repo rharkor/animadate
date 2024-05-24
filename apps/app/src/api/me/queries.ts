@@ -20,7 +20,7 @@ export const getAccount = async ({ ctx: { session } }: apiInputFromSchema<undefi
         pet: true,
       },
     })
-    if (!account) return ApiError("userNotFound", "NOT_FOUND")
+    if (!account) return ApiError("userNotFound", "UNAUTHORIZED")
     const data: z.infer<ReturnType<typeof getAccountResponseSchema>> = {
       user: { ...account, hasPetProfile: !!account.pet },
     }

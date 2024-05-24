@@ -63,19 +63,35 @@ export const handleServerError = async <T>(
     if (error instanceof Error && error.message === "NEXT_REDIRECT") {
       throw error
     }
-    if (error instanceof TRPCError && error.code === "UNAUTHORIZED") {
+    if (error instanceof TRPCError) {
       try {
         const data = JSON.parse(error.message) as TErrorMessage | string
-        if (typeof data !== "string") {
-          const avoidRedirect = data.extra && "redirect" in data.extra && data.extra.redirect === false
-          if (!avoidRedirect) {
-            redirect(authRoutes.redirectOnUnhauthorized)
+        if (error.code === "UNAUTHORIZED") {
+          if (typeof data !== "string") {
+            const avoidRedirect = data.extra && "redirect" in data.extra && data.extra.redirect === false
+            if (!avoidRedirect) {
+              redirect(authRoutes.redirectOnUnhauthorized)
+            }
+          }
+        } else if (typeof data !== "string") {
+          const redirectUrl =
+            data.extra && "redirect" in data.extra && data.extra.redirect && typeof data.extra.redirect === "string"
+              ? data.extra.redirect
+              : undefined
+          if (redirectUrl) {
+            redirect(redirectUrl)
           }
         }
-      } catch (e) {}
-      redirect(authRoutes.redirectOnUnhauthorized)
+      } catch (e) {
+        if (e instanceof Error && e.message === "NEXT_REDIRECT") {
+          throw e
+        }
+      }
+      if (error.code === "UNAUTHORIZED") {
+        redirect(authRoutes.redirectOnUnhauthorized)
+      }
     }
-    logger.error(error)
+    logger.error(error, path.join("."))
     const errorOutput: { [key: string]: unknown } = {
       raw: error,
     }

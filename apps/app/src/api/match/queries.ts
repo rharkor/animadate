@@ -22,7 +22,10 @@ export const getSuggestedPets = async ({
         ownerId: session.user.id,
       },
     })
-    if (!petProfile) return ApiError("pleaseConfigureYourPetProfile", "NOT_FOUND")
+    if (!petProfile)
+      return ApiError("pleaseConfigureYourPetProfile", "NOT_FOUND", {
+        redirect: "/profile/pet-profile",
+      })
 
     const suggested = await getSuggestedPetsDB(prisma, {
       alreadyLoaded,

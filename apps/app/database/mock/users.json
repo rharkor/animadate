@@ -48,5 +48,245 @@
     "email": "vincent.girard@example.com",
     "name": "Vincent Girard",
     "password": "Azerty123!"
+  },
+  {
+    "email": "sophie.garcia@test.com",
+    "name": "Sophie Garcia",
+    "password": "Azerty123!"
+  },
+  {
+    "email": "lucie.martinez@domain.com",
+    "name": "Lucie Martinez",
+    "password": "Azerty123!"
+  },
+  {
+    "email": "lucas.dupont@email.com",
+    "name": "Lucas Dupont",
+    "password": "Azerty123!"
+  },
+  {
+    "email": "anais.rousseau@test.com",
+    "name": "Anaïs Rousseau",
+    "password": "Azerty123!"
+  },
+  {
+    "email": "lea.delabrousse@example.com",
+    "name": "Léa Delabrousse",
+    "password": "Azerty123!"
+  },
+  {
+    "email": "lucie.blanc@email.com",
+    "name": "Lucie Blanc",
+    "password": "Azerty123!"
+  },
+  {
+    "email": "clara.garcia@email.com",
+    "name": "Clara Garcia",
+    "password": "Azerty123!"
+  },
+  {
+    "email": "paul.lambert@example.com",
+    "name": "Paul Lambert",
+    "password": "Azerty123!"
+  },
+  {
+    "email": "gabriel.morin@domain.com",
+    "name": "Gabriel Morin",
+    "password": "Azerty123!"
+  },
+  {
+    "email": "raphael.tchouameni@test.com",
+    "name": "Raphael Tchouameni",
+    "password": "Azerty123!"
+  },
+  {
+    "email": "laura.martinez@email.com",
+    "name": "Laura Martinez",
+    "password": "Azerty123!"
+  },
+  {
+    "email": "hugo.schmitt@test.com",
+    "name": "Hugo Schmitt",
+    "password": "Azerty123!"
+  },
+  {
+    "email": "anais.boyer@test.com",
+    "name": "Anais Boyer",
+    "password": "Azerty123!"
+  },
+  {
+    "email": "sophie.marceau@email.com",
+    "name": "Sophie Marceau",
+    "password": "Azerty123!"
+  },
+  {
+    "email": "jules.gauthier@mail.com",
+    "name": "Jules Gauthier",
+    "password": "Azerty123!"
+  },
+  {
+    "email": "hugo.gonzalez@domain.com",
+    "name": "Hugo Gonzalez",
+    "password": "Azerty123!"
+  },
+  {
+    "email": "laura.trape@mail.com",
+    "name": "Laura Trape",
+    "password": "Azerty123!"
+  },
+  {
+    "email": "nathalie.issidre@test.com",
+    "name": "Nathalie Issidre",
+    "password": "Azerty123!"
+  },
+  {
+    "email": "vincent.langlier@domain.com",
+    "name": "Vincent Langlier",
+    "password": "Azerty123!"
+  },
+  {
+    "email": "jean.perrein@domain.com",
+    "name": "Jean Perrein",
+    "password": "Azerty123!"
+  },
+  {
+    "email": "lucas.francois@domain.com",
+    "name": "Lucas Francois",
+    "password": "Azerty123!"
+  },
+  {
+    "email": "louis.petit@domain.com",
+    "name": "Louis Petit",
+    "password": "Azerty123!"
+  },
+  {
+    "email": "marie.dupont@mail.com",
+    "name": "Marie Dupont",
+    "password": "Azerty123!"
+  },
+  {
+    "email": "gabriel.royer@example.com",
+    "name": "Gabriel Royer",
+    "password": "Azerty123!"
+  },
+  {
+    "email": "vincent.renaud@example.com",
+    "name": "Vincent Renaud",
+    "password": "Azerty123!"
+  },
+  {
+    "email": "alexandre.richard@example.com",
+    "name": "Alexandre Richard",
+    "password": "Azerty123!"
+  },
+  {
+    "email": "manon.michel@test.com",
+    "name": "Manon Michel",
+    "password": "Azerty123!"
+  },
+  {
+    "email": "emma.partin@example.com",
+    "name": "Emma Partin",
+    "password": "Azerty123!"
+  },
+  {
+    "email": "gabriel.dumont@test.com",
+    "name": "Gabriel Dumont",
+    "password": "Azerty123!"
+  },
+  {
+    "email": "vincent.fevre@domain.com",
+    "name": "Vincent Fevre",
+    "password": "Azerty123!"
+  },
+  {
+    "email": "raphaël.lefevre@test.com",
+    "name": "Raphaël Lefevre",
+    "password": "Azerty123!"
+  },
+  {
+    "email": "lucas.robert@mail.com",
+    "name": "Lucas Robert",
+    "password": "Azerty123!"
+  },
+  {
+    "email": "laura.martin@domain.com",
+    "name": "Laura Martin",
+    "password": "Azerty123!"
+  },
+  {
+    "email": "clara.bernard@domain.com",
+    "name": "Clara Bernard",
+    "password": "Azerty123!"
+  },
+  {
+    "email": "martin.pitan@mail.com",
+    "name": "Martin Pitan",
+    "password": "Azerty123!"
+  },
+  {
+    "email": "marie.macha@test.com",
+    "name": "Marie Macha",
+    "password": "Azerty123!"
+  },
+  {
+    "email": "léa.girard@mail.com",
+    "name": "Léa Girard",
+    "password": "Azerty123!"
+  },
+  {
+    "email": "raphael.chevalier@test.com",
+    "name": "Raphael Chevalier",
+    "password": "Azerty123!"
+  },
+  {
+    "email": "alexandre.gilard@mail.com",
+    "name": "Alexandre Gilard",
+    "password": "Azerty123!"
+  },
+  {
+    "email": "clara.angelov@example.com",
+    "name": "Clara Angelov",
+    "password": "Azerty123!"
+  },
+  {
+    "email": "sophie.royer@example.com",
+    "name": "Sophie Royer",
+    "password": "Azerty123!"
+  },
+  {
+    "email": "lucie.dubois@domain.com",
+    "name": "Lucie Dubois",
+    "password": "Azerty123!"
+  },
+  {
+    "email": "julie.dumont@example.com",
+    "name": "Julie Dumont",
+    "password": "Azerty123!"
+  },
+  {
+    "email": "nathalie.astu@domain.com",
+    "name": "Nathalie Astu",
+    "password": "Azerty123!"
+  },
+  {
+    "email": "chloé.lesmur@mail.com",
+    "name": "Chloé Lesmur",
+    "password": "Azerty123!"
+  },
+  {
+    "email": "julie.porte@domain.com",
+    "name": "Julie Porte",
+    "password": "Azerty123!"
+  },
+  {
+    "email": "antonie.gauthier@domain.com",
+    "name": "Antoine Gauthier",
+    "password": "Azerty123!"
+  },
+  {
+    "email": "maxime.bernard@domain.com",
+    "name": "Maxime Bernard",
+    "password": "Azerty123!"
   }
 ]

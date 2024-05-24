@@ -61,5 +61,869 @@
     "description": "Rocky est un chien doux et aimant, qui aime passer du temps avec ses proches.",
     "characteristics": ["GENTLE", "LOVING", "SOCIAL", "HAPPY"],
     "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "sophie.garcia@test.com",
+    "name": "Poppy",
+    "breed": "Golden Retriever",
+    "birthdate": "2023-06-05",
+    "description": "Poppy est très protecteur de sa famille.",
+    "characteristics": ["CUTE", "CALM", "GENTLE", "SENSITIVE"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "lucie.martinez@domain.com",
+    "name": "Loki",
+    "breed": "Yorkshire Terrier",
+    "birthdate": "2016-10-11",
+    "description": "Loki est très protecteur de sa famille.",
+    "characteristics": ["WISE", "CALM", "AMUSING", "EASYGOING", "KIND"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "lucas.dupont@email.com",
+    "name": "Daisy",
+    "breed": "Rottweiler",
+    "birthdate": "2021-03-19",
+    "description": "Daisy aime les longues promenades et les aventures en plein air.",
+    "characteristics": ["AFFECTIONATE", "ENTHUSIASTIC"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "anais.rousseau@test.com",
+    "name": "Micky",
+    "breed": "Beagle",
+    "birthdate": "2018-02-09",
+    "description": "Micky est très curieux et explore toujours de nouveaux endroits.",
+    "characteristics": ["AMUSING", "ZEALOUS"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "lea.delabrousse@example.com",
+    "name": "Roger",
+    "breed": "Golden Retriever",
+    "birthdate": "2024-05-05",
+    "description": "Roger est très intelligent et apprend rapidement de nouveaux tours.",
+    "characteristics": ["DETERMINED", "AFFECTIONATE", "TRUSTWORTHY"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "lucie.blanc@email.com",
+    "name": "Luna",
+    "breed": "Beagle",
+    "birthdate": "2018-11-01",
+    "description": "Luna est très énergique et adore jouer à la balle.",
+    "characteristics": ["TRUSTWORTHY", "CURIOUS"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "clara.garcia@email.com",
+    "name": "Johny",
+    "breed": "German Shepherd",
+    "birthdate": "2015-11-13",
+    "description": "Johny aime les longues promenades et les aventures en plein air.",
+    "characteristics": ["FUNNY", "AMUSING", "SENSITIVE"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "paul.lambert@example.com",
+    "name": "Lune",
+    "breed": "Yorkshire Terrier",
+    "birthdate": "2017-07-24",
+    "description": "Lune est très protecteur de sa famille.",
+    "characteristics": ["GENTLE", "AMUSING", "CUTE"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "gabriel.morin@domain.com",
+    "name": "Balboa",
+    "breed": "Rottweiler",
+    "birthdate": "2016-02-24",
+    "description": "Balboa a une personnalité calme et aime se prélasser au soleil.",
+    "characteristics": ["CALM", "FRIENDLY", "WISE", "SHY"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "raphael.tchouameni@test.com",
+    "name": "Toshiba",
+    "breed": "Poodle",
+    "birthdate": "2017-08-22",
+    "description": "Toshiba a un grand cœur et adore câliner.",
+    "characteristics": ["GENTLE", "MATURE", "INTELLIGENT", "QUIET"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "laura.martinez@email.com",
+    "name": "Chips",
+    "breed": "Bulldog",
+    "birthdate": "2021-10-07",
+    "description": "Chips est très énergique et adore jouer à la balle.",
+    "characteristics": ["PLAYFUL", "TRUSTWORTHY", "STRONG", "DYNAMIC", "COOL"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "hugo.schmitt@test.com",
+    "name": "Bea",
+    "breed": "Beagle",
+    "birthdate": "2023-10-20",
+    "description": "Bea aime nager et jouer dans l'eau.",
+    "characteristics": ["STRONG", "KIND", "ENERGETIC", "WISE"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "anais.boyer@test.com",
+    "name": "Dory",
+    "breed": "Labrador Retriever",
+    "birthdate": "2017-06-30",
+    "description": "Dorya un grand cœur et adore câliner.",
+    "characteristics": ["WISE", "DYNAMIC"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "sophie.marceau@email.com",
+    "name": "Ruby",
+    "breed": "Rottweiler",
+    "birthdate": "2018-02-14",
+    "description": "Ruby est très protecteur de sa famille.",
+    "characteristics": ["DYNAMIC", "QUIET", "GENTLE", "SMART", "LOVING"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "jules.gauthier@mail.com",
+    "name": "Spid",
+    "breed": "German Shepherd",
+    "birthdate": "2023-01-30",
+    "description": "Spid aime les longues promenades et les aventures en plein air.",
+    "characteristics": ["JOYFUL", "FLEXIBLE", "CURIOUS", "COOL", "GENTLE"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "hugo.gonzalez@domain.com",
+    "name": "Sony",
+    "breed": "Golden Retriever",
+    "birthdate": "2017-01-14",
+    "description": "Sony est très intelligent et apprend rapidement de nouveaux tours.",
+    "characteristics": ["ADAPTABLE", "CHARMING"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "laura.trape@mail.com",
+    "name": "Mouse",
+    "breed": "Golden Retriever",
+    "birthdate": "2022-01-12",
+    "description": "Mouse est très curieux et explore toujours de nouveaux endroits.",
+    "characteristics": ["CALM", "MATURE", "CRAZY"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "nathalie.issidre@test.com",
+    "name": "Nemo",
+    "breed": "Labrador Retriever",
+    "birthdate": "2017-08-21",
+    "description": "Nemo a une personnalité calme et aime se prélasser au soleil.",
+    "characteristics": ["SENSITIVE", "COOL", "CLEVER", "ADAPTABLE"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "vincent.langlier@domain.com",
+    "name": "CanalPlus",
+    "breed": "German Shepherd",
+    "birthdate": "2020-10-20",
+    "description": "CanalPlus est très sociable et aime rencontrer de nouvelles personnes.",
+    "characteristics": ["CUTE", "CLEVER"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "jean.perrein@domain.com",
+    "name": "Iron",
+    "breed": "Rottweiler",
+    "birthdate": "2020-06-22",
+    "description": "Iron est très curieux et explore toujours de nouveaux endroits.",
+    "characteristics": ["PLAYFUL", "ADAPTABLE", "PROTECTIVE", "KIND", "SMART"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "lucas.francois@domain.com",
+    "name": "Taylor",
+    "breed": "Labrador Retriever",
+    "birthdate": "2019-05-27",
+    "description": "Taylor est un chien doux et aimant, qui aime passer du temps avec ses proches.",
+    "characteristics": ["ENTHUSIASTIC", "CUTE", "ADAPTABLE"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "louis.petit@domain.com",
+    "name": "Maskey",
+    "breed": "Golden Retriever",
+    "birthdate": "2021-09-05",
+    "description": "Maskey aime nager et jouer dans l'eau.",
+    "characteristics": ["STRONG", "ZEALOUS", "MATURE", "COURAGEOUS"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "marie.dupont@mail.com",
+    "name": "Thanos",
+    "breed": "Beagle",
+    "birthdate": "2021-11-29",
+    "description": "Thanos est très curieux et explore toujours de nouveaux endroits.",
+    "characteristics": ["CLEVER", "INTELLIGENT"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "gabriel.royer@example.com",
+    "name": "Joyca",
+    "breed": "French Bulldog",
+    "birthdate": "2021-12-15",
+    "description": "Joyca est très sociable et aime rencontrer de nouvelles personnes.",
+    "characteristics": ["CRAZY", "PROTECTIVE"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "vincent.renaud@example.com",
+    "name": "Flipper",
+    "breed": "Rottweiler",
+    "birthdate": "2019-08-20",
+    "description": "Flipper a un grand cœur et adore câliner.",
+    "characteristics": ["QUIET", "CHEERFUL"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "alexandre.richard@example.com",
+    "name": "Ibis",
+    "breed": "Labrador Retriever",
+    "birthdate": "2020-07-16",
+    "description": "Ibis est très protecteur de sa famille.",
+    "characteristics": ["CALM", "KIND", "ENERGETIC"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "manon.michel@test.com",
+    "name": "Sasha",
+    "breed": "Poodle",
+    "birthdate": "2020-05-24",
+    "description": "Sasha est très énergique et adore jouer à la balle.",
+    "characteristics": ["INTELLIGENT", "AFFECTIONATE", "ADAPTABLE", "JOYFUL", "TENDER"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "emma.partin@example.com",
+    "name": "Sam",
+    "breed": "French Bulldog",
+    "birthdate": "2018-12-22",
+    "description": "Sam est très intelligent et apprend rapidement de nouveaux tours.",
+    "characteristics": ["WISE", "TENDER", "ADAPTABLE", "SOCIAL", "JOYFUL"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "gabriel.dumont@test.com",
+    "name": "Floppy",
+    "breed": "Bulldog",
+    "birthdate": "2020-08-17",
+    "description": "Floppy a une personnalité calme et aime se prélasser au soleil.",
+    "characteristics": ["CHARMING", "ADAPTABLE"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "vincent.fevre@domain.com",
+    "name": "Titan",
+    "breed": "Golden Retriever",
+    "birthdate": "2021-06-11",
+    "description": "Titan est très sociable et aime rencontrer de nouvelles personnes.",
+    "characteristics": ["SOCIAL", "CALM", "STRONG", "CHEERFUL", "SHY"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "raphaël.lefevre@test.com",
+    "name": "Citroen",
+    "breed": "Beagle",
+    "birthdate": "2015-09-16",
+    "description": "Citroen aime nager et jouer dans l'eau.",
+    "characteristics": ["OBEDIENT", "SENSITIVE", "DYNAMIC", "CRAZY", "AMUSING"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "lucas.robert@mail.com",
+    "name": "Cocasus",
+    "breed": "French Bulldog",
+    "birthdate": "2021-09-09",
+    "description": "Cocasus est très curieux et explore toujours de nouveaux endroits.",
+    "characteristics": ["FLEXIBLE", "ZEALOUS", "WISE"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "laura.martin@domain.com",
+    "name": "Suzuki",
+    "breed": "Golden Retriever",
+    "birthdate": "2015-06-21",
+    "description": "Suzuki est un chien doux et aimant, qui aime passer du temps avec ses proches.",
+    "characteristics": ["FUNNY", "HAPPY", "KIND"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "clara.bernard@domain.com",
+    "name": "Squeezie",
+    "breed": "Beagle",
+    "birthdate": "2023-09-26",
+    "description": "Squeezie est très énergique et adore jouer à la balle.",
+    "characteristics": ["COOL", "EASYGOING", "GENTLE"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "martin.pitan@mail.com",
+    "name": "Oscar",
+    "breed": "Labrador Retriever",
+    "birthdate": "2015-04-14",
+    "description": "Oscar est très intelligent et apprend rapidement de nouveaux tours.",
+    "characteristics": ["STRONG", "DETERMINED", "PATIENT", "TOUGH"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "marie.macha@test.com",
+    "name": "Norman",
+    "breed": "French Bulldog",
+    "birthdate": "2021-11-04",
+    "description": "Norman est très sociable et aime rencontrer de nouvelles personnes.",
+    "characteristics": ["WISE", "OBEDIENT", "FEARLESS", "TRUSTWORTHY"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "léa.girard@mail.com",
+    "name": "Pilou",
+    "breed": "Rottweiler",
+    "birthdate": "2022-08-01",
+    "description": "Pilou est très curieux et explore toujours de nouveaux endroits.",
+    "characteristics": ["PATIENT", "EASYGOING", "MATURE", "WISE"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "raphael.chevalier@test.com",
+    "name": "Mastu",
+    "breed": "Yorkshire Terrier",
+    "birthdate": "2020-08-28",
+    "description": "Mastu aime nager et jouer dans l'eau.",
+    "characteristics": ["SMART", "EASYGOING", "MATURE", "DYNAMIC"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "alexandre.gilard@mail.com",
+    "name": "Huawei",
+    "breed": "Labrador Retriever",
+    "birthdate": "2023-01-22",
+    "description": "Huawei est très curieux et explore toujours de nouveaux endroits.",
+    "characteristics": ["COOL", "GENTLE"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "clara.angelov@example.com",
+    "name": "Captain",
+    "breed": "Poodle",
+    "birthdate": "2022-11-27",
+    "description": "Captain est un chien doux et aimant, qui aime passer du temps avec ses proches.",
+    "characteristics": ["INTELLIGENT", "CLEVER", "SMART", "PATIENT", "STRONG"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "sophie.royer@example.com",
+    "name": "Dumbo",
+    "breed": "Yorkshire Terrier",
+    "birthdate": "2016-07-19",
+    "description": "Dumbo a un grand cœur et adore câliner.",
+    "characteristics": ["KIND", "ENERGETIC"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "lucie.dubois@domain.com",
+    "name": "Chien",
+    "breed": "German Shepherd",
+    "birthdate": "2019-09-03",
+    "description": "Chien est très intelligent et apprend rapidement de nouveaux tours.",
+    "characteristics": ["QUIET", "COURAGEOUS", "LOVING", "CHEERFUL", "HAPPY"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "julie.dumont@example.com",
+    "name": "Molly",
+    "breed": "Golden Retriever",
+    "birthdate": "2022-05-28",
+    "description": "Molly est très protecteur de sa famille.",
+    "characteristics": ["SOCIAL", "JOYFUL"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "nathalie.astu@domain.com",
+    "name": "Matsu",
+    "breed": "Labrador Retriever",
+    "birthdate": "2018-02-08",
+    "description": "Matsu est très énergique et adore jouer à la balle.",
+    "characteristics": ["SOCIAL", "ADAPTABLE", "SENSITIVE", "GENTLE", "FRIENDLY"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "chloé.lesmur@mail.com",
+    "name": "Gorki",
+    "breed": "Yorkshire Terrier",
+    "birthdate": "2021-05-07",
+    "description": "Gorki aime nager et jouer dans l'eau.",
+    "characteristics": ["QUIET", "CHARMING", "EASYGOING", "JOYFUL", "TRUSTWORTHY"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "julie.porte@domain.com",
+    "name": "Mustach",
+    "breed": "Rottweiler",
+    "birthdate": "2022-02-21",
+    "description": "Mustach est très intelligent et apprend rapidement de nouveaux tours.",
+    "characteristics": ["FEARLESS", "PLAYFUL", "DOCILE", "COURAGEOUS", "WISE"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "antonie.gauthier@domain.com",
+    "name": "Charlie",
+    "breed": "Rottweiler",
+    "birthdate": "2019-10-12",
+    "description": "Charlie est très intelligent et apprend rapidement de nouveaux tours.",
+    "characteristics": ["CLEVER", "DOCILE"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "maxime.bernard@domain.com",
+    "name": "Thor",
+    "breed": "Malinois",
+    "birthdate": "2019-10-12",
+    "description": "Thor est très intelligent et dynamique.",
+    "characteristics": ["ZEALOUS", "PLAYFUL", "SENSITIVE", "PEACEFUL", "OBEDIENT"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "sophie.garcia@test.com",
+    "name": "Poppy",
+    "breed": "Golden Retriever",
+    "birthdate": "2023-06-05",
+    "description": "Poppy est très protecteur de sa famille.",
+    "characteristics": ["CUTE", "CALM", "GENTLE", "SENSITIVE"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "lucie.martinez@domain.com",
+    "name": "Loki",
+    "breed": "Yorkshire Terrier",
+    "birthdate": "2016-10-11",
+    "description": "Loki est très protecteur de sa famille.",
+    "characteristics": ["WISE", "CALM", "AMUSING", "EASYGOING", "KIND"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "lucas.dupont@email.com",
+    "name": "Daisy",
+    "breed": "Rottweiler",
+    "birthdate": "2021-03-19",
+    "description": "Daisy aime les longues promenades et les aventures en plein air.",
+    "characteristics": ["AFFECTIONATE", "ENTHUSIASTIC"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "anais.rousseau@test.com",
+    "name": "Micky",
+    "breed": "Beagle",
+    "birthdate": "2018-02-09",
+    "description": "Micky est très curieux et explore toujours de nouveaux endroits.",
+    "characteristics": ["AMUSING", "ZEALOUS"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "lea.delabrousse@example.com",
+    "name": "Roger",
+    "breed": "Golden Retriever",
+    "birthdate": "2024-05-05",
+    "description": "Roger est très intelligent et apprend rapidement de nouveaux tours.",
+    "characteristics": ["DETERMINED", "AFFECTIONATE", "TRUSTWORTHY"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "lucie.blanc@email.com",
+    "name": "Luna",
+    "breed": "Beagle",
+    "birthdate": "2018-11-01",
+    "description": "Luna est très énergique et adore jouer à la balle.",
+    "characteristics": ["TRUSTWORTHY", "CURIOUS"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "clara.garcia@email.com",
+    "name": "Johny",
+    "breed": "German Shepherd",
+    "birthdate": "2015-11-13",
+    "description": "Johny aime les longues promenades et les aventures en plein air.",
+    "characteristics": ["FUNNY", "AMUSING", "SENSITIVE"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "paul.lambert@example.com",
+    "name": "Lune",
+    "breed": "Yorkshire Terrier",
+    "birthdate": "2017-07-24",
+    "description": "Lune est très protecteur de sa famille.",
+    "characteristics": ["GENTLE", "AMUSING", "CUTE"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "gabriel.morin@domain.com",
+    "name": "Balboa",
+    "breed": "Rottweiler",
+    "birthdate": "2016-02-24",
+    "description": "Balboa a une personnalité calme et aime se prélasser au soleil.",
+    "characteristics": ["CALM", "FRIENDLY", "WISE", "SHY"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "raphael.tchouameni@test.com",
+    "name": "Toshiba",
+    "breed": "Poodle",
+    "birthdate": "2017-08-22",
+    "description": "Toshiba a un grand cœur et adore câliner.",
+    "characteristics": ["GENTLE", "MATURE", "INTELLIGENT", "QUIET"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "laura.martinez@email.com",
+    "name": "Chips",
+    "breed": "Bulldog",
+    "birthdate": "2021-10-07",
+    "description": "Chips est très énergique et adore jouer à la balle.",
+    "characteristics": ["PLAYFUL", "TRUSTWORTHY", "STRONG", "DYNAMIC", "COOL"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "hugo.schmitt@test.com",
+    "name": "Bea",
+    "breed": "Beagle",
+    "birthdate": "2023-10-20",
+    "description": "Bea aime nager et jouer dans l'eau.",
+    "characteristics": ["STRONG", "KIND", "ENERGETIC", "WISE"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "anais.boyer@test.com",
+    "name": "Dory",
+    "breed": "Labrador Retriever",
+    "birthdate": "2017-06-30",
+    "description": "Dorya un grand cœur et adore câliner.",
+    "characteristics": ["WISE", "DYNAMIC"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "sophie.marceau@email.com",
+    "name": "Ruby",
+    "breed": "Rottweiler",
+    "birthdate": "2018-02-14",
+    "description": "Ruby est très protecteur de sa famille.",
+    "characteristics": ["DYNAMIC", "QUIET", "GENTLE", "SMART", "LOVING"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "jules.gauthier@mail.com",
+    "name": "Spid",
+    "breed": "German Shepherd",
+    "birthdate": "2023-01-30",
+    "description": "Spid aime les longues promenades et les aventures en plein air.",
+    "characteristics": ["JOYFUL", "FLEXIBLE", "CURIOUS", "COOL", "GENTLE"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "hugo.gonzalez@domain.com",
+    "name": "Sony",
+    "breed": "Golden Retriever",
+    "birthdate": "2017-01-14",
+    "description": "Sony est très intelligent et apprend rapidement de nouveaux tours.",
+    "characteristics": ["ADAPTABLE", "CHARMING"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "laura.trape@mail.com",
+    "name": "Mouse",
+    "breed": "Golden Retriever",
+    "birthdate": "2022-01-12",
+    "description": "Mouse est très curieux et explore toujours de nouveaux endroits.",
+    "characteristics": ["CALM", "MATURE", "CRAZY"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "nathalie.issidre@test.com",
+    "name": "Nemo",
+    "breed": "Labrador Retriever",
+    "birthdate": "2017-08-21",
+    "description": "Nemo a une personnalité calme et aime se prélasser au soleil.",
+    "characteristics": ["SENSITIVE", "COOL", "CLEVER", "ADAPTABLE"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "vincent.langlier@domain.com",
+    "name": "CanalPlus",
+    "breed": "German Shepherd",
+    "birthdate": "2020-10-20",
+    "description": "CanalPlus est très sociable et aime rencontrer de nouvelles personnes.",
+    "characteristics": ["CUTE", "CLEVER"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "jean.perrein@domain.com",
+    "name": "Iron",
+    "breed": "Rottweiler",
+    "birthdate": "2020-06-22",
+    "description": "Iron est très curieux et explore toujours de nouveaux endroits.",
+    "characteristics": ["PLAYFUL", "ADAPTABLE", "PROTECTIVE", "KIND", "SMART"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "lucas.francois@domain.com",
+    "name": "Taylor",
+    "breed": "Labrador Retriever",
+    "birthdate": "2019-05-27",
+    "description": "Taylor est un chien doux et aimant, qui aime passer du temps avec ses proches.",
+    "characteristics": ["ENTHUSIASTIC", "CUTE", "ADAPTABLE"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "louis.petit@domain.com",
+    "name": "Maskey",
+    "breed": "Golden Retriever",
+    "birthdate": "2021-09-05",
+    "description": "Maskey aime nager et jouer dans l'eau.",
+    "characteristics": ["STRONG", "ZEALOUS", "MATURE", "COURAGEOUS"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "marie.dupont@mail.com",
+    "name": "Thanos",
+    "breed": "Beagle",
+    "birthdate": "2021-11-29",
+    "description": "Thanos est très curieux et explore toujours de nouveaux endroits.",
+    "characteristics": ["CLEVER", "INTELLIGENT"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "gabriel.royer@example.com",
+    "name": "Joyca",
+    "breed": "French Bulldog",
+    "birthdate": "2021-12-15",
+    "description": "Joyca est très sociable et aime rencontrer de nouvelles personnes.",
+    "characteristics": ["CRAZY", "PROTECTIVE"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "vincent.renaud@example.com",
+    "name": "Flipper",
+    "breed": "Rottweiler",
+    "birthdate": "2019-08-20",
+    "description": "Flipper a un grand cœur et adore câliner.",
+    "characteristics": ["QUIET", "CHEERFUL"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "alexandre.richard@example.com",
+    "name": "Ibis",
+    "breed": "Labrador Retriever",
+    "birthdate": "2020-07-16",
+    "description": "Ibis est très protecteur de sa famille.",
+    "characteristics": ["CALM", "KIND", "ENERGETIC"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "manon.michel@test.com",
+    "name": "Sasha",
+    "breed": "Poodle",
+    "birthdate": "2020-05-24",
+    "description": "Sasha est très énergique et adore jouer à la balle.",
+    "characteristics": ["INTELLIGENT", "AFFECTIONATE", "ADAPTABLE", "JOYFUL", "TENDER"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "emma.partin@example.com",
+    "name": "Sam",
+    "breed": "French Bulldog",
+    "birthdate": "2018-12-22",
+    "description": "Sam est très intelligent et apprend rapidement de nouveaux tours.",
+    "characteristics": ["WISE", "TENDER", "ADAPTABLE", "SOCIAL", "JOYFUL"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "gabriel.dumont@test.com",
+    "name": "Floppy",
+    "breed": "Bulldog",
+    "birthdate": "2020-08-17",
+    "description": "Floppy a une personnalité calme et aime se prélasser au soleil.",
+    "characteristics": ["CHARMING", "ADAPTABLE"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "vincent.fevre@domain.com",
+    "name": "Titan",
+    "breed": "Golden Retriever",
+    "birthdate": "2021-06-11",
+    "description": "Titan est très sociable et aime rencontrer de nouvelles personnes.",
+    "characteristics": ["SOCIAL", "CALM", "STRONG", "CHEERFUL", "SHY"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "raphaël.lefevre@test.com",
+    "name": "Citroen",
+    "breed": "Beagle",
+    "birthdate": "2015-09-16",
+    "description": "Citroen aime nager et jouer dans l'eau.",
+    "characteristics": ["OBEDIENT", "SENSITIVE", "DYNAMIC", "CRAZY", "AMUSING"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "lucas.robert@mail.com",
+    "name": "Cocasus",
+    "breed": "French Bulldog",
+    "birthdate": "2021-09-09",
+    "description": "Cocasus est très curieux et explore toujours de nouveaux endroits.",
+    "characteristics": ["FLEXIBLE", "ZEALOUS", "WISE"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "laura.martin@domain.com",
+    "name": "Suzuki",
+    "breed": "Golden Retriever",
+    "birthdate": "2015-06-21",
+    "description": "Suzuki est un chien doux et aimant, qui aime passer du temps avec ses proches.",
+    "characteristics": ["FUNNY", "HAPPY", "KIND"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "clara.bernard@domain.com",
+    "name": "Squeezie",
+    "breed": "Beagle",
+    "birthdate": "2023-09-26",
+    "description": "Squeezie est très énergique et adore jouer à la balle.",
+    "characteristics": ["COOL", "EASYGOING", "GENTLE"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "martin.pitan@mail.com",
+    "name": "Oscar",
+    "breed": "Labrador Retriever",
+    "birthdate": "2015-04-14",
+    "description": "Oscar est très intelligent et apprend rapidement de nouveaux tours.",
+    "characteristics": ["STRONG", "DETERMINED", "PATIENT", "TOUGH"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "marie.macha@test.com",
+    "name": "Norman",
+    "breed": "French Bulldog",
+    "birthdate": "2021-11-04",
+    "description": "Norman est très sociable et aime rencontrer de nouvelles personnes.",
+    "characteristics": ["WISE", "OBEDIENT", "FEARLESS", "TRUSTWORTHY"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "léa.girard@mail.com",
+    "name": "Pilou",
+    "breed": "Rottweiler",
+    "birthdate": "2022-08-01",
+    "description": "Pilou est très curieux et explore toujours de nouveaux endroits.",
+    "characteristics": ["PATIENT", "EASYGOING", "MATURE", "WISE"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "raphael.chevalier@test.com",
+    "name": "Mastu",
+    "breed": "Yorkshire Terrier",
+    "birthdate": "2020-08-28",
+    "description": "Mastu aime nager et jouer dans l'eau.",
+    "characteristics": ["SMART", "EASYGOING", "MATURE", "DYNAMIC"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "alexandre.gilard@mail.com",
+    "name": "Huawei",
+    "breed": "Labrador Retriever",
+    "birthdate": "2023-01-22",
+    "description": "Huawei est très curieux et explore toujours de nouveaux endroits.",
+    "characteristics": ["COOL", "GENTLE"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "clara.angelov@example.com",
+    "name": "Captain",
+    "breed": "Poodle",
+    "birthdate": "2022-11-27",
+    "description": "Captain est un chien doux et aimant, qui aime passer du temps avec ses proches.",
+    "characteristics": ["INTELLIGENT", "CLEVER", "SMART", "PATIENT", "STRONG"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "sophie.royer@example.com",
+    "name": "Dumbo",
+    "breed": "Yorkshire Terrier",
+    "birthdate": "2016-07-19",
+    "description": "Dumbo a un grand cœur et adore câliner.",
+    "characteristics": ["KIND", "ENERGETIC"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "lucie.dubois@domain.com",
+    "name": "Chien",
+    "breed": "German Shepherd",
+    "birthdate": "2019-09-03",
+    "description": "Chien est très intelligent et apprend rapidement de nouveaux tours.",
+    "characteristics": ["QUIET", "COURAGEOUS", "LOVING", "CHEERFUL", "HAPPY"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "julie.dumont@example.com",
+    "name": "Molly",
+    "breed": "Golden Retriever",
+    "birthdate": "2022-05-28",
+    "description": "Molly est très protecteur de sa famille.",
+    "characteristics": ["SOCIAL", "JOYFUL"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "nathalie.astu@domain.com",
+    "name": "Matsu",
+    "breed": "Labrador Retriever",
+    "birthdate": "2018-02-08",
+    "description": "Matsu est très énergique et adore jouer à la balle.",
+    "characteristics": ["SOCIAL", "ADAPTABLE", "SENSITIVE", "GENTLE", "FRIENDLY"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "chloé.lesmur@mail.com",
+    "name": "Gorki",
+    "breed": "Yorkshire Terrier",
+    "birthdate": "2021-05-07",
+    "description": "Gorki aime nager et jouer dans l'eau.",
+    "characteristics": ["QUIET", "CHARMING", "EASYGOING", "JOYFUL", "TRUSTWORTHY"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "julie.porte@domain.com",
+    "name": "Mustach",
+    "breed": "Rottweiler",
+    "birthdate": "2022-02-21",
+    "description": "Mustach est très intelligent et apprend rapidement de nouveaux tours.",
+    "characteristics": ["FEARLESS", "PLAYFUL", "DOCILE", "COURAGEOUS", "WISE"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "antonie.gauthier@domain.com",
+    "name": "Charlie",
+    "breed": "Rottweiler",
+    "birthdate": "2019-10-12",
+    "description": "Charlie est très intelligent et apprend rapidement de nouveaux tours.",
+    "characteristics": ["CLEVER", "DOCILE"],
+    "photos": ["1", "2"]
+  },
+  {
+    "owner_email": "maxime.bernard@domain.com",
+    "name": "Thor",
+    "breed": "Malinois",
+    "birthdate": "2019-10-12",
+    "description": "Thor est très intelligent et dynamique.",
+    "characteristics": ["ZEALOUS", "PLAYFUL", "SENSITIVE", "PEACEFUL", "OBEDIENT"],
+    "photos": ["1", "2"]
   }
 ]
