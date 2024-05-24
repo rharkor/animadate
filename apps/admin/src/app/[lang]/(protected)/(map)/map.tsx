@@ -4,21 +4,19 @@ import { useEffect, useRef, useState } from "react"
 import { IControl, LngLat, Map as MLMap } from "maplibre-gl"
 
 import { env } from "@/lib/env"
-import { TDictionary } from "@/lib/langs"
-import { maxDefaultRadius } from "@animadate/app-db/utils"
+import { maxAdminRadius } from "@animadate/app-db/utils"
 import { ScatterplotLayer } from "@deck.gl/layers"
 import { MapboxOverlay } from "@deck.gl/mapbox"
 
 import Attribution from "./attributions"
-import { MapDr } from "./map.dr"
 import Markers from "./markers"
 
 const defaultCenter = new LngLat(-0.577966, 44.845125)
 const defaultZoom = 14
-const defaultRadius = 1000
+const defaultRadius = 1500
 const renderThrottle = 1500
 
-export default function Map({ dictionary }: { dictionary: TDictionary<typeof MapDr> }) {
+export default function Map() {
   //* Map
   const mapContainer = useRef<HTMLDivElement>(null)
   const map = useRef<MLMap | null>(null)
@@ -35,7 +33,7 @@ export default function Map({ dictionary }: { dictionary: TDictionary<typeof Map
         center: defaultCenter,
         zoom: defaultZoom,
         attributionControl: false,
-        minZoom: 14,
+        // minZoom: 14,
       })
 
     let lastRender = 0
@@ -78,7 +76,7 @@ export default function Map({ dictionary }: { dictionary: TDictionary<typeof Map
             data: [{ position: [center.lng, center.lat], radius }],
             getPosition: (d) => d.position,
             getFillColor: [0, 0, 255, 50],
-            getRadius: (d) => Math.min(d.radius, maxDefaultRadius),
+            getRadius: (d) => Math.min(d.radius, maxAdminRadius),
           }),
         ],
       })

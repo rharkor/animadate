@@ -3,7 +3,7 @@ import { z } from "zod"
 import { prisma } from "@/lib/prisma"
 import { handleApiError } from "@/lib/utils/server-utils"
 import { apiInputFromSchema } from "@/types"
-import { getUsersInRadius, getUsersProfileWithPet } from "@animadate/app-db/utils"
+import { getUsersInRadius, getUsersProfileWithPet, maxAdminRadius } from "@animadate/app-db/utils"
 
 import { getProfilesLocationResponseSchema, getProfilesLocationSchema } from "./schemas"
 
@@ -15,6 +15,7 @@ export const getProfilesLocation = async ({ input }: apiInputFromSchema<typeof g
       latitude,
       longitude,
       radius,
+      maxRadius: maxAdminRadius,
     })
 
     const fullUsers = await getUsersProfileWithPet(

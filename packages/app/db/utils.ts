@@ -51,7 +51,8 @@ export const updateUserLocation = async (prisma: PrismaClient, data: UpdateUserL
   return data
 }
 
-export const maxDefaultRadius = 2500
+export const maxDefaultRadius = 10000
+export const maxAdminRadius = 10000
 
 export const getUsersInRadius = async (
   prisma: PrismaClient,
