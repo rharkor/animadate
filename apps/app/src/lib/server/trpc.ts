@@ -1,13 +1,17 @@
 import { Session } from "next-auth"
+import { IncomingMessage } from "http"
 import superjson from "superjson"
-import { ZodError } from "zod"
+import { z, ZodError } from "zod"
 
+import { sessionsSchema } from "@/api/me/schemas"
 import { getAuthApi } from "@/components/auth/require-auth"
 import { env } from "@/lib/env"
+import { wssAuthSchema } from "@/schemas/auth"
 import { User } from "@animadate/app-db/generated/client"
 import { initTRPC } from "@trpc/server"
 
 import { apiRateLimiter } from "../rate-limit"
+import { redis } from "../redis"
 import { Context } from "../trpc/context"
 import { ApiError } from "../utils/server-utils"
 
@@ -73,3 +77,29 @@ const hasVerifiedEmail = middleware(async (opts) => {
 })
 export const authenticatedProcedure = publicProcedure.use(isAuthenticated).use(hasVerifiedEmail)
 export const authenticatedNoEmailVerificationProcedure = publicProcedure.use(isAuthenticated)
+
+const wsIsAuthenticated = middleware(async (opts) => {
+  const rawInput = await opts.getRawInput()
+  const input = await wssAuthSchema()
+    .parseAsync(rawInput)
+    .catch(() => null)
+  if (!input) return ApiError("unknownError", "BAD_REQUEST")
+  if (!opts.ctx.req) return ApiError("unauthorized", "UNAUTHORIZED")
+  if (!(opts.ctx.req instanceof IncomingMessage)) {
+    return ApiError("unauthorized", "UNAUTHORIZED")
+  }
+
+  const key = `session:${input.userId}:${input.uuid}`
+  const loginSession = await redis.get(key)
+  if (!loginSession) {
+    return ApiError("unauthorized", "UNAUTHORIZED")
+  }
+  const data = JSON.parse(loginSession) as z.infer<ReturnType<typeof sessionsSchema>>
+  return opts.next({
+    ctx: {
+      ...opts.ctx,
+      session: { user: data } as unknown as Session,
+    },
+  })
+})
+export const wsAuthenticatedProcedure = publicProcedure.use(wsIsAuthenticated)

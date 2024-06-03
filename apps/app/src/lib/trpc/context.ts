@@ -1,10 +1,11 @@
 import { ITrpcContext } from "@/types"
 import { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch"
+import { CreateWSSContextFnOptions } from "@trpc/server/adapters/ws"
 
-export function createContext(opts?: FetchCreateContextFnOptions, fromServer?: boolean) {
+export function createContext(opts?: FetchCreateContextFnOptions | CreateWSSContextFnOptions, fromServer?: boolean) {
   const response: ITrpcContext = {
     session: null,
-    headers: opts && Object.fromEntries(opts.req.headers),
+    headers: opts && Object.fromEntries(Object.entries(opts.req.headers)),
     req: opts && opts.req,
     fromServer,
   }

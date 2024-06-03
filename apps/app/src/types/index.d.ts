@@ -4,7 +4,7 @@ import { z } from "zod"
 export type ITrpcContext = {
   session: Session | null | undefined
   headers: { [k: string]: string } | null | undefined
-  req: Request | null | undefined
+  req: Request | IncomingMessage | null | undefined
   fromServer?: boolean
 }
 

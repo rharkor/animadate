@@ -166,8 +166,8 @@ model Pet {
   researchedCharacteristics CHARACTERISTIC[]
   sourceActions             PetAction[]      @relation(name: "sourceAction")
   targetActions             PetAction[]      @relation(name: "targetAction")
-  sourceMatches             Match[]          @relation(name: "sourceMatch")
-  targetMatches             Match[]          @relation(name: "targetMatch")
+  matches1                  Match[]          @relation(name: "petMatch1")
+  matches2                  Match[]          @relation(name: "petMatch2")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -261,14 +261,14 @@ model PetAction {
 }
 
 model Match {
-  id        String @id @default(cuid())
-  petId     String
-  pet       Pet    @relation(name: "sourceMatch", fields: [petId], references: [id], onDelete: Cascade)
-  matchedId String
-  matched   Pet    @relation(name: "targetMatch", fields: [matchedId], references: [id], onDelete: Cascade)
+  id     String @id @default(cuid())
+  petId1 String
+  pet1   Pet    @relation(name: "petMatch1", fields: [petId1], references: [id], onDelete: Cascade)
+  petId2 String
+  pet2   Pet    @relation(name: "petMatch2", fields: [petId2], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@unique([petId, matchedId])
+  @@unique([petId1, petId2])
 }

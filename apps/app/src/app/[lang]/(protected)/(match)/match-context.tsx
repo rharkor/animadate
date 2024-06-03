@@ -94,6 +94,8 @@ export const MatchProvider = ({
 
   const [lastActionRateLimit, setLastActionRateLimit] = useState<boolean>(false)
 
+  const petActionMutation = trpc.match.petAction.useMutation()
+
   const canLike = suggested.length > 0
   const like = async () => {
     if (!canLike || lastActionRateLimit) return
@@ -107,6 +109,10 @@ export const MatchProvider = ({
       },
     })
     setLastActionRateLimit(false)
+    await petActionMutation.mutateAsync({
+      petId: suggested[0].id,
+      action: "like",
+    })
     await loadNext()
   }
 
@@ -123,6 +129,10 @@ export const MatchProvider = ({
       },
     })
     setLastActionRateLimit(false)
+    await petActionMutation.mutateAsync({
+      petId: suggested[0].id,
+      action: "dismiss",
+    })
     await loadNext()
   }
 

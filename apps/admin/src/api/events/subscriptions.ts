@@ -7,9 +7,10 @@ import { observable } from "@trpc/server/observable"
 import { onNewEventResponseSchema } from "./schemas"
 
 export const onNewEvent = () => {
+  const channel = `on-new-event`
   return observable<z.infer<ReturnType<typeof onNewEventResponseSchema>>>((emit) => {
-    const subscriber = redis.duplicate()
-    const onNewInvitation = (_: string, data: string) => {
+    const onNewInvitation = (_channel: string, data: string) => {
+      if (_channel !== channel) return
       try {
         const dataParsed = JSON.parse(data)
         const dataValidated = onNewEventResponseSchema().parse(dataParsed)
@@ -19,15 +20,15 @@ export const onNewEvent = () => {
       }
     }
     const register = async () => {
-      await subscriber.connect().catch(() => {})
-      await subscriber.subscribe(`on-new-event`)
-      logger.debug(`Subscribed to on-new-event`)
-      subscriber.on("message", onNewInvitation)
+      await redis.connect().catch(() => {})
+      await redis.subscribe(channel)
+      logger.debug(`Subscribed to ${channel}`)
+      redis.on("message", onNewInvitation)
     }
     register()
 
     return () => {
-      subscriber.unsubscribe(`on-new-event`)
+      redis.unsubscribe(channel)
     }
   })
 }

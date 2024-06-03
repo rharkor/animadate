@@ -17,3 +17,26 @@ export const getSuggestedPetsResponseSchema = () =>
       })
     ),
   })
+
+export const petActionSchema = () =>
+  z.object({
+    petId: z.string(),
+    action: z.enum(["like", "dismiss"]),
+  })
+
+export const petActionResponseSchema = () =>
+  z.object({
+    success: z.boolean(),
+  })
+
+export const onMatchSchema = () =>
+  z.object({
+    petId: z.string(),
+  })
+
+export const onMatchResponseSchema = () =>
+  z.object({
+    pet: petProfileSchema().extend({
+      distance: z.number().nullable(),
+    }),
+  })
