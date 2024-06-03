@@ -3,7 +3,7 @@ import { hash as bhash } from "@/lib/bcrypt"
 import { env } from "@/lib/env"
 import { CHARACTERISTIC } from "@animadate/app-db/generated/client"
 import { createUserLocation } from "@animadate/app-db/utils"
-import { cmd } from "@animadate/lib"
+import { cmd, logger } from "@animadate/lib"
 
 import { seedPrisma } from "../utils"
 
@@ -105,30 +105,35 @@ export const mock = async () => {
       }
 
       // Profile
-      await seedPrisma.pet.create({
-        data: {
-          name: dog.name,
-          description: dog.description,
-          birthdate: new Date(dog.birthdate),
-          breed: dog.breed,
-          characteristics: {
-            create: dog.characteristics.map((c) => ({
-              value: c as CHARACTERISTIC,
-            })),
-          },
-          kind: "DOG",
-          photos: {
-            connect: dog.photos.map((p) => ({
-              key: getDogImageKey(p),
-            })),
-          },
-          owner: {
-            connect: {
-              id: owner.id,
+      await seedPrisma.pet
+        .create({
+          data: {
+            name: dog.name,
+            description: dog.description,
+            birthdate: new Date(dog.birthdate),
+            breed: dog.breed,
+            characteristics: {
+              create: dog.characteristics.map((c) => ({
+                value: c as CHARACTERISTIC,
+              })),
+            },
+            kind: "DOG",
+            photos: {
+              connect: dog.photos.map((p) => ({
+                key: getDogImageKey(p),
+              })),
+            },
+            owner: {
+              connect: {
+                id: owner.id,
+              },
             },
           },
-        },
-      })
+        })
+        .catch((e) => {
+          logger.error("Failed to create dog", dog.name)
+          throw e
+        })
       dogsImagesTask.print(`Added dog ${dog.name}`)
       addedDogs++
     } else {

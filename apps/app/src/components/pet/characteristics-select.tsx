@@ -8,6 +8,7 @@ import { ModalDescription, ModalHeader, ModalTitle } from "@/components/ui/modal
 import { TDictionary } from "@/lib/langs"
 import { cn } from "@/lib/utils"
 import { CHARACTERISTIC } from "@animadate/app-db/generated/client"
+import { logger } from "@animadate/lib"
 import { Button, Chip, Input, Modal, ModalBody, ModalContent, ModalFooter, useDisclosure } from "@nextui-org/react"
 
 import { CharacteristicsSelectDr } from "./characteristics-select.dr"
@@ -34,19 +35,10 @@ export default function CharacteristicsSelect({
 
   const _characteristicsChoices = useMemo(
     () =>
-      Object.values(CHARACTERISTIC)
-        .map((c) => ({
-          label: dictionary.petCharacteristics[c],
-          value: c,
-        }))
-        .reduce(
-          (acc, c) => {
-            //? Remove label duplicates
-            if (!acc.find((a) => a.label === c.label)) acc.push(c)
-            return acc
-          },
-          [] as { label: string; value: string }[]
-        ),
+      Object.values(CHARACTERISTIC).map((c) => ({
+        label: dictionary.petCharacteristics[c],
+        value: c,
+      })),
     [dictionary]
   )
   const [characteristicsChoices, setCharacteristicsChoices] = useState(_characteristicsChoices)
@@ -57,7 +49,14 @@ export default function CharacteristicsSelect({
   }
 
   const getCharacteristic = useMemo(() => {
-    return (value: string) => characteristicsChoices.find((c) => c.value === value)
+    return (value: string) => {
+      const res = characteristicsChoices.find((c) => c.value === value)
+      if (!res) {
+        logger.error(`Characteristic ${value} not found`)
+        return { label: value, value }
+      }
+      return res
+    }
   }, [characteristicsChoices])
 
   const addCharacteristics = (value: string) => {
@@ -86,6 +85,11 @@ export default function CharacteristicsSelect({
     [items, search]
   )
 
+  const translatedCharacteristics = useMemo(
+    () => characteristics.map((c) => getCharacteristic(c)),
+    [characteristics, getCharacteristic]
+  )
+
   return (
     <div>
       {error && <p className="px-1 text-xs text-danger lg:hidden">{error}</p>}
@@ -107,15 +111,15 @@ export default function CharacteristicsSelect({
               },
             })}
       >
-        {characteristics.map((c) => (
+        {translatedCharacteristics.map((c) => (
           <Chip
             size="sm"
-            key={c}
+            key={c.value}
             variant="flat"
             color="primary"
             className={cn("border-2 border-transparent", "focus:border-primary focus:outline-none focus:ring-0")}
           >
-            {getCharacteristic(c)?.label ?? c}
+            {c.label}
           </Chip>
         ))}
         {!isReadOnly && (
@@ -186,7 +190,7 @@ export default function CharacteristicsSelect({
                             )}
                             startContent={<X className="mr-1 size-3" />}
                           >
-                            {getCharacteristic(c)?.label}
+                            {getCharacteristic(c).label}
                           </Chip>
                         ))}
                       </div>

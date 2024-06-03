@@ -18,6 +18,9 @@ type MatchContextType = {
   animate: AnimationControls
   currentPet: z.infer<ReturnType<typeof getSuggestedPetsResponseSchema>>["pets"][number]
   transitionDuration: number
+  seeMore: boolean
+  setSeeMore: (value: boolean) => void
+  reload: (seeMore?: boolean) => Promise<void>
 }
 
 export const MatchContext = createContext<MatchContextType | undefined>(undefined)
@@ -40,6 +43,7 @@ export const MatchProvider = ({
   const [data, setData] = useState<z.infer<ReturnType<typeof getSuggestedPetsResponseSchema>>["pets"]>(initialData.pets)
   const [alreadyLoaded, setAlreadyLoaded] = useState<string[]>(initialData.pets.map((pet) => pet.id))
   const suggestedMutation = trpc.match.getSuggestedPets.useMutation()
+  const [seeMore, setSeeMore] = useState(false)
 
   const [start, setStart] = useState(0)
   const [end, setEnd] = useState(preloadLength)
@@ -49,16 +53,15 @@ export const MatchProvider = ({
 
   const suggested = data.slice(start, end)
 
-  const loadNext = async () => {
-    //* Add a new pet to the list
-    setEnd(end + 1)
-    //* Remove the first pet from the list
-    setStart(start + 1)
-    //* Preload more pets
-    if (data.length - end < preloadLength) {
+  const reload = async (_seeMore?: boolean) => {
+    if (_seeMore !== undefined) setSeeMore(_seeMore)
+    const enableInfiniteRadius = _seeMore || seeMore
+
+    if (data.length - end < preloadLength && !suggestedMutation.isPending) {
       const newPets = await suggestedMutation.mutateAsync({
         limit: suggestedLimit,
         alreadyLoaded,
+        enableInfiniteRadius,
       })
 
       // Max limit is 50 pets in the list
@@ -78,6 +81,15 @@ export const MatchProvider = ({
       setAlreadyLoaded(newAlreadyLoaded)
       setData(newData)
     }
+  }
+
+  const loadNext = async () => {
+    //* Add a new pet to the list
+    setEnd(end + 1)
+    //* Remove the first pet from the list
+    setStart(start + 1)
+    //* Preload more pets
+    await reload()
   }
 
   const [lastActionRateLimit, setLastActionRateLimit] = useState<boolean>(false)
@@ -129,7 +141,21 @@ export const MatchProvider = ({
 
   return (
     <MatchContext.Provider
-      value={{ like, canLike, dismiss, canDismiss, undo, canUndo, suggested, animate, currentPet, transitionDuration }}
+      value={{
+        like,
+        canLike,
+        dismiss,
+        canDismiss,
+        undo,
+        canUndo,
+        suggested,
+        animate,
+        currentPet,
+        transitionDuration,
+        seeMore,
+        setSeeMore,
+        reload,
+      }}
     >
       {children}
     </MatchContext.Provider>

@@ -25,6 +25,7 @@ export default async function Home({
   const suggested = await serverTrpc.match.getSuggestedPets({
     limit: suggestedLimit,
     alreadyLoaded: [],
+    enableInfiniteRadius: false,
   })
 
   return (

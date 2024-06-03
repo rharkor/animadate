@@ -31,6 +31,7 @@ export default function PetProfilePhotos({
   fullHeight,
   disableButtons,
   topPagination,
+  isCurrent,
 }: {
   carousel?: boolean
   defaultPhoto?: number
@@ -44,6 +45,7 @@ export default function PetProfilePhotos({
   fullHeight?: boolean
   disableButtons?: boolean
   topPagination?: boolean
+  isCurrent: boolean
 }) {
   //* Upload
   const [currentFile, setCurrentFile] = useState<File | null>(null)
@@ -132,6 +134,7 @@ export default function PetProfilePhotos({
           fullHeight={fullHeight}
           disableButtons={disableButtons}
           topPagination={topPagination}
+          isCurrent={isCurrent}
         />
       </div>
       {!isReadOnly && (

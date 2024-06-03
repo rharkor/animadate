@@ -15,7 +15,7 @@ export const getSuggestedPets = async ({
   try {
     ensureLoggedIn(session)
 
-    const { limit, alreadyLoaded } = input
+    const { limit, alreadyLoaded, enableInfiniteRadius } = input
 
     const petProfile = await prisma.pet.findFirst({
       where: {
@@ -31,7 +31,10 @@ export const getSuggestedPets = async ({
       alreadyLoaded,
       limit,
       userId: session.user.id,
+      enableInfiniteRadius,
     })
+
+    const suggestedByPetId = new Map(suggested.map((s) => [s.petId, s]))
 
     const pets = await prisma.pet.findMany({
       where: {
@@ -49,7 +52,18 @@ export const getSuggestedPets = async ({
       },
     })
 
-    const data: z.infer<ReturnType<typeof getSuggestedPetsResponseSchema>> = { pets }
+    const data: z.infer<ReturnType<typeof getSuggestedPetsResponseSchema>> = {
+      pets: pets
+        .map((p) => ({
+          ...p,
+          distance: suggestedByPetId.get(p.id)?.distance ?? null,
+        }))
+        .sort((a, b) => {
+          const aDistance = suggestedByPetId.get(a.id)?.distance ?? 0
+          const bDistance = suggestedByPetId.get(b.id)?.distance ?? 0
+          return aDistance - bDistance
+        }),
+    }
     return data
   } catch (error: unknown) {
     return handleApiError(error)

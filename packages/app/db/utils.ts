@@ -51,7 +51,7 @@ export const updateUserLocation = async (prisma: PrismaClient, data: UpdateUserL
   return data
 }
 
-export const maxDefaultRadius = 10000
+export const maxDefaultRadius = 3000 // TODO 5000
 export const maxAdminRadius = 10000
 
 export const getUsersInRadius = async (
@@ -191,12 +191,14 @@ export const getSuggestedPets = async (
     userId: string
     alreadyLoaded: string[]
     limit: number
+    enableInfiniteRadius: boolean
   }
 ) => {
   const schema = z.object({
     userId: z.string().regex(idRegex),
     alreadyLoaded: z.array(z.string().regex(idRegex)),
     limit: z.number(),
+    enableInfiniteRadius: z.boolean(),
   })
   const input = schema.parse(_input)
   const suggested = await prisma.$queryRawUnsafe<
@@ -234,10 +236,16 @@ left join "Pet" as "sourcePet" on
 		"sourceUserLocation"."location"::geometry) as distance
   ) as dist
 where
-	-- Max radus
-	distance < ${maxDefaultRadius}
-	-- Not current owner's pet
-	and "pet"."ownerId" != '${input.userId}'
+  -- Not current owner's pet
+  "pet"."ownerId" != '${input.userId}'
+  ${
+    input.enableInfiniteRadius
+      ? ""
+      : `
+  -- Max radus
+  and distance < ${maxDefaultRadius}
+  `
+  }
 	-- Not already loaded in frontend
 	and ${input.alreadyLoaded.length > 0 ? `"pet"."id" not in (${input.alreadyLoaded.map((id) => `'${id}'`).join(",")})` : "true = true"}
 	-- Have at least one characteristic in common

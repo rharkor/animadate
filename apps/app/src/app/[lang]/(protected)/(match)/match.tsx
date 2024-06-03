@@ -11,7 +11,11 @@ import { useMatch } from "./match-context"
 import MatchProfile from "./match-profile"
 
 export default function Match({ dictionary }: { dictionary: TDictionary<typeof MatchDr> }) {
-  const { suggested, dismiss, canDismiss, like, canLike, undo, canUndo } = useMatch()
+  const { suggested, dismiss, canDismiss, like, canLike, undo, canUndo, seeMore, reload } = useMatch()
+
+  const onSearchFurther = () => {
+    reload(true)
+  }
 
   return (
     <>
@@ -24,8 +28,17 @@ export default function Match({ dictionary }: { dictionary: TDictionary<typeof M
             style={{
               zIndex: suggested.length - i + 1,
             }}
+            isCurrent={i === 0}
           />
         ))}
+        {!seeMore && (
+          <div className={"flex flex-col items-center justify-center gap-2"}>
+            <p className="max-w-60 text-center text-sm">{dictionary.noMoreProfiles}</p>
+            <Button color="primary" onPress={onSearchFurther} isDisabled={suggested.length > 0}>
+              {dictionary.searchFurther}
+            </Button>
+          </div>
+        )}
       </section>
       <div className="flex items-center justify-center gap-4">
         <Button

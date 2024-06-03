@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react"
 import { DragHandlers, motion, useMotionValue, useTransform } from "framer-motion"
+import { MapPin } from "lucide-react"
 import { z } from "zod"
 
 import { getSuggestedPetsResponseSchema } from "@/api/match/schemas"
@@ -24,10 +25,12 @@ export default function MatchProfile({
   dictionary,
   suggested,
   style,
+  isCurrent,
 }: {
   dictionary: TDictionary<typeof MatchProfileDr>
   suggested: z.infer<ReturnType<typeof getSuggestedPetsResponseSchema>>["pets"][number]
   style?: React.CSSProperties
+  isCurrent: boolean
 }) {
   const { animate, dismiss, like, currentPet, transitionDuration } = useMatch()
 
@@ -94,6 +97,7 @@ export default function MatchProfile({
         fullHeight
         disableButtons={hasBeenDragged}
         topPagination
+        isCurrent={isCurrent}
       />
       <header className="absoute bottom-0 left-0 h-max w-full">
         <div className="relative z-30 p-2">
@@ -115,6 +119,17 @@ export default function MatchProfile({
           />
         </div>
       </header>
+      {suggested.distance && (
+        <div className="absolute right-0 top-0 w-full font-bold text-slate-50">
+          <div className="absolute left-0 top-0 z-10 h-[200%] w-full bg-gradient-to-t from-black/0 to-black/40 to-70%" />
+          <div className="relative z-30 flex items-center justify-end gap-1 p-2">
+            <MapPin className="size-4" />
+            <p>
+              {Math.round(suggested.distance / 100) / 10} {dictionary.km}
+            </p>
+          </div>
+        </div>
+      )}
     </motion.article>
   )
 }

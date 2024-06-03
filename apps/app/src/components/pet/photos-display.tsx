@@ -33,6 +33,7 @@ interface PhotosDisplayProps {
   fullHeight?: boolean
   disableButtons?: boolean
   topPagination?: boolean
+  isCurrent: boolean
 }
 
 export default function PhotosDisplay({
@@ -49,6 +50,7 @@ export default function PhotosDisplay({
   fullHeight,
   disableButtons,
   topPagination,
+  isCurrent,
 }: PhotosDisplayProps) {
   const [photoIndex, _setPhotoIndex] = useState(0)
   const setPhotoIndex = (index: number) => {
@@ -189,6 +191,7 @@ export default function PhotosDisplay({
                   isDescriptionFocused={isDescriptionFocused}
                   isReadOnly={isReadOnly}
                   isDisabled={disableButtons}
+                  isCurrent={photoIndex === index && isCurrent}
                 />
               </div>
             ))}
@@ -247,6 +250,7 @@ export default function PhotosDisplay({
                   isDescriptionFocused={isDescriptionFocused}
                   isReadOnly={isReadOnly}
                   isDisabled={disableButtons}
+                  isCurrent={active === realPhotosLength - 1 && isCurrent}
                 />
               </div>
             )}
@@ -255,7 +259,7 @@ export default function PhotosDisplay({
       </div>
       {/* Top image index indicator */}
       {topPagination && (
-        <div className="absolute top-2 z-10 flex w-full justify-center gap-1">
+        <div className="absolute top-2 z-20 flex w-full justify-center gap-1">
           {photos.map((photo) => (
             <div
               key={photo.key}
@@ -345,9 +349,11 @@ function SwitchPhoto({
   isDescriptionFocused,
   isReadOnly,
   isDisabled,
+  isCurrent,
 }: {
   handleSlide: (direction: "left" | "right") => void
   isDescriptionFocused: boolean
+  isCurrent: boolean
   isReadOnly?: boolean
   isDisabled?: boolean
 }) {
@@ -357,11 +363,11 @@ function SwitchPhoto({
       <div
         className={cn("absolute left-0 top-0 h-full w-1/2", {
           "w-1/3": isReadOnly,
-          "pointer-events-none": isDisabled,
+          "pointer-events-none": isDisabled || !isCurrent,
         })}
         aria-label="Slide left"
         role="button"
-        tabIndex={0}
+        tabIndex={isCurrent ? 0 : -1}
         onClick={() => !isDescriptionFocused && handleSlide("left")}
         onKeyDown={(e) => {
           if (!isDescriptionFocused && (e.key === "Enter" || e.key === " ")) handleSlide("left")
@@ -371,11 +377,11 @@ function SwitchPhoto({
       <div
         className={cn("absolute right-0 top-0 h-full w-1/2", {
           "w-1/3": isReadOnly,
-          "pointer-events-none": isDisabled,
+          "pointer-events-none": isDisabled || !isCurrent,
         })}
         aria-label="Slide right"
         role="button"
-        tabIndex={0}
+        tabIndex={isCurrent ? 0 : -1}
         onClick={() => !isDescriptionFocused && handleSlide("right")}
         onKeyDown={(e) => {
           if (!isDescriptionFocused && (e.key === "Enter" || e.key === " ")) handleSlide("right")

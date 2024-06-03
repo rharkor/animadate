@@ -284,14 +284,12 @@
     "FRIENDLY": "Friendly",
     "PLAYFUL": "Playful",
     "CALM": "Calm",
-    "INTELLIGENT": "Intelligent",
     "PROTECTIVE": "Protective",
     "AFFECTIONATE": "Affectionate",
     "CURIOUS": "Curious",
     "ENERGETIC": "Energetic",
     "SWEET": "Sweet",
     "HAPPY": "Happy",
-    "LOVING": "Loving",
     "QUIET": "Quiet",
     "SHY": "Shy",
     "SOCIAL": "Social",
@@ -306,7 +304,6 @@
     "ENTHUSIASTIC": "Enthusiastic",
     "FEARLESS": "Fearless",
     "FUNNY": "Funny",
-    "GENTLE": "Gentle",
     "JOYFUL": "Joyful",
     "KIND": "Kind",
     "MATURE": "Mature",
@@ -325,7 +322,6 @@
     "ADAPTABLE": "Adaptable",
     "AMUSING": "Amusing",
     "CHARMING": "Charming",
-    "CHEERFUL": "Cheerful",
     "COURAGEOUS": "Courageous",
     "DETERMINED": "Determined",
     "FLEXIBLE": "Flexible"
@@ -345,5 +341,8 @@
   "noCharacteristics": "No characteristics",
   "invalidFileType": "Invalid file type.",
   "preview": "Preview",
-  "breed": "Breed"
+  "breed": "Breed",
+  "noMoreProfiles": "Unfortunately there are no more profiles near you",
+  "searchFurther": "Search further",
+  "km": "km"
 }
