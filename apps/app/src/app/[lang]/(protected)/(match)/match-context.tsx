@@ -122,11 +122,11 @@ export const MatchProvider = ({
       },
     })
     setLastActionRateLimit(false)
+    await loadNext()
     await petActionMutation.mutateAsync({
       petId: currentPet.id,
       action: "like",
     })
-    await loadNext()
   }
 
   const canDismiss = suggested.length > 0
@@ -142,11 +142,11 @@ export const MatchProvider = ({
       },
     })
     setLastActionRateLimit(false)
+    await loadNext()
     await petActionMutation.mutateAsync({
       petId: currentPet.id,
       action: "dismiss",
     })
-    await loadNext()
   }
 
   const canUndo = rStart > 0 && data.at(rStart - 1) !== undefined
