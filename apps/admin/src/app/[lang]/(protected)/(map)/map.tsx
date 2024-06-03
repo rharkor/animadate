@@ -21,7 +21,8 @@ const renderThrottle = 1500
 
 export default function Map({ dictionary }: { dictionary: TDictionary<typeof MapDr> }) {
   //* Settings
-  const [displayRadiusCircle, setDisplayRadiusCircle] = useState(true)
+  const [displayRadiusCircle, setDisplayRadiusCircle] = useState(false)
+  const [displayMarkers, setDisplayMarkers] = useState(true)
   const [clusterMaxDistance, setClusterMaxDistance] = useState(100)
 
   //* Map
@@ -145,11 +146,13 @@ export default function Map({ dictionary }: { dictionary: TDictionary<typeof Map
     <>
       <div ref={mapContainer} className="h-full" />
       <Attribution />
-      <Markers center={center} radius={radius} map={map} />
+      <Markers center={center} radius={radius} map={map} displayMarkers={displayMarkers} />
       <MapSettings
+        dictionary={dictionary}
         displayRadiusCircle={displayRadiusCircle}
         setDisplayRadiusCircle={setDisplayRadiusCircle}
-        dictionary={dictionary}
+        displayMarkers={displayMarkers}
+        setDisplayMarkers={setDisplayMarkers}
       />
     </>
   )

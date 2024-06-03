@@ -288,5 +288,6 @@
   "searchByApplicationName": "Search by application name",
   "appLiteral": "Application",
   "map": "Map",
-  "displayRadiusCircle": "Display radius circle"
+  "displayRadiusCircle": "Display radius circle",
+  "displayMarkers": "Display markers"
 }

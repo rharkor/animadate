@@ -288,5 +288,6 @@
   "searchByApplicationName": "Rechercher par nom d'application",
   "appLiteral": "Application",
   "map": "Carte",
-  "displayRadiusCircle": "Afficher le rayon"
+  "displayRadiusCircle": "Afficher le rayon",
+  "displayMarkers": "Afficher les marqueurs"
 }
