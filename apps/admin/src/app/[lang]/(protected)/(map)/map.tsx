@@ -4,24 +4,34 @@ import { useEffect, useRef, useState } from "react"
 import { IControl, LngLat, Map as MLMap } from "maplibre-gl"
 
 import { env } from "@/lib/env"
+import { TDictionary } from "@/lib/langs"
 import { maxAdminRadius } from "@animadate/app-db/utils"
 import { ScatterplotLayer } from "@deck.gl/layers"
 import { MapboxOverlay } from "@deck.gl/mapbox"
 
 import Attribution from "./attributions"
+import { MapDr } from "./map.dr"
 import Markers from "./markers"
+import MapSettings from "./settings"
 
 const defaultCenter = new LngLat(-0.577966, 44.845125)
 const defaultZoom = 14
 const defaultRadius = 1500
 const renderThrottle = 1500
 
-export default function Map() {
+export default function Map({ dictionary }: { dictionary: TDictionary<typeof MapDr> }) {
+  //* Settings
+  const [displayRadiusCircle, setDisplayRadiusCircle] = useState(true)
+  const [clusterMaxDistance, setClusterMaxDistance] = useState(100)
+
   //* Map
   const mapContainer = useRef<HTMLDivElement>(null)
   const map = useRef<MLMap | null>(null)
+  const mapBoxOverlay = useRef<MapboxOverlay | null>(null)
+  const layers = useRef<{ [key: string]: ScatterplotLayer }>({})
   const [center, setCenter] = useState<LngLat>(defaultCenter)
   const [radius, setRadius] = useState(defaultRadius)
+
   useEffect(() => {
     if (!mapContainer.current) return
 
@@ -47,6 +57,7 @@ export default function Map() {
     const deckOverlay = new MapboxOverlay({
       layers: [],
     })
+    mapBoxOverlay.current = deckOverlay
 
     const onRender = () => {
       const bounds = newMap.getBounds()
@@ -67,19 +78,6 @@ export default function Map() {
           refetchData(center, radius)
         }, renderThrottle)
       }
-
-      // Display the radius
-      deckOverlay.setProps({
-        layers: [
-          new ScatterplotLayer({
-            id: "radius",
-            data: [{ position: [center.lng, center.lat], radius }],
-            getPosition: (d) => d.position,
-            getFillColor: [0, 0, 255, 50],
-            getRadius: (d) => Math.min(d.radius, maxAdminRadius),
-          }),
-        ],
-      })
     }
 
     newMap.on("render", onRender)
@@ -98,11 +96,61 @@ export default function Map() {
     }
   }, [])
 
+  //* Set radius circle
+  useEffect(() => {
+    const curMap = map.current
+    const curMapBoxOverlay = mapBoxOverlay.current
+    const curLayers = layers.current
+    if (!curMap || !curMapBoxOverlay) return
+
+    if (displayRadiusCircle) {
+      const onRender = () => {
+        const bounds = curMap.getBounds()
+        // Get the radius of the bounds
+        const radius = bounds.getNorthEast().distanceTo(bounds.getSouthWest()) / 2
+        // Get the center of the bounds
+        const center = bounds.getCenter()
+
+        const circleLayer = new ScatterplotLayer({
+          id: "radius",
+          data: [{ position: [center.lng, center.lat], radius }],
+          getPosition: (d) => d.position,
+          getFillColor: [0, 0, 255, 20],
+          getRadius: (d) => Math.min(d.radius, maxAdminRadius),
+        })
+        curLayers["radius"] = circleLayer
+
+        curMapBoxOverlay.setProps({
+          layers: Object.values(curLayers),
+        })
+      }
+
+      curMap.on("render", onRender)
+      onRender()
+
+      return () => {
+        curMap.off("render", onRender)
+      }
+    } else {
+      if (curLayers["radius"]) {
+        delete curLayers["radius"]
+        curMapBoxOverlay.setProps({
+          layers: Object.values(curLayers),
+        })
+      }
+    }
+  }, [displayRadiusCircle])
+
   return (
     <>
       <div ref={mapContainer} className="h-full" />
       <Attribution />
       <Markers center={center} radius={radius} map={map} />
+      <MapSettings
+        displayRadiusCircle={displayRadiusCircle}
+        setDisplayRadiusCircle={setDisplayRadiusCircle}
+        dictionary={dictionary}
+      />
     </>
   )
 }

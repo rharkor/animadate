@@ -287,5 +287,6 @@
   "searchByEmail": "Rechercher par email",
   "searchByApplicationName": "Rechercher par nom d'application",
   "appLiteral": "Application",
-  "map": "Carte"
+  "map": "Carte",
+  "displayRadiusCircle": "Afficher le rayon"
 }

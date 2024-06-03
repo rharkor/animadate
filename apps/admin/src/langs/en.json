@@ -287,5 +287,6 @@
   "searchByEmail": "Search by email",
   "searchByApplicationName": "Search by application name",
   "appLiteral": "Application",
-  "map": "Map"
+  "map": "Map",
+  "displayRadiusCircle": "Display radius circle"
 }
