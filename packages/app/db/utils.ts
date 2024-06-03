@@ -272,7 +272,7 @@ where
 			or (
 				-- Not already dismissed within the last 30 days
 				"petAction"."action" = 'DISMISS'
-				and "petAction"."updatedAt" < NOW() - interval '30 days' 
+				and "petAction"."updatedAt" > NOW() - interval '30 days' 
 			)
 		)
 	)

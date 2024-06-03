@@ -23,6 +23,7 @@ type MatchContextType = {
   seeMore: boolean
   setSeeMore: (value: boolean) => void
   reload: (seeMore?: boolean) => Promise<void>
+  canSlide: boolean
 }
 
 export const MatchContext = createContext<MatchContextType | undefined>(undefined)
@@ -190,6 +191,7 @@ export const MatchProvider = ({
         seeMore,
         setSeeMore,
         reload,
+        canSlide: canLike && canDismiss,
       }}
     >
       {children}

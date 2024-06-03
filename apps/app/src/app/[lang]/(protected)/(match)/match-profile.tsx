@@ -32,7 +32,7 @@ export default function MatchProfile({
   style?: React.CSSProperties
   isCurrent: boolean
 }) {
-  const { animate, dismiss, like, currentPet, transitionDuration } = useMatch()
+  const { animate, dismiss, like, currentPet, transitionDuration, canSlide } = useMatch()
 
   const chipsContainer = useRef<HTMLDivElement>(null)
 
@@ -79,7 +79,7 @@ export default function MatchProfile({
         "absolute flex flex-col justify-end overflow-hidden bg-slate-100",
         "size-full cursor-pointer overflow-hidden rounded-medium lg:h-[740px] lg:w-[360px]"
       )}
-      drag={true}
+      drag={canSlide ? true : false}
       dragConstraints={{ left: -200, right: 200, top: 0, bottom: 0 }}
       onDragEnd={onDragEnd}
       onDragStart={onDragStart}
