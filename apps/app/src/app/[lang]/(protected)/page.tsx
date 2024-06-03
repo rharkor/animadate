@@ -28,9 +28,11 @@ export default async function Home({
     enableInfiniteRadius: false,
   })
 
+  const petProfile = await serverTrpc.pet.getPetProfile({})
+
   return (
     <main className="flex size-full flex-1 flex-col justify-center gap-4 overflow-hidden p-3">
-      <MatchProvider initialData={suggested} suggestedLimit={suggestedLimit}>
+      <MatchProvider initialData={suggested} suggestedLimit={suggestedLimit} petProfile={petProfile}>
         <Match dictionary={dictionary} />
       </MatchProvider>
     </main>

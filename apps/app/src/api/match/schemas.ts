@@ -1,5 +1,7 @@
 import { z } from "zod"
 
+import { wssAuthSchema } from "@/schemas/auth"
+
 import { petProfileSchema } from "../pet/schemas"
 
 export const getSuggestedPetsSchema = () =>
@@ -30,13 +32,11 @@ export const petActionResponseSchema = () =>
   })
 
 export const onMatchSchema = () =>
-  z.object({
+  wssAuthSchema().extend({
     petId: z.string(),
   })
 
 export const onMatchResponseSchema = () =>
   z.object({
-    pet: petProfileSchema().extend({
-      distance: z.number().nullable(),
-    }),
+    pet: petProfileSchema(),
   })

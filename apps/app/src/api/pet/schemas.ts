@@ -111,7 +111,7 @@ export const petProfileSchema = () =>
     description: z.string(),
     kind: z.string(),
     breed: z.string(),
-    birthdate: z.date(),
+    birthdate: z.coerce.date(),
     characteristics: z.array(
       z.object({
         id: z.string(),

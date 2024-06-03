@@ -13,7 +13,7 @@ import { initTRPC } from "@trpc/server"
 import { apiRateLimiter } from "../rate-limit"
 import { redis } from "../redis"
 import { Context } from "../trpc/context"
-import { ApiError } from "../utils/server-utils"
+import { ApiError, WsError } from "../utils/server-utils"
 
 /**
  * Initialization of tRPC backend
@@ -40,7 +40,7 @@ export const createCallerFactory = t.createCallerFactory
 export const router = t.router
 export const middleware = t.middleware
 const hasRateLimit = middleware(async (opts) => {
-  if (opts.ctx.req) {
+  if (opts.ctx.req && !(opts.ctx.req instanceof IncomingMessage)) {
     const { headers } = await apiRateLimiter(opts.ctx.req)
     return opts.next({
       ctx: {
@@ -83,10 +83,10 @@ const wsIsAuthenticated = middleware(async (opts) => {
   const input = await wssAuthSchema()
     .parseAsync(rawInput)
     .catch(() => null)
-  if (!input) return ApiError("unknownError", "BAD_REQUEST")
-  if (!opts.ctx.req) return ApiError("unauthorized", "UNAUTHORIZED")
+  if (!input) return WsError("unknownError", "BAD_REQUEST")
+  if (!opts.ctx.req) return WsError("unauthorized", "UNAUTHORIZED")
   if (!(opts.ctx.req instanceof IncomingMessage)) {
-    return ApiError("unauthorized", "UNAUTHORIZED")
+    return WsError("unauthorized", "UNAUTHORIZED")
   }
 
   const key = `session:${input.userId}:${input.uuid}`

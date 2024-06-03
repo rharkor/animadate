@@ -64,6 +64,25 @@ export async function ApiError(
   })
 }
 
+export async function WsError(
+  messageCode: Path<TDictionary<undefined, "errors">>,
+  code?: TRPC_ERROR_CODE_KEY,
+  extra?: object
+): Promise<never> {
+  const lang = i18n.defaultLocale
+  const dictionary = await _getDictionary("errors", lang as Locale, undefined)
+  let message = findNestedKeyInDictionary(messageCode, dictionary)
+  if (!message) {
+    logger.error(new Error(`Error not found in dictionary: ${messageCode}`))
+    message = dictionary.unknownError
+  }
+  const data: TErrorMessage = { message, code: messageCode, extra }
+  throw new TRPCError({
+    code: code ?? "BAD_REQUEST",
+    message: JSON.stringify(data),
+  })
+}
+
 export const generateRandomSecret = () => {
   const secret = base32Encode(crypto.getRandomValues(new Uint8Array(10)), "RFC4648", { padding: false })
   return secret

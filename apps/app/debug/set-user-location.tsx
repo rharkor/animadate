@@ -1,10 +1,10 @@
 import inquirer from "inquirer"
 
 import { prisma } from "@/lib/prisma"
+import { createUserLocation, updateUserLocation } from "@animadate/app-db/utils"
 import { logger } from "@animadate/lib"
 
 import locations from "../database/mock/locations.json"
-import { createUserLocation, updateUserLocation } from "../database/utils"
 
 const main = async () => {
   const answers1 = await inquirer.prompt([

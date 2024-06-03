@@ -1,6 +1,7 @@
 import { z } from "zod"
 
 import { prisma } from "@/lib/prisma"
+import { redis } from "@/lib/redis"
 import { getContext } from "@/lib/utils/events"
 import { ApiError } from "@/lib/utils/server-utils"
 import { ensureLoggedIn, handleApiError } from "@/lib/utils/server-utils"
@@ -8,7 +9,7 @@ import { apiInputFromSchema } from "@/types"
 import { PET_ACTION } from "@animadate/app-db/generated/client"
 import events from "@animadate/events-sdk"
 
-import { petActionResponseSchema, petActionSchema } from "./schemas"
+import { onMatchResponseSchema, petActionResponseSchema, petActionSchema } from "./schemas"
 
 export const petAction = async ({ ctx: { session, req }, input }: apiInputFromSchema<typeof petActionSchema>) => {
   try {
@@ -112,7 +113,27 @@ export const petAction = async ({ ctx: { session, req }, input }: apiInputFromSc
               matchId: newMatch.id,
             },
           })
-          // TODO Propagate the match to wss
+
+          //? Propagate the match to wss
+          const pet = await prisma.pet.findFirst({
+            where: {
+              id: petId,
+            },
+            include: {
+              photos: {
+                orderBy: {
+                  order: "asc",
+                },
+              },
+              characteristics: true,
+            },
+          })
+          await redis.connect().catch(() => {})
+          const data = onMatchResponseSchema().parse({
+            pet,
+          })
+          const channel = `on-match:${sessionPet.id}`
+          await redis.publish(channel, JSON.stringify(data))
         }
       }
     }

@@ -2,35 +2,38 @@ import z from "zod"
 
 import { prisma } from "@/lib/prisma"
 import { redis } from "@/lib/redis"
-import { ApiError } from "@/lib/utils/server-utils"
+import { WsError } from "@/lib/utils/server-utils"
 import { ITrpcContext } from "@/types"
 import { logger } from "@animadate/lib"
 import { observable } from "@trpc/server/observable"
 
+import { sessionsSchema } from "../me/schemas"
+
 import { onMatchResponseSchema, onMatchSchema } from "./schemas"
 
 export const onMatch = async ({
-  ctx: { session },
+  ctx: { session: _session },
 }: {
   ctx: ITrpcContext
   input: z.infer<ReturnType<typeof onMatchSchema>>
 }) => {
+  const session = _session as unknown as { user: z.infer<ReturnType<typeof sessionsSchema>> }
   if (!session || !session.user) {
-    return ApiError("unauthorized", "UNAUTHORIZED")
+    return WsError("unauthorized", "UNAUTHORIZED")
   }
-  const user = await prisma.user.findFirst({
+  const user = await prisma.user.findUnique({
     where: {
-      id: session.user.id,
+      id: session.user.userId,
     },
     include: {
       pet: true,
     },
   })
   if (!user) {
-    return ApiError("userNotFound", "NOT_FOUND")
+    return WsError("userNotFound", "NOT_FOUND")
   }
   if (!user.pet) {
-    return ApiError("petNotFound", "NOT_FOUND")
+    return WsError("petNotFound", "NOT_FOUND")
   }
   const channel = `on-match:${user.pet.id}`
   return observable<z.infer<ReturnType<typeof onMatchResponseSchema>>>((emit) => {

@@ -2,13 +2,14 @@ import { exit } from "process"
 import ws from "ws"
 
 import { appRouter } from "@/api/_app"
+import { env } from "@/lib/env"
 import { createContext } from "@/lib/trpc/context"
 import { logger } from "@animadate/lib"
 import { applyWSSHandler } from "@trpc/server/adapters/ws"
 
 const wss = new ws.Server({
   // eslint-disable-next-line no-process-env
-  port: process.env.PORT ? parseInt(process.env.PORT) : 3004,
+  port: env.WS_PORT,
 })
 const handler = applyWSSHandler({
   wss,

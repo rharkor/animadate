@@ -22,10 +22,9 @@ export const pushEvent = async ({ input }: apiInputFromSchema<typeof pushEventSc
     })
 
     //? Trigger the invitation event
-    const emitter = redis.duplicate()
-    await emitter.connect().catch(() => {})
+    await redis.connect().catch(() => {})
     const eventData = onNewEventResponseSchema().parse(event)
-    await emitter.publish(`on-new-event`, JSON.stringify(eventData))
+    await redis.publish(`on-new-event`, JSON.stringify(eventData))
 
     //? Send alert email if needed
     if (data.level === "ERROR") {

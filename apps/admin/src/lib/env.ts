@@ -66,6 +66,7 @@ export const env = createEnv({
       .enum(["true", "false"])
       .optional()
       .transform((value) => value === "true"),
+    WS_PORT: z.coerce.number(),
   },
   client: {
     NEXT_PUBLIC_BASE_URL: z.string().url().optional(),
@@ -128,6 +129,7 @@ export const env = createEnv({
     DISABLE_EVENTS_PUSH: process.env.DISABLE_EVENTS_PUSH,
     NEXT_PUBLIC_WS_URL: process.env.NEXT_PUBLIC_WS_URL,
     NEXT_PUBLIC_MAP_API_KEY: process.env.NEXT_PUBLIC_MAP_API_KEY,
+    WS_PORT: process.env.WS_PORT,
   },
   onValidationError: (error) => {
     logger.error(error)

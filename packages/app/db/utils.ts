@@ -265,6 +265,7 @@ where
 		select 1
 		from "PetAction" "petAction"
 		where "petAction"."sourcePetId" = "sourcePet"."id"
+    and "petAction"."targetPetId" = "pet"."id"
 		and (
 			-- Not already liked
 			"petAction"."action" = 'LIKE'

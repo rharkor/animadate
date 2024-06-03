@@ -36,6 +36,7 @@ const main = async () => {
     alreadyLoaded,
     limit,
     userId: user.id,
+    enableInfiniteRadius: false,
   })
 
   const pets = await prisma.pet.findMany({

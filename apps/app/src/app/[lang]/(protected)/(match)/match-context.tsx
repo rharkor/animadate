@@ -1,10 +1,12 @@
 "use client"
 
 import { createContext, useContext, useState } from "react"
+import { useSession } from "next-auth/react"
 import { AnimationControls, useAnimation } from "framer-motion"
 import { z } from "zod"
 
 import { getSuggestedPetsResponseSchema } from "@/api/match/schemas"
+import { getPetProfileResponseSchema } from "@/api/pet/schemas"
 import { trpc } from "@/lib/trpc/client"
 
 type MatchContextType = {
@@ -33,12 +35,22 @@ export const MatchProvider = ({
   children,
   initialData,
   suggestedLimit,
+  petProfile,
 }: {
   children: React.ReactNode
   initialData: z.infer<ReturnType<typeof getSuggestedPetsResponseSchema>>
   suggestedLimit: number
+  petProfile: z.infer<ReturnType<typeof getPetProfileResponseSchema>>
 }) => {
   const animate = useAnimation()
+
+  const petProfileQuery = trpc.pet.getPetProfile.useQuery(
+    {},
+    {
+      initialData: petProfile,
+    }
+  )
+  const session = useSession()
 
   const [data, setData] = useState<z.infer<ReturnType<typeof getSuggestedPetsResponseSchema>>["pets"]>(initialData.pets)
   const [alreadyLoaded, setAlreadyLoaded] = useState<string[]>(initialData.pets.map((pet) => pet.id))
@@ -94,6 +106,7 @@ export const MatchProvider = ({
 
   const [lastActionRateLimit, setLastActionRateLimit] = useState<boolean>(false)
 
+  const currentPet = suggested[0]
   const petActionMutation = trpc.match.petAction.useMutation()
 
   const canLike = suggested.length > 0
@@ -110,7 +123,7 @@ export const MatchProvider = ({
     })
     setLastActionRateLimit(false)
     await petActionMutation.mutateAsync({
-      petId: suggested[0].id,
+      petId: currentPet.id,
       action: "like",
     })
     await loadNext()
@@ -130,7 +143,7 @@ export const MatchProvider = ({
     })
     setLastActionRateLimit(false)
     await petActionMutation.mutateAsync({
-      petId: suggested[0].id,
+      petId: currentPet.id,
       action: "dismiss",
     })
     await loadNext()
@@ -147,7 +160,19 @@ export const MatchProvider = ({
     setStart(start - 1)
   }
 
-  const currentPet = suggested[0]
+  trpc.match.onMatch.useSubscription(
+    {
+      userId: session.data?.user?.id ?? "",
+      uuid: session.data?.user?.uuid ?? "",
+      petId: petProfileQuery.data.id ?? "",
+    },
+    {
+      enabled: !!petProfileQuery.data && !!session.data && !!session.data.user,
+      onData: async (data) => {
+        console.log(data)
+      },
+    }
+  )
 
   return (
     <MatchContext.Provider
