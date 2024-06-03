@@ -23,7 +23,6 @@ export default function Map({ dictionary }: { dictionary: TDictionary<typeof Map
   //* Settings
   const [displayRadiusCircle, setDisplayRadiusCircle] = useState(false)
   const [displayMarkers, setDisplayMarkers] = useState(true)
-  const [clusterMaxDistance, setClusterMaxDistance] = useState(100)
 
   //* Map
   const mapContainer = useRef<HTMLDivElement>(null)
